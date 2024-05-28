@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <servlet>
+        <servlet-name>SubjectListServlet</servlet-name>
+        <servlet-class>controller.admin.SubjectListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateSubjectServlet</servlet-name>
+        <servlet-class>controller.admin.UpdateSubjectServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddSubjectServlet</servlet-name>
+        <servlet-class>controller.admin.AddSubjectServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteSubjectServlet</servlet-name>
+        <servlet-class>controller.admin.DeleteSubjectServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SubjectListServlet</servlet-name>
+        <url-pattern>/admin/subject-list</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateSubjectServlet</servlet-name>
+        <url-pattern>/admin/update-subject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddSubjectServlet</servlet-name>
+        <url-pattern>/admin/new-subject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteSubjectServlet</servlet-name>
+        <url-pattern>/admin/delete-subject</url-pattern>
+    </servlet-mapping>
+</web-app>
