@@ -59,6 +59,38 @@ public class UserDAO extends DBContext {
         }
         return list;
     }
+    
+    public boolean CreateAccount(String fullname, String username, String email, String dob, String password, boolean gender , java.sql.Date create_At){
+        try {
+            DBContext db = new DBContext();
+            String sql = "INSERT INTO [dbo].[Users]\n"
+                    + "           ([FullName]\n"
+                    + "           ,[UserName]\n"
+                    + "           ,[DateOfBirth]\n"
+                    + "           ,[Email]\n"
+                    + "           ,[Password]\n"
+                    + "           ,[Gender]\n"
+                    + "           ,[RoleID]\n"
+                    + "           ,[Create_at])\n"
+                    + "     VALUES\n"
+                    + "           (?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement pst = db.connection.prepareStatement(sql);
+            pst.setString(1, fullname);
+            pst.setString(2, username);
+            pst.setString(3, dob);
+            pst.setString(4, email);
+            pst.setString(5, password);
+            pst.setBoolean(6, gender); 
+            pst.setInt(7, 2); // Default role for normal users
+            pst.setDate(8, create_At);
+            pst.executeUpdate();
+            return true;
+            } catch (Exception e) {
+                return false;
+            }
+            
+        
+    }
 
     public User checkLogin(String name, String pass) {
         DBContext db = null;
@@ -107,6 +139,27 @@ public class UserDAO extends DBContext {
             } catch (Exception e) {
                 e.printStackTrace();  // Log any potential exceptions during resource closing
             }
+        }
+        return null;
+    
+    }
+    
+    public User checkAccountExits(String user) {
+        String sql = "select * from Users \n"
+                + "where UserName = ?\n";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setString(1, user);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return new User(rs.getInt(1), rs.getString(2), rs.getString(3),
+                        rs.getDate(4), rs.getString(5), rs.getString(6), rs.getString(7),
+                        rs.getString(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getDate(12));
+            }
+        } catch (Exception e) {
         }
         return null;
     }
