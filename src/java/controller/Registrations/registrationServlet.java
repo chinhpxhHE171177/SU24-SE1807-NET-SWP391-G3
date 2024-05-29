@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.admin;
+package controller.Registrations;
 
 import dal.RegistrationDAO;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import model.Registrations;
  *
  * @author nguye
  */
-public class RegistrationServlet extends HttpServlet {
+public class registrationServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,7 +31,19 @@ public class RegistrationServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet registrationServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet registrationServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -47,13 +59,12 @@ public class RegistrationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-        RegistrationDAO rdao = new RegistrationDAO();
-        List<Registrations> listr = rdao.getAllRegistrations();
-        request.setAttribute("listr", listr);
-        request.getRequestDispatcher("Success.jsp").forward(request, response);
-        
+//        RegistrationDAO rdao = new RegistrationDAO();
+//        List<Registrations> listr = rdao.getAllRegistrations();
+//        request.setAttribute("listr", listr);
+        request.getRequestDispatcher("/registration/registrations.jsp").forward(request, response);
     }
-    
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *

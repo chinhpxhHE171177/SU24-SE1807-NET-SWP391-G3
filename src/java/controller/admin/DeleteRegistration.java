@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author nguye
  */
+
 public class DeleteRegistration extends HttpServlet {
 
     /**

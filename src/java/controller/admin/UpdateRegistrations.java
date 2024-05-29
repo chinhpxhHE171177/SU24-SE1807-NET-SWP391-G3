@@ -58,13 +58,14 @@ public class UpdateRegistrations extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Lấy thông tin cần cập nhật từ request
+        try {
+            // Lấy thông tin cần cập nhật từ request
         int registerID = Integer.parseInt(request.getParameter("registerID"));
         int userID = Integer.parseInt(request.getParameter("userID"));
         int subjectID = Integer.parseInt(request.getParameter("subjectID"));
         int packageID = Integer.parseInt(request.getParameter("packageID"));
         // Chú ý: Trong ứng dụng thực tế, cần kiểm tra dữ liệu đầu vào và xử lý các trường hợp ngoại lệ
-
+  
         BigDecimal totalCost = new BigDecimal(request.getParameter("totalCost"));
         int status = Integer.parseInt(request.getParameter("status"));
 
@@ -85,10 +86,14 @@ public class UpdateRegistrations extends HttpServlet {
 
         // Chuyển hướng đến trang kết quả tương ứng
         if (isUpdated) {
-            response.sendRedirect("registration/UpdateSuccess.jsp");
+            response.sendRedirect("UpdateSuccess.jsp");
         } else {
-            response.sendRedirect("registration/UpdateFail.jsp");
+            response.sendRedirect("UpdateFail.jsp");
         }
+        } catch (Exception e) {
+        }
+        request.getRequestDispatcher("UpdateRegis.jsp").forward(request, response);
+        
     }
 
     /**
@@ -102,7 +107,7 @@ public class UpdateRegistrations extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("registration/UpdateRegis.jsp");
+        response.sendRedirect("UpdateRegis.jsp");
     }
 
     /**
