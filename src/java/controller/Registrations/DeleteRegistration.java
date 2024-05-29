@@ -1,8 +1,10 @@
+package controller.Registrations;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.admin;
+
 
 import dal.RegistrationDAO;
 import java.io.IOException;
@@ -11,17 +13,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  *
  * @author nguye
  */
-public class AddRegistration extends HttpServlet {
+
+public class DeleteRegistration extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +38,10 @@ public class AddRegistration extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddRegistration</title>");            
+            out.println("<title>Servlet DeleteRegistration</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddRegistration at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DeleteRegistration at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,10 +56,20 @@ public class AddRegistration extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+     private RegistrationDAO registrationDAO = new RegistrationDAO();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("registration/AddRegistration.jsp");
+        RegistrationDAO dao=new RegistrationDAO();
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            dao.deleteRegistration(id);
+            request.getRequestDispatcher("list-regis").forward(request, response);     
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            request.getRequestDispatcher("/admin/DeleteRegistration.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -75,26 +83,7 @@ public class AddRegistration extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int userID = Integer.parseInt(request.getParameter("userID"));
-        int subjectID = Integer.parseInt(request.getParameter("subjectID"));
-        int packageID = Integer.parseInt(request.getParameter("packageID"));
-        BigDecimal totalCost = new BigDecimal(request.getParameter("totalCost"));
-        int status = Integer.parseInt(request.getParameter("status"));
-        Date validFrom = null;
-        Date validTo = null;
-        Timestamp createdAt = new Timestamp(System.currentTimeMillis());
-      
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            validFrom = sdf.parse(request.getParameter("validFrom"));
-            validTo = sdf.parse(request.getParameter("validTo"));
-        } catch (ParseException e) {
-
-        }
-
-        RegistrationDAO RsD = new RegistrationDAO();
-        RsD.addRegistration(userID, subjectID, packageID, totalCost, status, validFrom, validTo, createdAt);     
-        response.sendRedirect("registration/Success.jsp");
+        processRequest(request, response);
     }
 
     /**

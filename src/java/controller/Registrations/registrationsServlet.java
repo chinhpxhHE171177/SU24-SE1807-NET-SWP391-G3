@@ -4,6 +4,7 @@
  */
 package controller.Registrations;
 
+
 import dal.RegistrationDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,12 +14,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Registrations;
-
 /**
  *
  * @author nguye
  */
-public class registrationServlet extends HttpServlet {
+public class registrationsServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +37,10 @@ public class registrationServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet registrationServlet</title>");            
+            out.println("<title>Servlet registrationsServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet registrationServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet registrationsServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,11 +58,10 @@ public class registrationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-//        RegistrationDAO rdao = new RegistrationDAO();
-//        List<Registrations> listr = rdao.getAllRegistrations();
-//        request.setAttribute("listr", listr);
-        request.getRequestDispatcher("/registration/registrations.jsp").forward(request, response);
+          RegistrationDAO rdao = new RegistrationDAO();
+        List<Registrations> listr = rdao.getAllRegistrations();
+        request.setAttribute("listr", listr);
+        request.getRequestDispatcher("/admin/registrations.jsp").forward(request, response);
     }
 
     /**

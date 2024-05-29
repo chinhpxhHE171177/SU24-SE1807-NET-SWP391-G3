@@ -64,16 +64,18 @@ public class RegistrationDAO extends DBContext {
         }
     }
 
-    public boolean deleteRegistration(int id) {
-        String sql = "DELETE FROM Registrations WHERE RegisterID = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+    public void deleteRegistration(int id) {
+        
+        try  {
+            String sql = "DELETE FROM Registrations WHERE RegisterID = ?";
+            PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, id);
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;
+            stmt.execute();
+
         } catch (Exception e) {
 
         }
-        return false;
+
     }
 
     public boolean updateRegistration(Registrations registration) {

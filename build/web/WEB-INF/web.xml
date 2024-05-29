@@ -22,23 +22,23 @@
     </servlet>
     <servlet>
         <servlet-name>UpdateRegistrations</servlet-name>
-        <servlet-class>controller.admin.UpdateRegistrations</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>RegistrationServlet</servlet-name>
-        <servlet-class>controller.admin.RegistrationServlet</servlet-class>
+        <servlet-class>controller.Registrations.UpdateRegistrations</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteRegistration</servlet-name>
-        <servlet-class>controller.admin.DeleteRegistration</servlet-class>
+        <servlet-class>controller.Registrations.DeleteRegistration</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddRegistration</servlet-name>
-        <servlet-class>controller.admin.AddRegistration</servlet-class>
+        <servlet-class>controller.Registrations.AddRegistration</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>registrationServlet</servlet-name>
-        <servlet-class>controller.Registrations.registrationServlet</servlet-class>
+        <servlet-name>registrationsServlet</servlet-name>
+        <servlet-class>controller.Registrations.registrationsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FilterRegistration</servlet-name>
+        <servlet-class>controller.Registrations.FilterRegistration</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SubjectListServlet</servlet-name>
@@ -62,22 +62,22 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UpdateRegistrations</servlet-name>
-        <url-pattern>/registration/UpdateRegis</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>RegistrationServlet</servlet-name>
-        <url-pattern>/registration/Regis</url-pattern>
+        <url-pattern>/UpdateRegis</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeleteRegistration</servlet-name>
-        <url-pattern>/registration/DelRegis</url-pattern>
+        <url-pattern>/DelRegis</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddRegistration</servlet-name>
-        <url-pattern>/registration/AddRegis</url-pattern>
+        <url-pattern>/AddRegis</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>registrationServlet</servlet-name>
-        <url-pattern>/registration/list-regis</url-pattern>
+        <servlet-name>registrationsServlet</servlet-name>
+        <url-pattern>/list-regis</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FilterRegistration</servlet-name>
+        <url-pattern>/Filter</url-pattern>
     </servlet-mapping>
 </web-app>
