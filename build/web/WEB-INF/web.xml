@@ -16,6 +16,10 @@
         <servlet-name>DeleteSubjectServlet</servlet-name>
         <servlet-class>controller.admin.DeleteSubjectServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SubjectDetailServlet</servlet-name>
+        <servlet-class>controller.admin.SubjectDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SubjectListServlet</servlet-name>
         <url-pattern>/admin/subject-list</url-pattern>
@@ -31,5 +35,9 @@
     <servlet-mapping>
         <servlet-name>DeleteSubjectServlet</servlet-name>
         <url-pattern>/admin/delete-subject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SubjectDetailServlet</servlet-name>
+        <url-pattern>/admin/subject-detail</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -15,7 +15,7 @@
         <title>Subjects List</title>
         <!--<link rel="stylesheet" href="styles.css">-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
-        rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+              rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
@@ -117,7 +117,10 @@
                 padding: 12px;
                 text-align: left;
             }
-
+            td a {
+                text-decoration: none;
+                color: #333;
+            }
             th {
                 background-color: #f2f2f2;
             }
@@ -214,7 +217,7 @@
                     <c:forEach items="${lists}" var="s">
                         <tr>
                             <td>${s.id}</td>
-                            <td>${s.name}</td>
+                            <td><a href="subject-detail?id=${s.id}">${s.name}</a></td>
                             <td>${s.category_name}</td>
                             <td>${s.description}</td>
                             <td>${s.package_name}</td>

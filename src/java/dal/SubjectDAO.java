@@ -592,14 +592,14 @@ public class SubjectDAO extends DBContext {
 
     public static void main(String args[]) {
         SubjectDAO sdao = new SubjectDAO();
-//        Subject subject = new Subject();
-//        subject = (Subject) sdao.getSubjectByCid(10);
-//        System.out.println(subject);
+        Subject subject = new Subject();
+        subject = (Subject) sdao.getSubjectById(1);
+        System.out.println(subject);
 //        sdao.deleteSubject(11);
-        List<Subject> list = sdao.getTopUserEnroll();
-        for (Subject subject : list) {
-            System.out.println(subject);
-        }
+//        List<Subject> list = sdao.getTopUserEnroll();
+//        for (Subject subject : list) {
+//            System.out.println(subject);
+//        }
 //        List<Subject> listname = sdao.getSubjectsByCategoryAndStatus(1, 1);
 //        for (Subject subject : listname) {
 //            System.out.println(subject);
