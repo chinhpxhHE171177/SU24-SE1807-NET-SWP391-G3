@@ -9,7 +9,6 @@ import dal.QuestionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +17,6 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author minh1
  */
-@WebServlet(name="add", urlPatterns={"/add"})
 public class InsertQuestionServlet extends HttpServlet {
    
     /** 
@@ -36,10 +34,10 @@ public class InsertQuestionServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet add</title>");  
+            out.println("<title>Servlet InsertQuestionServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet add at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet InsertQuestionServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -69,9 +67,7 @@ public class InsertQuestionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       // processRequest(request, response);
-         //processRequest(request, response);
-        String qdetail = request.getParameter("name");
+         String qdetail = request.getParameter("name");
         String quizid = request.getParameter("dob");
         QuestionDAO dao = new QuestionDAO();
         dao.insertQuestion(qdetail, quizid);

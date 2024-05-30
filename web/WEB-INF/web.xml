@@ -20,6 +20,10 @@
         <servlet-name>SubjectDetailServlet</servlet-name>
         <servlet-class>controller.admin.DetailSubjectServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>InsertQuestionServlet</servlet-name>
+        <servlet-class>controller.admin.InsertQuestionServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SubjectListServlet</servlet-name>
         <url-pattern>/admin/subject-list</url-pattern>
@@ -39,5 +43,9 @@
     <servlet-mapping>
         <servlet-name>SubjectDetailServlet</servlet-name>
         <url-pattern>/admin/detail-subject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertQuestionServlet</servlet-name>
+        <url-pattern>/add</url-pattern>
     </servlet-mapping>
 </web-app>

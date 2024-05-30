@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author minh1
  */
-public class QuestionDAO extends DBContext{
+public class QuestionDAO extends DBContext {
 
     Connection conn = null;
     PreparedStatement ps = null;
@@ -50,18 +50,19 @@ public class QuestionDAO extends DBContext{
             ps.setString(1, qdetail);
             ps.setString(2, quizid);
             ps.executeUpdate();
+            System.out.println("add");
         } catch (Exception e) {
         }
     }
 
     public void deleteQuestion(String id) {
-        String query = "DELETE FROM [dbo].[Quiz_DB]\n"
-                + "      WHERE QuestionID = ?";
+        String query = "DELETE FROM Questions where QuestionID = ?";
         try {
             conn = new DBContext().connection;
             ps = conn.prepareStatement(query);
             ps.setString(1, id);
             ps.executeUpdate();
+            System.out.println("delete");
         } catch (Exception e) {
         }
     }
@@ -118,4 +119,10 @@ public class QuestionDAO extends DBContext{
 
         return list;
     }
+
+    public static void main(String[] args) {
+        QuestionDAO q = new QuestionDAO();
+        q.insertQuestion("hihihih", "5");
+    }
+
 }

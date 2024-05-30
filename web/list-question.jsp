@@ -59,7 +59,7 @@
             <div class="row mt-2">
                 <div class="col-md-3">
 
-                    <a href="admin/insert-question.jsp" class="btn btn-primary">Import Questions</a>
+                    <a href="insert-question.jsp" class="btn btn-primary">Import Questions</a>
 
                 </div>
                 

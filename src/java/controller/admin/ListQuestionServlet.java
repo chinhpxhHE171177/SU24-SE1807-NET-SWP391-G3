@@ -63,7 +63,7 @@ public class ListQuestionServlet extends HttpServlet {
         List<QuizQuestion> list = dao.pagingQuestion(index);
        request.setAttribute("listS",list );
         request.setAttribute("endP", endPage);
-        request.getRequestDispatcher("/admin/list-question.jsp").forward(request, response);
+        request.getRequestDispatcher("list-question.jsp").forward(request, response);
     } 
 
     /** 
