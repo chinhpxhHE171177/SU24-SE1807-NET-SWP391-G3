@@ -36,7 +36,7 @@ public class SearchQuestionServlet extends HttpServlet {
         QuestionDAO dao = new QuestionDAO();
         List<QuizQuestion> list = dao.searchByQuestionDetail(txtSearch);
         request.setAttribute("listS", list);
-        request.getRequestDispatcher("/admin/list-question.jsp").forward(request, response);
+        request.getRequestDispatcher("list-question.jsp").forward(request, response);
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

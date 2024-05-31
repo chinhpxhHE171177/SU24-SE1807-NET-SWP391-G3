@@ -39,6 +39,42 @@ public class QuestionDAO extends DBContext {
         return list;
     }
 
+    public QuizQuestion getQuestionById(int pid) {
+        String query = "select * from Questions where QuestionID = ?";
+        try {
+            conn = new DBContext().connection;
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, pid);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                QuizQuestion quiz = new QuizQuestion(rs.getInt("QuestionID"), rs.getString("QuestionDetail"), rs.getInt("QuizID"));
+                System.out.println(quiz);
+                return quiz;
+                
+            }
+        } catch (Exception e) {
+        }
+
+        return null;
+    }
+
+    public void updateQuestion(QuizQuestion q) {
+        String query = "UPDATE [dbo].[Questions]\n"
+                + "   SET [QuestionDetail] = ?\n"
+                + "      ,[QuizID] = ?\n"
+                + " WHERE QuestionID = ?";
+        try {
+            conn = new DBContext().connection;
+            ps = conn.prepareStatement(query);
+            ps.setString(1, q.getQuestionDetail());
+            ps.setInt(2, q.getQuizId());
+            ps.setInt(3, q.getQuestionID());
+            ps.executeUpdate();
+            System.out.println("update");
+        } catch (Exception e) {
+        }
+    }
+
     public void insertQuestion(String qdetail, String quizid) {
         String query = "INSERT INTO [dbo].[Questions]\n"
                 + "           \n"
@@ -54,6 +90,7 @@ public class QuestionDAO extends DBContext {
         } catch (Exception e) {
         }
     }
+
 
     public void deleteQuestion(String id) {
         String query = "DELETE FROM Questions where QuestionID = ?";
@@ -122,7 +159,7 @@ public class QuestionDAO extends DBContext {
 
     public static void main(String[] args) {
         QuestionDAO q = new QuestionDAO();
-        q.insertQuestion("hihihih", "5");
+        q.getQuestionById(1);
     }
 
 }

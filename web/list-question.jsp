@@ -85,7 +85,7 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <a href="#" class="btn btn-primary">Update</a>
+                                    <a href="updatequestion?qid=${o.getQuestionID()}" class="btn btn-primary">Update</a>
                                 </div>
                                 <div class="col-md-6">
                                     <a href="delete?qid=${o.getQuestionID()}" class="btn btn-primary">Delete</a>
