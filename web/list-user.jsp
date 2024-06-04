@@ -59,7 +59,7 @@
             <div class="row mt-2">
                 <div class="col-md-3">
 
-                    <a href="insert-question.jsp" class="btn btn-primary">Import Questions</a>
+                    <a href="insert-user.jsp" class="btn btn-primary">Import Questions</a>
 
                 </div>
                 
@@ -95,7 +95,7 @@
                         <td>${o.getPassword()}</td>
                         <td>${o.getPhone()}</td>
                         <td>${o.getAddress()}</td>
-                        <td></td>
+                        <td>${o.isGender()}</td>
                         <td>${o.getRoleId()}</td>
                         <td>${o.getAvatar()}</td>
                         <td>${o.getCreateAt()}</td>

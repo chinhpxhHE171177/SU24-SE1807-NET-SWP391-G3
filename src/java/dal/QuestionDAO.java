@@ -76,7 +76,7 @@ public class QuestionDAO extends DBContext {
     }
 
     public void insertQuestion(String qdetail, String quizid) {
-        String query = "INSERT INTO [dbo].[Questions]\n"
+        String query = "INSERT INTO [dbo].[Users]\n"
                 + "           \n"
                 + "     VALUES\n"
                 + "           (?,?)";
