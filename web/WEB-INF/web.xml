@@ -28,6 +28,10 @@
         <servlet-name>ListUserServlet</servlet-name>
         <servlet-class>controller.admin.ListUserServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>InsertUserServlet</servlet-name>
+        <servlet-class>controller.admin.InsertUserServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SubjectListServlet</servlet-name>
         <url-pattern>/admin/subject-list</url-pattern>
@@ -55,5 +59,9 @@
     <servlet-mapping>
         <servlet-name>ListUserServlet</servlet-name>
         <url-pattern>/list-user</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertUserServlet</servlet-name>
+        <url-pattern>/insert-user</url-pattern>
     </servlet-mapping>
 </web-app>
