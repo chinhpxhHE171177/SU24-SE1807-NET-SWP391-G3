@@ -93,7 +93,6 @@
                     <a href="list-questions?index=${i}">${i}</a>
                 </span>
             </c:forEach>
-            <!-- Nút nhập câu hỏi -->
 
 
             <!-- Pop-up nhập câu hỏi (sử dụng Bootstrap modal) -->
