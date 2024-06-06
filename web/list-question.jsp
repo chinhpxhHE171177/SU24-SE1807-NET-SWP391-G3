@@ -12,7 +12,6 @@
 <html>
     <head>
         <title>Manage Questions List</title>
-        <!-- Include CSS libraries (e.g., Bootstrap) -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     </head>
     <body>
