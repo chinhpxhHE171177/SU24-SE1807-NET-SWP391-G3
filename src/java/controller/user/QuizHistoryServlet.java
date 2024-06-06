@@ -18,7 +18,7 @@ import model.QuizHistoryVM;
 
 /**
  *
- * @author Quaan
+ * @author Admin
  */
 public class QuizHistoryServlet extends HttpServlet {
     @Override
