@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  *
- * @author minh1
+ * @author minh
  */
 public class QuestionDAO extends DBContext {
 

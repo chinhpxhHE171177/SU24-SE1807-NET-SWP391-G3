@@ -1,11 +1,10 @@
 <%-- 
     Document   : UpdateFail
     Created on : May 28, 2024, 3:35:13 AM
-    Author     : nguye
+    Author     : duc
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
 <html>
 <head>

@@ -21,7 +21,7 @@
         }
         header, footer {
             width: 100%;
-            background-color: #f8f9fa; /* Màu sữa nhẹ */
+            background-color: #f8f9fa; 
             padding: 10px 0;
             text-align: center;
         }

@@ -34,7 +34,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            text-align: center; /* Đặt nút ở giữa */
+            text-align: center; 
         }
 
         label {
@@ -53,9 +53,9 @@
             margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            width: 100%; /* Chiều rộng trừ đi 20px từ hai bên */
+            width: 100%; 
             box-sizing: border-box;
-            font-size: 16px; /* Tăng cỡ chữ */
+            font-size: 16px; 
            
         }
 
