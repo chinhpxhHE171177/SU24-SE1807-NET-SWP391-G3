@@ -68,16 +68,21 @@
         </header>
 
         <main>
-
             <section class="py-5 text-center container">
                 <div class="row py-lg-5">
                     <div class="col-lg-6 col-md-8 mx-auto">
                         <h1 class="fw-light">Quiz Management</h1>
+                        <form class="d-flex" action="quiz-manage">
+                            <input type="hidden" name="action" value="search"/>
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" value="${search}">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
                         <!--<p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>-->
                         <p>
                             <a href="quiz-manage?action=add" class="btn btn-primary my-2">Create new quiz</a>
                             <a href="#" class="btn btn-secondary my-2">Secondary action</a>
                         </p>
+
                     </div>
                 </div>
             </section>
@@ -90,7 +95,7 @@
                         <c:forEach items="${QUIZS}" var="quiz">
                             <div class="col">
                                 <div class="card shadow-sm">
-                                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                                    <img src="data:image/png;base64,${quiz.image}" alt="Profile picture"  style="width: 100%; height: 250px; cursor: pointer; margin: 10px auto;border: 2px solid #1b730d">
                                     <div class="card-body">
                                         <p class="card-text">Title: ${quiz.title}</p>      
                                         <p class="card-text">Level: ${quiz.level}</p>
@@ -105,11 +110,37 @@
                                     </div>
                                 </div>
                             </div>
-                            </c:forEach>
+                        </c:forEach>
                     </div>
                 </div>
             </div>
-
+            <nav aria-label="Page navigation example" style="display: flex; justify-content:center;">
+                <ul class="pagination">
+                    <c:choose>
+                        <c:when test ="${selectedPage - 1 < 1}">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#">«</a>
+                            </li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="page-item"><a class="page-link" href="quiz-manage?action=view&search=${search}&index=${selectedPage-1}">«</a></li>
+                            </c:otherwise>
+                        </c:choose>
+                        <c:forEach var="i" begin="1" end="${endP}">
+                        <li class="page-item ${i == selectedPage ? "active" : "" }"> <a class="page-link" href="quiz-manage?action=view&search=${search}&index=${i}">${i}</a> <li>
+                        </c:forEach>
+                        <c:choose>
+                            <c:when test ="${selectedPage >= endP}">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#">»</a>
+                            </li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="page-item"><a class="page-link" href="quiz-manage?action=view&search=${search}&index=${selectedPage+1}">»</a></li>
+                            </c:otherwise>
+                        </c:choose>
+                </ul>
+            </nav>
         </main>
 
         <footer class="text-muted py-5">

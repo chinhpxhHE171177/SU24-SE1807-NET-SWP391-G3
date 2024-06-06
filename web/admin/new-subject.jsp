@@ -13,6 +13,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>New Subject</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
         <style>
             body {
@@ -76,7 +77,7 @@
                 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             }
 
-            label {
+            label, form-group {
                 margin: 10px 0 5px;
                 font-weight: 500;
                 color: #555;
@@ -162,21 +163,19 @@
                     <select id="package" name="status">
                         <option value="0" <c:if test="${status == 1}">selected</c:if>>Published</option>
                         <option value="1" <c:if test="${status == 0}">selected</c:if>>Unpublished</option>
-                    </select><br><br>
+                        </select><br><br>
 
-                    <label for="userId">Owner</label><br>
-                        <!--<input type="number" id="userId" name="userId" required><br><br>-->
-                    <select id="userId" name="userId">
+                        <label for="userId">Owner</label><br>
+                        <select id="userId" name="userId">
                         <c:forEach items="${listu}" var="i">
                             <option value="${i.id}">${i.username}</option>
                         </c:forEach>
-                    </select><br><br>
-
+                    </select><br><br/>
                     <label for="image">Image URL</label><br>
-                    <input type="file" id="image" name="image"><br><br>
-
-                    <label for="createdAt">Created At</label><br>
-                    <input type="date" id="created_at" name="created_at"><br><br>
+                    <!--<input type="file" id="image" name="image"><br><br>-->
+                    <div class="form-group">
+                        <input type="file" name="image"  class="form-control" placeholder="Product image" required="" />
+                    </div><br/>
 
                     <label for="description">Description</label><br>
                     <textarea id="description" name="description" placeholder="Enter a brief description"></textarea><br><br>
@@ -184,9 +183,11 @@
                     <button type="submit">Add Subject</button>
                     <button type="button" onclick="history.back()">Back</button>
                 </form>
-
             </div>
         </div>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 
 </html>
