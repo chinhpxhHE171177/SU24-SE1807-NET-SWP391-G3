@@ -29,6 +29,10 @@
         <servlet-class>controller.admin.DetailSubjectServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ListQuestionServlet</servlet-name>
+        <servlet-class>controller.admin.ListQuestionServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>Login</servlet-name>
         <servlet-class>controller.admin.LoginServlet</servlet-class>
     </servlet>
@@ -111,6 +115,10 @@
     <servlet-mapping>
         <servlet-name>SubjectDetailServlet</servlet-name>
         <url-pattern>/admin/detail-subject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListQuestionServlet</servlet-name>
+        <url-pattern>/list-questions</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoginGoogleServlet</servlet-name>
