@@ -26,7 +26,6 @@
                 <div class="col-md-2">
                     <select id="lesson-filter" class="form-control">
                         <option value="">Lesson</option>
-                        <!-- Các tùy chọn bài học -->
                     </select>
                 </div>
 

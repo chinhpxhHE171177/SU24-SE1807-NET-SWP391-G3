@@ -6,7 +6,7 @@ package controller.AccessGoogle;
 
 /**
  *
- * @author p.trung
+ * @author p.ttrung
  */
 import java.io.IOException;
 import org.apache.http.client.ClientProtocolException;
