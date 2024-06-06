@@ -12,7 +12,7 @@ import model.Registrations;
 
 /**
  *
- * @author Admin
+ * @author Quan
  */
 public class RegistrationDAO extends DBContext {
 

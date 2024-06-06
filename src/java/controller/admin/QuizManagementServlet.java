@@ -16,12 +16,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import model.Category;
 import model.Quiz;
 import model.Subject;
-import model.User;
 
 /**
  *

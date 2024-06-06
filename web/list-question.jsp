@@ -61,10 +61,6 @@
                 
             </div>
 
-
-
-
-            <!-- Bảng danh sách câu hỏi -->
             <table class="table mt-3">
                 <tr>
                     <th>QuestionID</th>
