@@ -21,8 +21,6 @@
         <c:set var="c" value="${requestScope.question}"/>
         <form class="form-horizontal" action="update-question" method="post">
             <fieldset>
-
-
                 <legend>Update Question</legend>
                                 <div class="form-group">
                     <label class="col-md-4 control-label" for="product_name">Quiz Detail</label>  
@@ -57,7 +55,6 @@
                 </div>
 
             </fieldset>
-
         </form>
     </body>
 </html>
