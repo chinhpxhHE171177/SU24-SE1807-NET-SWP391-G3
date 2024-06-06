@@ -8,7 +8,6 @@
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!------ Include the above in your HEAD tag ---------->
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
