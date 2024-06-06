@@ -6,7 +6,7 @@ package controller.AccessGoogle;
 
 /**
  *
- * @author p.trung
+ * @author p.ttrung
  */
 public class GooglePojo {
   private String id;

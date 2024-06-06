@@ -34,6 +34,6 @@
                 </div>
             </div>
         </footer>
-        <!-- Footer section end -->
+        <!-- Footer section End -->
     </body>
 </html>

@@ -17,7 +17,6 @@
     <body>
         <div class="container">
             <h1>Manage Questions List </h1>
-            <!-- Thanh công cụ lọc và tìm kiếm -->
             <div class="row">
                 <div class="col-md-2">
                     <select id="subject-filter" class="form-control">
