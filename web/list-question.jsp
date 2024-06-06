@@ -94,8 +94,5 @@
                 </span>
             </c:forEach>
         </div>
-
-        <!-- Include JS libraries (e.g., jQuery, Bootstrap JS) -->
-       
     </body>
 </html>
