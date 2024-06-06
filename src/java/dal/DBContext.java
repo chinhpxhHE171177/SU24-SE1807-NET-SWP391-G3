@@ -1,15 +1,14 @@
-
 package dal;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-
 public class DBContext {
+
     public Connection connection;
-    public DBContext()
-    {
+
+    public DBContext() {
         try {
             // Edit URL , username, password to authenticate with your MS SQL Server
             String url = "jdbc:sqlserver://localhost:1433;databaseName=Quiz_DB";
@@ -21,11 +20,12 @@ public class DBContext {
             System.out.println(ex);
         }
     }
-    
+
     public static void main(String[] args) {
         try {
             System.out.println(new DBContext().connection);
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

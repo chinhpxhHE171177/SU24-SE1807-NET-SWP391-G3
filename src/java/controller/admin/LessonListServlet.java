@@ -94,7 +94,6 @@ public class LessonListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
         String status = request.getParameter("status");
         LessonDAO ldao = new LessonDAO();
         List<Lessons> listl = null;
@@ -109,7 +108,6 @@ public class LessonListServlet extends HttpServlet {
             listl = ldao.getAllLessons();
         }
 
-        // Set attributes and forward to JSP
         request.setAttribute("listl", listl);
         request.setAttribute("status", status);
         request.getRequestDispatcher("lessons.jsp").forward(request, response);
@@ -124,6 +122,6 @@ public class LessonListServlet extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }
