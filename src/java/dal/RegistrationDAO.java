@@ -16,30 +16,6 @@ import model.Registrations;
  */
 public class RegistrationDAO extends DBContext {
 
-//    public List<Registrations> getAllRegistrations() {
-//        List<Registrations> list = new ArrayList<>();
-//        try {
-//            String sql = "SELECT * FROM Registrations";
-//            PreparedStatement statement = connection.prepareStatement(sql);
-//            ResultSet resultSet = statement.executeQuery();
-//            while (resultSet.next()) {
-//                Registrations registration = new Registrations(
-//                        resultSet.getInt("RegisterID"),
-//                        resultSet.getInt("UserID"),
-//                        resultSet.getInt("SubjectID"),
-//                        resultSet.getInt("PackageID"),
-//                        resultSet.getBigDecimal("total_cost"),
-//                        resultSet.getInt("status"),
-//                        resultSet.getDate("valid_from"),
-//                        resultSet.getDate("valid_to"),
-//                        resultSet.getTimestamp("created_at")
-//                );
-//                list.add(registration);
-//            }
-//        } catch (Exception e) {
-//        }
-//        return list;
-//    }
     public ArrayList<Registrations> getRegistrationsFlowingSubjectName(String subjectName) {
         ArrayList<Registrations> list = new ArrayList<>();
         try {
