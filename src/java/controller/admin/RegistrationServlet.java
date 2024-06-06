@@ -1,25 +1,22 @@
 package controller.admin;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
-
-
 import dal.RegistrationDAO;
+import dal.SubjectDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import model.Registrations;
 
 /**
  *
- * @author nguye
+ * @author Admin
  */
-
-public class DeleteRegistration extends HttpServlet {
+public class RegistrationServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +35,10 @@ public class DeleteRegistration extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DeleteRegistration</title>");            
+            out.println("<title>Servlet RegistrationServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DeleteRegistration at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet RegistrationServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,21 +53,17 @@ public class DeleteRegistration extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-     private RegistrationDAO registrationDAO = new RegistrationDAO();
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        RegistrationDAO dao=new RegistrationDAO();
-        try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            dao.deleteRegistration(id);
-            request.getRequestDispatcher("list-regis").forward(request, response);     
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            request.getRequestDispatcher("/admin/DeleteRegistration.jsp").forward(request, response);
-        }
+        RegistrationDAO rdao = new RegistrationDAO();
+        SubjectDAO sdao=new SubjectDAO();
+        List<Registrations> listRg = rdao.getRegistration();
+        ArrayList<Registrations> list=sdao.getAllSubjectforRegistration();
+        request.setAttribute("listSubject", list);
+        request.setAttribute("listRg", listRg);
+        request.getRequestDispatcher("registrations.jsp").forward(request, response);
+        
     }
 
     /**

@@ -1,27 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller.admin;
 
 import dal.RegistrationDAO;
+import dal.SubjectDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+import model.Registrations;
 
 /**
  *
- * @author nguye
+ * @author Admin
  */
-public class AddRegistration extends HttpServlet {
+public class FilterRegistrationServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +35,10 @@ public class AddRegistration extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddRegistration</title>");            
+            out.println("<title>Servlet FilterRegistrationServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddRegistration at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet FilterRegistrationServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,7 +56,19 @@ public class AddRegistration extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/admin/AddRegistration.jsp").forward(request, response);
+        String subject = request.getParameter("subject");
+        if (subject.equals("as")) {
+            response.sendRedirect("registrations");
+            return;
+        }
+        RegistrationDAO rdao = new RegistrationDAO();
+        SubjectDAO sdao = new SubjectDAO();
+        List<Registrations> listRg = rdao.getRegistrationsFlowingSubjectName(subject);
+        ArrayList<Registrations> list = sdao.getAllSubjectforRegistration();
+        request.setAttribute("listSubject", list);
+        request.setAttribute("listRg", listRg);
+        request.setAttribute("subject", subject);
+        request.getRequestDispatcher("registrations.jsp").forward(request, response);
     }
 
     /**
@@ -75,26 +82,7 @@ public class AddRegistration extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int userID = Integer.parseInt(request.getParameter("userID"));
-        int subjectID = Integer.parseInt(request.getParameter("subjectID"));
-        int packageID = Integer.parseInt(request.getParameter("packageID"));
-        BigDecimal totalCost = new BigDecimal(request.getParameter("totalCost"));
-        int status = Integer.parseInt(request.getParameter("status"));
-        Date validFrom = null;
-        Date validTo = null;
-        Timestamp createdAt = new Timestamp(System.currentTimeMillis());
-      
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            validFrom = sdf.parse(request.getParameter("validFrom"));
-            validTo = sdf.parse(request.getParameter("validTo"));
-        } catch (ParseException e) {
-
-        }
-
-        RegistrationDAO RsD = new RegistrationDAO();
-        RsD.addRegistration(userID, subjectID, packageID, totalCost, status, validFrom, validTo, createdAt);     
-        request.getRequestDispatcher("/admin/Success.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**

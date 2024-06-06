@@ -9,22 +9,9 @@
         <servlet-class>controller.admin.UpdateRegistrations</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>DeleteRegistration</servlet-name>
-        <servlet-class>controller.admin.DeleteRegistration</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>AddRegistration</servlet-name>
-        <servlet-class>controller.admin.AddRegistration</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>registrationsServlet</servlet-name>
-        <servlet-class>controller.admin.registrationsServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>FilterRegistration</servlet-name>
         <servlet-class>controller.admin.FilterRegistration</servlet-class>
     </servlet>
-    
     <servlet>
         <servlet-name>UpdateSubjectServlet</servlet-name>
         <servlet-class>controller.admin.UpdateSubjectServlet</servlet-class>
@@ -61,7 +48,6 @@
         <servlet-name>QuizHistoryServlet</servlet-name>
         <servlet-class>controller.user.QuizHistoryServlet</servlet-class>
     </servlet>
-    
     <servlet>
         <servlet-name>RegistrationServlet</servlet-name>
         <servlet-class>controller.admin.RegistrationServlet</servlet-class>
@@ -150,7 +136,6 @@
         <servlet-name>QuizHistoryServlet</servlet-name>
         <url-pattern>/quiz-history</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>RegistrationServlet</servlet-name>
         <url-pattern>/admin/registrations</url-pattern>
@@ -194,18 +179,6 @@
     <servlet-mapping>
         <servlet-name>UpdateRegistrations</servlet-name>
         <url-pattern>/UpdateRegis</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DeleteRegistration</servlet-name>
-        <url-pattern>/DelRegis</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AddRegistration</servlet-name>
-        <url-pattern>/AddRegis</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>registrationsServlet</servlet-name>
-        <url-pattern>/list-regis</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>FilterRegistration</servlet-name>
