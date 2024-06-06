@@ -6,7 +6,7 @@ import java.util.Date;
 
 /**
  *
- * @author Admin
+ * @author Duc
  */
 public class Registrations {
 
