@@ -21,7 +21,6 @@
                 <div class="col-md-2">
                     <select id="subject-filter" class="form-control">
                         <option value="">Subject</option>
-                        <!-- Các tùy chọn môn học -->
                     </select>
                 </div>
                 <div class="col-md-2">

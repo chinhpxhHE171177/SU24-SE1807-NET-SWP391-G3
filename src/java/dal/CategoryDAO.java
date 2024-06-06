@@ -14,7 +14,7 @@ import model.Category;
 public class CategoryDAO extends DBContext {
 
     /**
-     * @param args the command line arguments
+     * @param args the command line 
      */
     
     public List<Category> getAllCategory() {

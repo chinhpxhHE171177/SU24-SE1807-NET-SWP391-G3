@@ -45,7 +45,6 @@
                 <div class="header-bar-warp d-flex">
                     <!-- site logo -->
                     <a href="home.html" class="site-logo">
-                        <!-- <img src="./img/QuizLogo.png" alt=""> -->
                         Quizz.
                     </a>
                     <nav class="top-nav-area w-100">
