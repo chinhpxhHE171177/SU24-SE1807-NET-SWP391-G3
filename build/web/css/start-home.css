@@ -1,0 +1,453 @@
+/* Google Fonts - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', 'sans-serif';
+}
+
+body {
+    color: #fff;
+    background: #09001d;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 10%;
+    background: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 32px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    filter: drop-shadow(0 0 5px #09001d);
+}
+
+.navbar a {
+    font-size: 18px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 35px;
+    transition: .3s;
+}
+
+.navbar a:hover,
+.navbar a.active {
+    color: #c40094;
+}
+
+.main .main-content {
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+}
+
+.container-quiz-section {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 1;
+}
+
+.quiz-section {
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* --------------------
+  Intro section Introduction
+-----------------------*/
+.intro-section {
+    padding: 100px 0;
+    background: rgb(12, 6, 46);
+    color: #000;
+}
+
+.intro-section .intro-section-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.intro-section .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.intro-section .col-md-4 {
+    width: 100%;
+    max-width: 350px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.intro-section .intro-text-box {
+    height: 250px;
+    padding: 20px;
+    background: #09001d;
+    color: #fff;
+    border-radius: 10px;
+    position: relative;
+}
+.intro-text-box h3 {
+    margin: 5px 0px 10px 0px;
+    font-size: 22px;
+}
+.intro-text-box p {
+    margin-bottom: 20px;
+}
+.intro-section .read-more {
+    color: #c40094;
+    text-decoration: none;
+}
+
+.intro-section .popover-content {
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    background: #fff;
+    color: #000;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.intro-section .intro-text-box:hover .popover-content {
+    opacity: 1;
+    visibility: visible;
+}
+
+.home {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-content {
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.home-content h1 {
+    font-size: 78px;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(0, 0, 0, .3);
+}
+
+.home-content p {
+    font-size: 16px;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(0, 0, 0, .3);
+    margin-bottom: 30px;
+}
+
+.home-content .start-btn {
+    width: 190px;
+    height: 55px;
+    background-color: #c40094;
+    border: 2px solid #fff;
+    outline: none;
+    border-radius: 6px;
+    box-shadow: 0 0 10px #c40094;
+    font-size: 18px;
+    color: #fff;
+    letter-spacing: 1px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .5s;
+}
+
+.home-content .start-btn:hover {
+    background: #09001d;
+    box-shadow: none;
+}
+
+/* --------------------
+  Intro video section
+-----------------------*/
+
+.intro-video-section {
+	height: 757px;
+	position: relative;
+}
+.intro-video-section .container {
+    max-width: 1175px;
+}
+.video-play-btn {
+	position: absolute;
+	left: calc(50% - 61px);
+	top: calc(50% - 61px);
+	width: 122px;
+	height: 122px;
+	text-align: center;
+	padding-top: 35px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.16);
+    cursor: pointer;
+}
+
+.video-text {
+    bottom: 0;
+	margin-bottom: 80px;
+	padding: 27px 0;
+	padding-left: 25px;
+	position: absolute;
+}
+
+.video-text h2 {
+	font-size: 48px;
+	text-transform: uppercase;
+	font-style: italic;
+	font-weight: 700;
+	color: #fff;
+	margin-bottom: 1px;
+}
+
+.video-text p {
+	font-size: 18px;
+	color: #a3a1b3;
+	font-weight: 500;
+	margin-bottom: 0;
+}
+
+.video-text:after {
+	position: absolute;
+	content: "";
+	width: 9px;
+	height: 100%;
+	left: -22px;
+	top: 0;
+	border-left: 3px solid #de46d6;
+	background: #fff;
+	-webkit-box-shadow: 0 0 9px 3px rgba(226, 30, 228, 0.5);
+	box-shadow: 0 0 9px 3px rgba(226, 30, 228, 0.5);
+}
+
+/* ----------------
+  Featured section
+---------------------*/
+
+.featured-section {
+	position: relative;
+	overflow: hidden;
+}
+
+.featured-bg {
+	width: calc(50% - 156px);
+	float: left;
+	height: 100%;
+	left: 0;
+	right: 0;
+	position: absolute;
+}
+.set-bg {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top center;
+}
+.featured-box {
+	float: right;
+	width: calc(50% + 156px);
+	background: #fff;
+	padding: 100px 50px 130px 79px;
+}
+
+.featured-box .text-box {
+	max-width: 810px;
+}
+
+.featured-box .text-box .top-meta {
+	color: #68647d;
+}
+
+.featured-box .text-box h3 {
+	font-size: 50px;
+	max-width: 100%;
+    color: #09001d;
+    margin-bottom: 50px;
+}
+
+.featured-box .text-box p {
+	font-size: 16px;
+    color: #68647d;
+}
+
+.featured-box .text-box .read-more {
+	color: #251e2f;
+}
+/* ----------------
+  Footer section
+---------------------*/
+.footer-logo {
+	font-size: 32px;
+	color: #fff;
+	text-decoration: none;
+	font-weight: 700;
+	filter: drop-shadow(0 0 5px #09001d);
+}
+
+.footer-section {
+	text-align: center;
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#330d38+0,190d36+100 */
+	background: #330d38;
+	/* Old browsers */
+	/* FF3.6-15 */
+	background: -webkit-linear-gradient(left, #330d38 0%, #190d36 100%);
+	/* Chrome10-25,Safari5.1-6 */
+	background: -webkit-gradient(linear, left top, right top, from(#330d38), to(#190d36));
+	background: -o-linear-gradient(left, #330d38 0%, #190d36 100%);
+	background: linear-gradient(to right, #330d38 0%, #190d36 100%);
+	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#330d38', endColorstr='#190d36', GradientType=1);
+	/* IE6-9 */
+}
+
+.footer-section .container {
+	position: relative;
+	padding: 60px 15px 25px;
+}
+.footer-section .container li {
+    list-style: none;
+}
+.footer-section .container li a {
+    text-decoration: none;
+}
+.footer-left-pic {
+	position: absolute;
+	left: -13px;
+	bottom: 19px;
+}
+
+.footer-right-pic {
+	position: absolute;
+	right: 50px;
+	bottom: 19px;
+}
+
+.footer-menu {
+	padding-top: 62px;
+    display: flex;
+    justify-content: center;
+}
+.main-menu li a {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin-right: 40px;
+    padding-bottom: 28px;
+    position: relative;
+    padding-right: 20px;
+    transition: .3s;
+}
+.main-menu li a:hover {
+    color: #c40094;
+}
+.footer-menu li:last-child a {
+	margin-right: 0;
+}
+
+.footer-social {
+	padding-top: 20px;
+	padding-bottom: 40px;
+}
+.footer-social a {
+    text-decoration: none;
+}
+.footer-social a:first-child {
+	margin-left: 0;
+}
+.header-social p,
+.footer-social p,
+.geme-social-share p {
+	display: inline-block;
+	color: #9190a5;
+	font-size: 16px;
+	padding-top: 4px;
+}
+
+.header-social a,
+.footer-social a,
+.geme-social-share a {
+	display: -ms-inline-flex;
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+	width: 32px;
+	height: 32px;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	border-radius: 50%;
+	color: #fff;
+	font-size: 12px;
+	margin-left: 13px;
+	-webkit-transition: all 0.3s;
+	-o-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+.header-social a:hover,
+.footer-social a:hover,
+.geme-social-share a:hover {
+	background: #b01ba5;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .header {
+        padding: 10px 5%;
+    }
+
+    .logo {
+        font-size: 24px;
+    }
+
+    .navbar a {
+        font-size: 16px;
+        margin-left: 20px;
+    }
+
+    .home-content h1 {
+        font-size: 32px;
+    }
+
+    .home-content p {
+        font-size: 16px;
+    }
+}
+
+
+
+

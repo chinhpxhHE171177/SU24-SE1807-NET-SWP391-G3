@@ -1,19 +1,32 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
-import java.util.*;
+import java.util.Date;
 
 /**
  *
- * @author p.ttrung
+ * @author Admin
  */
 public class User {
-    private int userId;
-    private String fullName;
-    private String userName;
+
+    /**
+     * @param args the command line arguments
+     */
+//    [UserID] [int] IDENTITY(0,1) NOT NULL,
+//	[FullName] [nvarchar](200) NULL,
+//	[UserName] [nvarchar](250) NULL,
+//	[DateOrBirth] [date] NULL,
+//	[Email] [nvarchar](200) NOT NULL,
+//	[Password] [nvarchar](250) NOT NULL,
+//	[Phone] [varchar](50) NULL,
+//	[Address] [nvarchar](300) NULL,
+//	[Gender] [bit] NULL,
+//	[RoleID] [int] NOT NULL,
+//	[Avatar] [nvarchar](400) NULL,
+//	[Create_at] [date] NULL
+    
+    private int id;
+    private String fullname;
+    private String username;
     private Date dob;
     private String email;
     private String password;
@@ -26,15 +39,11 @@ public class User {
 
     public User() {
     }
-    
-    
 
-    public User(int userId, String fullName, String userName, Date dob, String email, String password, 
-                String phone, String address, boolean gender, int roleId, String avatar, Date createAt) {
-        
-        this.userId = userId;
-        this.fullName = fullName;
-        this.userName = userName;
+    public User(int id, String fullname, String username, Date dob, String email, String password, String phone, String address, boolean gender, int roleId, String avatar, Date createAt) {
+        this.id = id;
+        this.fullname = fullname;
+        this.username = username;
         this.dob = dob;
         this.email = email;
         this.password = password;
@@ -46,28 +55,28 @@ public class User {
         this.createAt = createAt;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getId() {
+        return id;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getFullname() {
+        return fullname;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Date getDob() {
@@ -144,10 +153,8 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "userId=" + userId + ", fullName=" + fullName + ", userName=" + userName + ", dob=" + dob + ", email=" + email + ", password=" + password + ", phone=" + phone + ", address=" + address + ", gender=" + gender + ", roleId=" + roleId + ", avatar=" + avatar + ", createAt=" + createAt + '}';
+        return "User{" + "id=" + id + ", fullname=" + fullname + ", username=" + username + ", dob=" + dob + ", email=" + email + ", password=" + password + ", phone=" + phone + ", address=" + address + ", gender=" + gender + ", roleId=" + roleId + ", avatar=" + avatar + ", createAt=" + createAt + '}';
     }
-    
-    
     
     
 }

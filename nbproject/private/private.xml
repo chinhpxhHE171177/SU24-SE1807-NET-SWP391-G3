@@ -3,22 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/Kì%205/SWP/QuizManagement%20(2)/QuizManagement/web/Views/update-quiz.jsp</file>
-            <file>file:/E:/Kì%205/SWP/QuizManagement%20(2)/QuizManagement/src/java/dao/QuizDAO.java</file>
-            <file>file:/E:/Kì%205/SWP/QuizManagement%20(2)/QuizManagement/src/java/model/Subject.java</file>
-            <file>file:/E:/Kì%205/SWP/QuizManagement%20(2)/QuizManagement/web/Views/create-quiz.jsp</file>
-            <file>file:/E:/Kì%205/SWP/QuizManagement%20(2)/QuizManagement/src/java/model/Quiz.java</file>
-            <file>file:/E:/Kì%205/SWP/QuizManagement%20(2)/QuizManagement/src/java/dao/SubjectDAO.java</file>
-            <file>file:/E:/Kì%205/SWP/QuizManagement%20(2)/QuizManagement/src/java/controller/LoginServlet.java</file>
-            <file>file:/E:/Kì%205/SWP/QuizManagement%20(2)/QuizManagement/src/java/dao/DBContext.java</file>
-            <file>file:/E:/Kì%205/SWP/QuizManagement%20(2)/QuizManagement/web/Views/login.jsp</file>
-            <file>file:/E:/Kì%205/SWP/QuizManagement%20(2)/QuizManagement/src/java/dao/CategoryDAO.java</file>
-            <file>file:/E:/Kì%205/SWP/QuizManagement%20(2)/QuizManagement/web/Views/mange-quiz.jsp</file>
-            <file>file:/E:/Kì%205/SWP/QuizManagement%20(2)/QuizManagement/web/Views/status.jsp</file>
-            <file>file:/E:/Kì%205/SWP/QuizManagement%20(2)/QuizManagement/src/java/dao/DAO.java</file>
-            <file>file:/E:/Kì%205/SWP/QuizManagement%20(2)/QuizManagement/src/java/model/UserRole.java</file>
-            <file>file:/E:/Kì%205/SWP/QuizManagement%20(2)/QuizManagement/src/java/model/Category.java</file>
-            <file>file:/E:/Kì%205/SWP/QuizManagement%20(2)/QuizManagement/src/java/model/User.java</file>
+            <file>file:/D:/Ex-Work/SU24-SE1807-NET-SWP391-G3-master/web/homepage.jsp</file>
+            <file>file:/D:/Ex-Work/SU24-SE1807-NET-SWP391-G3-master/web/css/style.css</file>
+            <file>file:/D:/Ex-Work/SU24-SE1807-NET-SWP391-G3-master/web/homepage_1.jsp</file>
         </group>
     </open-files>
 </project-private>

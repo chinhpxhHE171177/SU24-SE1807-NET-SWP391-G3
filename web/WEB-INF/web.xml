@@ -1,27 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
-        <servlet-name>QuizManageServlet</servlet-name>
-        <servlet-class>controller.QuizManageServlet</servlet-class>
+        <servlet-name>SubjectListServlet</servlet-name>
+        <servlet-class>controller.admin.SubjectListServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>controller.LoginServlet</servlet-class>
+        <servlet-name>UpdateSubjectServlet</servlet-name>
+        <servlet-class>controller.admin.UpdateSubjectServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>controller.RegisterServlet</servlet-class>
+        <servlet-name>AddSubjectServlet</servlet-name>
+        <servlet-class>controller.admin.AddSubjectServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteSubjectServlet</servlet-name>
+        <servlet-class>controller.admin.DeleteSubjectServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SubjectDetailServlet</servlet-name>
+        <servlet-class>controller.admin.DetailSubjectServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>controller.admin.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>controller.admin.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Register</servlet-name>
+        <servlet-class>controller.admin.RegisterServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>QuizManagementServlet</servlet-name>
+        <servlet-class>controller.admin.QuizManagementServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>QuizHistoryServlet</servlet-name>
+        <servlet-class>controller.user.QuizHistoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HomeController</servlet-name>
+        <servlet-class>controller.common.HomeController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>QuizManageServlet</servlet-name>
-        <url-pattern>/quiz-manage</url-pattern>
+        <servlet-name>SubjectListServlet</servlet-name>
+        <url-pattern>/admin/subject-list</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
+        <servlet-name>UpdateSubjectServlet</servlet-name>
+        <url-pattern>/admin/update-subject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddSubjectServlet</servlet-name>
+        <url-pattern>/admin/new-subject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteSubjectServlet</servlet-name>
+        <url-pattern>/admin/delete-subject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SubjectDetailServlet</servlet-name>
+        <url-pattern>/admin/detail-subject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Register</servlet-name>
         <url-pattern>/register</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuizManagementServlet</servlet-name>
+        <url-pattern>/admin/quiz-manage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuizHistoryServlet</servlet-name>
+        <url-pattern>/quiz-history</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomeController</servlet-name>
+        <url-pattern>/home</url-pattern>
     </servlet-mapping>
 </web-app>
