@@ -178,7 +178,10 @@
             <header>Login</header>
             <%
                 String error = request.getParameter("error");
-                if ("1".equals(error)) {
+                String status = request.getParameter("status");
+                if ("1".equals(status)) {
+                    out.println("<p style='color:red;margin-top:20px; margin-bottom:0px; '>Register Success!</p>");
+                }else if ("1".equals(error)) {
                     out.println("<p style='color:red;margin-top:20px; margin-bottom:0px; '>Invalid username or password</p>");
                 }
         %>

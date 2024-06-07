@@ -165,6 +165,26 @@ public class UserDAO extends DBContext {
     
     }
     
+    public User checkEmailExits(String email) {
+        String sql = "select * from Users \n"
+                + "where Email = ?\n";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setString(1, email);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return new User(rs.getInt(1), rs.getString(2), rs.getString(3),
+                        rs.getDate(4), rs.getString(5), rs.getString(6), rs.getString(7),
+                        rs.getString(8), rs.getBoolean(9), rs.getInt(10), rs.getString(11), rs.getDate(12));
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+    
     public User checkAccountExits(String user) {
         String sql = "select * from Users \n"
                 + "where UserName = ?\n";

@@ -78,7 +78,7 @@
     </servlet>
     <servlet>
         <servlet-name>LoginGoogleServlet</servlet-name>
-        <servlet-class>AccessGoogle.LoginGoogleServlet</servlet-class>
+        <servlet-class>controller.AccessGoogle.LoginGoogleServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>QuizHistoryServlet</servlet-name>
@@ -86,11 +86,11 @@
     </servlet>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>controller.admin.LoginServlet</servlet-class>
+        <servlet-class>controller.Login.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>controller.admin.LogoutServlet</servlet-class>
+        <servlet-class>controller.Login.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>QuizManagementServlet</servlet-name>
@@ -98,7 +98,7 @@
     </servlet>
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>controller.admin.RegisterServlet</servlet-class>
+        <servlet-class>controller.Login.RegisterServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PricePackageServlet</servlet-name>

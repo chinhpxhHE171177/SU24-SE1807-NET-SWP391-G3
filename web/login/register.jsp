@@ -137,6 +137,9 @@
             /* transform: scale(0.99); */
             background: linear-gradient(-135deg, #71b7e6, #9b59b6);
         }
+
+        
+        
         @media(max-width: 584px){
             .container{
                 max-width: 100%;
@@ -170,7 +173,8 @@
             String error = request.getParameter("error");
             if ("1".equals(error)) {
                 out.println("<p style='color:red; margin:20px;'>Error occurred while registering. Please try again.</p>");
-            }
+            } 
+            
             %>
             <div class="content">
                 <form action="register" method="post">
@@ -183,12 +187,19 @@
                             <span class="details">Username</span>
                             <input type="text" placeholder="Enter your username" name="username"required>
                             <%
-                                if ("3".equals(error)) out.println("<p style='color:red; margin:0px;'>Username already exits</p>");
+                            if ("3".equals(error)) {
+                out.println("<p style='color:red; margin:0px;'>Username already exits</p>");
+            }
                             %>
                         </div>
                         <div class="input-box">
                             <span class="details">Email</span>
                             <input type="text" placeholder="Enter your email" name="email" required>
+                            <%
+                            if ("5".equals(error)) {
+                out.println("<p style='color:red; margin:0px;'>Email already exits</p>");
+            }
+                            %>
                         </div>
                         <div class="input-box">
                             <span class="details">Date Of Birth</span>
@@ -196,15 +207,17 @@
                         </div>
                         <div class="input-box">
                             <span class="details">Password</span>
-                            <input type="text" placeholder="Enter your password" name="password"  required>
+                            <input type="password" placeholder="Enter your password" name="password"  required>
                         </div>
                         <div class="input-box">
                             <span class="details">Confirm Password</span>
-                            <input type="text" placeholder="Confirm your password"  name="confirmpass" required>
-                            <%
-                                if ("2".equals(error)) out.println("<p style='color:red; margin:20px;'>Confirm Password not match Password</p>");
-                            %>
+                            <input type="password" placeholder="Confirm your password"  name="confirmpass" required>
                         </div>
+                        <%
+                        if ("2".equals(error)) {
+                        out.println("<p style='color:red; margin:0px;'>Confirm Password Not Match Password</p>");
+                            }
+                        %>
                     </div>
                     <div class="gender-details">
                         <input type="radio" name="gender" id="dot-1" value="M">
@@ -214,8 +227,8 @@
                             <span class="gender-title">Gender</span>
 
                             <label for="dot-1">
-                                <span class="dot one" ></span>
-                                <span class="gender" >Male</span>
+                                <span class="dot one"></span>
+                                <span class="gender">Male</span>
                             </label>
                             <label for="dot-2">
                                 <span class="dot two"></span>
@@ -223,6 +236,10 @@
                             </label>
 
                         </div>
+                        <%if ("4".equals(error)) {
+                out.println("<p style='color:red; margin:0px;'>Choose Gender!!!</p>");
+            }%>
+
                     </div>
                     <div class="button">
                         <input type="submit" value="Register">
