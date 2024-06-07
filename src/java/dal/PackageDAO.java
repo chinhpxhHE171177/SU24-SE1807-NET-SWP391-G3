@@ -34,6 +34,7 @@ public class PackageDAO extends DBContext {
                 list.add(p);
             }
         } catch (SQLException e) {
+            e.getStackTrace();
         }
         return list;
     }

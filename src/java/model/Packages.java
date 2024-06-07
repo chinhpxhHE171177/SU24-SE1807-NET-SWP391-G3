@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 public class Packages {
 
     /**
-     * @param args the command line arguments
+     * @param args the command line 
      */
     private int id;
     private String name;
@@ -110,5 +110,5 @@ public class Packages {
     public String toString() {
         return "Packages{" + "id=" + id + ", name=" + name + ", description=" + description + ", price=" + price + ", salePrice=" + salePrice + ", duration=" + duration + ", status=" + status + '}';
     }
-    
+
 }
