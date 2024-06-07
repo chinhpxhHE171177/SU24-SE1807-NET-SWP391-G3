@@ -106,7 +106,7 @@ public class RegisterServlet extends HttpServlet {
                 if(um == null){
                 //dc signup
                 d.CreateAccount(fullname, username, email, dob, password, gen, createAt);
-                response.sendRedirect("login");
+                response.sendRedirect("login?status=1");
                 }else{
                     response.sendRedirect("register?error=5");
                 }
