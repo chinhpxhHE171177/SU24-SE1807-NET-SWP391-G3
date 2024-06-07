@@ -20,7 +20,7 @@
 </head>
 <body>
     <h2>Welcome, <%= user.getEmail() %></h2>
-    <p>Your role is: <%= user.getUsername()%></p>
+    <p>Your UserName is: <%= user.getUsername()%></p>
     <p>Your role is: <%= user.getRoleId() == 1 ? "Admin" : "User" %></p>
     <p>Your Gender is: <%= user.isGender() == true ? "Male" : "Female" %></p>
     <a href="logout">Logout</a>

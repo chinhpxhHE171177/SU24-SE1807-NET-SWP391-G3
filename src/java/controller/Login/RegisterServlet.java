@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.admin;
+package controller.Login;
 
+import dal.DBContext;
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,7 +12,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import java.sql.*;
 import model.User;
@@ -20,7 +20,7 @@ import model.User;
  *
  * @author p.ttrung
  */
-public class LoginServlet extends HttpServlet {
+public class RegisterServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +39,10 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");
+            out.println("<title>Servlet RegisterServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet RegisterServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,7 +60,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("login/login.jsp").forward(request, response);
+        request.getRequestDispatcher("login/register.jsp").forward(request, response);
         doPost(request, response);
     }
 
@@ -75,31 +75,57 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String fullname = request.getParameter("fullname");
         String username = request.getParameter("username");
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
-
-        UserDAO ud = new UserDAO();
-        User u = ud.checkLogin(username, password);
-
-        if (u != null) {
+        String confirmpass = request.getParameter("confirmpass");
+        String dob = request.getParameter("dob");
+        String gender = request.getParameter("gender");
+        boolean gen = false;
+        
+        if(gender == null){
+            response.sendRedirect("register?error=4");
+            return;
+        }else{
+            gen = (gender.equals("M"));
             
-            HttpSession session = request.getSession();
-            session.setAttribute("user", u);
-            request.getRequestDispatcher("/login/home.jsp").forward(request, response);
+        }
+        
+        long millis = System.currentTimeMillis();
+        java.sql.Date createAt = new java.sql.Date(millis);
+
+        if (!password.equals(confirmpass)) {
+            response.sendRedirect("register?error=2");
         } else {
-            response.sendRedirect("login?error=1");
-           
+            UserDAO d = new UserDAO();
+            User u = d.checkAccountExits(username);
+            
+            if (u == null) {
+                User um = d.checkEmailExits(email);
+                if(um == null){
+                //dc signup
+                d.CreateAccount(fullname, username, email, dob, password, gen, createAt);
+                response.sendRedirect("login?status=1");
+                }else{
+                    response.sendRedirect("register?error=5");
+                }
+            } else {
+                response.sendRedirect("register?error=3");
+            }
         }
 
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
+
+
+/**
+ * Returns a short description of the servlet.
+ *
+ * @return a String containing servlet description
+ */
+@Override
+public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 
