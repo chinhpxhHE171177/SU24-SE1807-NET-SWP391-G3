@@ -35,6 +35,7 @@ public class RegisterServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -74,53 +75,57 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try{
         String fullname = request.getParameter("fullname");
         String username = request.getParameter("username");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String confirmpass = request.getParameter("confirmpass");
         String dob = request.getParameter("dob");
-        boolean gender = request.getParameter("gender").equals("M");
+        String gender = request.getParameter("gender");
+        boolean gen = false;
+        
+        if(gender == null){
+            response.sendRedirect("register?error=4");
+            return;
+        }else{
+            gen = (gender.equals("M"));
+            
+        }
+        
         long millis = System.currentTimeMillis();
         java.sql.Date createAt = new java.sql.Date(millis);
-        
-        
-        
+
         if (!password.equals(confirmpass)) {
-            request.getRequestDispatcher("login/register.jsp?error=2").forward(request, response);
-                
-            } else {
-                UserDAO d = new UserDAO();
-                User u = d.checkAccountExits(username);
-                if (u == null) {
-                    //dc signup
-                    d.CreateAccount(fullname, username, email, dob, password, gender , createAt);
-                    request.getRequestDispatcher("login/home.jsp").forward(request, response);
-                    
-                    
-                } else {
-                    request.getRequestDispatcher("login/register.jsp?error=3").forward(request, response);
+            response.sendRedirect("register?error=2");
+        } else {
+            UserDAO d = new UserDAO();
+            User u = d.checkAccountExits(username);
+            
+            if (u == null) {
+                User um = d.checkEmailExits(email);
+                if(um == null){
+                //dc signup
+                d.CreateAccount(fullname, username, email, dob, password, gen, createAt);
+                response.sendRedirect("login");
+                }else{
+                    response.sendRedirect("register?error=5");
                 }
+            } else {
+                response.sendRedirect("register?error=3");
             }
-        
-        
-        }catch(Exception e){
-            request.getRequestDispatcher("login/register.jsp?error=2").forward(request, response);
         }
-            
-            
-            
-        
+
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
+
+
+/**
+ * Returns a short description of the servlet.
+ *
+ * @return a String containing servlet description
+ */
+@Override
+public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 
