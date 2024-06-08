@@ -10,7 +10,6 @@
 <html>
     <head>
         <title>Add New Package</title>
-        <!--<link rel="stylesheet" type="text/css" href="styles.css">-->
     </head>
 
     <style>
