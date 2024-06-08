@@ -104,6 +104,10 @@
         <servlet-name>PricePackageServlet</servlet-name>
         <servlet-class>controller.admin.PricePackageServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddPackageServlet</servlet-name>
+        <servlet-class>controller.admin.AddPackageServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SubjectListServlet</servlet-name>
         <url-pattern>/admin/subject-list</url-pattern>
@@ -207,5 +211,9 @@
     <servlet-mapping>
         <servlet-name>PricePackageServlet</servlet-name>
         <url-pattern>/admin/price-package</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddPackageServlet</servlet-name>
+        <url-pattern>/admin/new-package</url-pattern>
     </servlet-mapping>
 </web-app>
