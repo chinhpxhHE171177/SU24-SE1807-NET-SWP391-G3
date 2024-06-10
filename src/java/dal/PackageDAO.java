@@ -14,7 +14,6 @@ import model.Packages;
 public class PackageDAO extends DBContext {
 
     /**
-     * @param args the command line arguments
      */
     public List<Packages> getAllPackage() {
         List<Packages> list = new ArrayList<>();

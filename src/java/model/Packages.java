@@ -8,7 +8,6 @@ package model;
 public class Packages {
 
     /**
-     * @param args the command line 
      */
     private int id;
     private String name;

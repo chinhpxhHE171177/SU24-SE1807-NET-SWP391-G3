@@ -121,7 +121,7 @@
             background-color: #ddd;
         }
 
-        /* Content tab Dimension  */
+        /* Content tab  Dimension  */
         table {
             width: 100%;
             border-collapse: collapse;

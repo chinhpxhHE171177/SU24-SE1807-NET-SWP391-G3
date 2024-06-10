@@ -112,6 +112,10 @@
         <servlet-name>UpdatePackageServlet</servlet-name>
         <servlet-class>controller.admin.UpdatePackageServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeletePackageServlet</servlet-name>
+        <servlet-class>controller.admin.DeletePackageServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SubjectListServlet</servlet-name>
         <url-pattern>/admin/subject-list</url-pattern>
@@ -223,5 +227,9 @@
     <servlet-mapping>
         <servlet-name>UpdatePackageServlet</servlet-name>
         <url-pattern>/admin/update-package</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeletePackageServlet</servlet-name>
+        <url-pattern>/admin/delete-package</url-pattern>
     </servlet-mapping>
 </web-app>
