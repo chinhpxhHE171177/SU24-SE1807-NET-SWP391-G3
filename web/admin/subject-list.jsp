@@ -15,6 +15,9 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <style>
+            *{
+                font-family: 'Poppins', 'sans-serif';
+            }
             body {
                 box-sizing: border-box;
                 font-family: 'Poppins', sans-serif;
@@ -229,7 +232,7 @@
                             <th>Owner</th>
                             <th>Status</th>
                             <th>Image</th>
-                            <th>Number of Lessons</th>
+                            <th>NumOfLess</th>
                             <th>Create At</th>
                             <th>Action</th>
                         </tr>

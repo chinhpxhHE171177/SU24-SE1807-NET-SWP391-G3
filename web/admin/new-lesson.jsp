@@ -12,7 +12,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>New Subject</title>
+        <title>New Lessons</title>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
         <style>
             body {
@@ -140,13 +140,13 @@
             <h1>Add New Lesson</h1>
             <div id="Overview" class="tab-content active">
                 <!-- Content tab Overview -->
-                <form action="new-lesson" method="post">
+                <form action="new-lesson" method="POST">
                     <label for="lesson">Lesson</label><br>
                     <input type="text" id="lesson" name="lesson" placeholder="Enter the lesson name"><br><br>
 
-                    <label for="subjectName">Subject Name</label>
-                    <select id="subjectName" name="subjectName">
-                        <c:forEach items="${lists}" var="i">
+                    <label for="moocName">Mooc Name</label>
+                    <select id="subjectName" name="moocName">
+                        <c:forEach items="${listm}" var="i">
                             <option value="${i.id}">${i.name}</option>
                         </c:forEach>
                     </select><br><br>
@@ -157,9 +157,6 @@
                             <option value="${i.id}">${i.username}</option>
                         </c:forEach>
                     </select><br><br>
-
-                    <label for="createdAt">Created At</label><br>
-                    <input type="date" id="created_at" name="created_at"><br><br>
 
                     <label for="status">Status</label>
                     <select name="status" id="status">
