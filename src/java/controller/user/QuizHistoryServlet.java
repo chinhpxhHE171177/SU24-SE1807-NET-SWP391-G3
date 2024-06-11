@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 import model.User;
-import model.QuizHistoryVM;
+import model.viewModel.QuizHistoryVM;
 
 
 /**

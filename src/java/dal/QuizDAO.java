@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import model.Quiz;
-import model.QuizHistoryVM;
+import model.viewModel.QuizHistoryVM;
 
 /**
  *
