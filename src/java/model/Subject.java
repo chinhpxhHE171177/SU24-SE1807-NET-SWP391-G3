@@ -34,7 +34,8 @@ public class Subject {
     private String package_name;
     private String userName;
     private int numberOfLessons;
-    private int totalEnroll; //tong user dk subject
+    private int totalEnroll; // tong so nguoi dk vao mon hoc 
+
     public Subject() {
     }
 

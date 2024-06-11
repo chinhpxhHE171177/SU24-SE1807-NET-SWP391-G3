@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import model.Registrations;
 import model.Subject;
 
 /**
@@ -68,19 +67,6 @@ public class SubjectDAO extends DBContext {
                 list.add(subject);
             }
         } catch (SQLException e) {
-        }
-        return list;
-    }
-        public ArrayList<Registrations> getAllSubjectforRegistration(){
-        ArrayList<Registrations> list=new ArrayList<>();
-        try {
-            String sql="select s.Subject_Name from Subjects as s";
-            PreparedStatement ps=connection.prepareStatement(sql);
-            ResultSet rs=ps.executeQuery();
-            while(rs.next()){
-                list.add(new Registrations(rs.getString(1)));
-            }
-        } catch (Exception e) {
         }
         return list;
     }
