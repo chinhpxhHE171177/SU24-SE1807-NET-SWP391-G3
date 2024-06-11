@@ -80,6 +80,7 @@ public class LessonDAO extends DBContext {
                 list.add(e);
             }
         } catch (Exception e) {
+            e.getStackTrace();
         }
         return list;
     }

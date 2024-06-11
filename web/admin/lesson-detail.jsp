@@ -50,7 +50,6 @@
             /* Content */
             .content {
                 width: 80%;
-                /*margin-left: 270px;*/
                 margin: 0 auto;
                 padding: 20px;
                 min-height: 100vh;
