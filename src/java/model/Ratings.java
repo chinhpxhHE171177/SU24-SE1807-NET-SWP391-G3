@@ -7,7 +7,7 @@ package model;
 public class Ratings {
 
     /**
-     * @param args the command line arguments
+     * @param args the command line 
      */
     
     private int id;
