@@ -46,6 +46,7 @@ public class LessonDAO extends DBContext {
                 list.add(lesson);
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return list;
     }

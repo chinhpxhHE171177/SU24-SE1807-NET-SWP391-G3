@@ -239,5 +239,4 @@ public class LesMooc {
     public String toString() {
         return "LesMooc{" + "id=" + id + ", name=" + name + ", videoLink=" + videoLink + ", createdAt=" + createdAt + ", createdBy=" + createdBy + ", moocId=" + moocId + ", status=" + status + ", content=" + content + ", duration=" + duration + ", moocName=" + moocName + ", subjectName=" + subjectName + ", author=" + author + ", image=" + image + ", categoryName=" + categoryName + '}';
     }
-
 }
