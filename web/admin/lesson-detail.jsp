@@ -44,9 +44,6 @@
                 color: #333;
                 line-height: 1.6;
             }
-
-
-
             /* Content */
             .content {
                 width: 80%;

@@ -27,7 +27,6 @@
         <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
         <!-- Template Stylesheet -->
-        <!-- Stylesheets -->
         <link rel="stylesheet" href="../homepage/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="../homepage/css/font-awesome.min.css"/>
         <link rel="stylesheet" href="../homepage/css/slicknav.min.css"/>
