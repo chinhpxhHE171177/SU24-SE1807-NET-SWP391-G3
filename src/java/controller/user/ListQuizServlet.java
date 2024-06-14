@@ -101,7 +101,7 @@ public class ListQuizServlet extends HttpServlet {
                 }
                 int index = Integer.parseInt(indexS);
                 QuizDAO quizDAO = new QuizDAO();
-                List<Quiz> listQuiz = quizDAO.searchQuiz(index, search);
+                List<Quiz> listQuiz = quizDAO.searchQuiz(index, search, 0);
                 int total = quizDAO.getTotalListSearch(search);
                 int lastPage = total / 9;
                 if (total % 9 != 0) {
