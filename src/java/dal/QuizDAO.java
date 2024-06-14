@@ -74,14 +74,31 @@ public class QuizDAO extends DBContext {
         return null;
     }
 
-    public List<Quiz> searchQuiz(int index, String search) {
-        String sql = "SELECT * FROM [Quizzes] WHERE title LIKE ? ORDER BY QuizID DESC OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY";
-        List<Quiz> listQuiz = new ArrayList();
+    public List<Quiz> searchQuiz(int index, String search, int categoryId) {
         try {
-            ps = connection.prepareStatement(sql);
-            ps.setString(1, "%" + search + "%");
-            ps.setInt(2, (index - 1) * 6);
-
+            List<Quiz> listQuiz = new ArrayList();
+            String sql = "";
+            if (!(search.equals("")) && categoryId != 0) {
+                sql = "SELECT * FROM [Quizzes] WHERE title LIKE ? AND CategoryID = ?  ORDER BY QuizID DESC OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY";
+                ps = connection.prepareStatement(sql);
+                ps.setString(1, "%" + search + "%");      
+                ps.setInt(2, categoryId);
+                ps.setInt(2, (index - 1) * 6);
+            } else if (search.equals("")) {
+                sql = "SELECT * FROM [Quizzes] WHERE title LIKE ? ORDER BY QuizID DESC OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY";
+                ps = connection.prepareStatement(sql);
+                ps.setString(1, "%" + search + "%");
+                ps.setInt(2, (index - 1) * 6);
+            }else  if (categoryId != 0) {
+                sql = "SELECT * FROM [Quizzes] WHERE CategoryID = ? ORDER BY QuizID DESC OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY";
+                ps = connection.prepareStatement(sql);
+                ps.setInt(1, categoryId);
+                ps.setInt(2, (index - 1) * 6);
+            } else {
+                 sql = "SELECT * FROM [Quizzes] ORDER BY QuizID DESC OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY";
+                ps = connection.prepareStatement(sql);
+                ps.setInt(1, (index - 1) * 6);
+            }
             rs = ps.executeQuery();
             while (rs.next()) {
                 Quiz quiz = new Quiz();
@@ -103,13 +120,13 @@ public class QuizDAO extends DBContext {
         }
         return null;
     }
-    
-     public List<Quiz> filterQuiz(int index, int filter) {
+
+    public List<Quiz> filterQuiz(int index, int filter) {
         String sql = "SELECT * FROM [Quizzes] WHERE Level = ? ORDER BY QuizID DESC OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY";
         List<Quiz> listQuiz = new ArrayList();
         try {
             ps = connection.prepareStatement(sql);
-            ps.setInt(1,  filter );
+            ps.setInt(1, filter);
             ps.setInt(2, (index - 1) * 6);
 
             rs = ps.executeQuery();
@@ -134,7 +151,53 @@ public class QuizDAO extends DBContext {
         return null;
     }
 
-      public int getTotalListFilter(int level) {
+    public int getTotalfilterQuizByCategory(int cateId) {
+        String sql = "SELECT * FROM [Quizzes] WHERE CategoryID = ? ";
+        List<Quiz> listQuiz = new ArrayList();
+        try {
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, cateId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<Quiz> filterQuizByCategory(int index, int cateId) {
+        String sql = "SELECT * FROM [Quizzes] WHERE CategoryID = ? ORDER BY QuizID DESC OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY";
+        List<Quiz> listQuiz = new ArrayList();
+        try {
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, cateId);
+            ps.setInt(2, (index - 1) * 6);
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Quiz quiz = new Quiz();
+                quiz.setQuizID(rs.getInt("QuizID"));
+                quiz.setTitle(rs.getString("title"));
+                quiz.setDescription(rs.getString("description"));
+                quiz.setLevel(rs.getInt("Level"));
+                quiz.setCategoryID(rs.getInt("CategoryID"));
+                quiz.setSubjectID(rs.getInt("SubjectID"));
+                byte[] imgData = rs.getBytes("Image");
+                String base64Image = Base64.getEncoder().encodeToString(imgData);
+                quiz.setImage((base64Image));
+                quiz.setCreateAt(rs.getDate("created_at").toString());
+                listQuiz.add(quiz);
+            }
+            return listQuiz;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getTotalListFilter(int level) {
         String sql = "SELECT COUNT(*) FROM [Quizzes] WHERE Level = ? ";
         try {
             ps = connection.prepareStatement(sql);
@@ -148,7 +211,7 @@ public class QuizDAO extends DBContext {
         }
         return 0;
     }
-     
+
     public int getTotalListSearch(String search) {
         String sql = "SELECT COUNT(*) FROM [Quizzes]  WHERE title LIKE ?";
         try {
@@ -281,7 +344,6 @@ public class QuizDAO extends DBContext {
         return null;
     }
 
-    
     public int getTotalQuizBySubjectId(int SubjectId) {
         String sql = "SELECT COUNT(*) FROM [Quizzes] q WHERE SubjectID = ?";
         List<Quiz> listQuiz = new ArrayList();
@@ -298,6 +360,7 @@ public class QuizDAO extends DBContext {
         }
         return 0;
     }
+
     public List<Quiz> getListQuizBySubjectId(int SubjectId, int index) {
         String sql = "SELECT * FROM [Quizzes] q WHERE SubjectID = ? ORDER BY QuizID DESC OFFSET ? ROWS FETCH NEXT 9 ROWS ONLY";
         List<Quiz> listQuiz = new ArrayList();

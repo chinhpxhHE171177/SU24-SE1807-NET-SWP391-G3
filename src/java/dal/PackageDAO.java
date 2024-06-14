@@ -92,7 +92,6 @@ public class PackageDAO extends DBContext {
                         rs.getString(7));
             }
         } catch (SQLException e) {
-            e.getStackTrace();
         }
         return null;
     }

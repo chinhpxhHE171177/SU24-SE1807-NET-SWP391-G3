@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.LesMooc;
+import model.Mooc;
 
 /**
  *
@@ -45,7 +46,6 @@ public class LessonDAO extends DBContext {
                 list.add(lesson);
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return list;
     }
@@ -79,7 +79,6 @@ public class LessonDAO extends DBContext {
                 list.add(e);
             }
         } catch (Exception e) {
-            e.getStackTrace();
         }
         return list;
     }

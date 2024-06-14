@@ -51,7 +51,7 @@ public class LessonListServlet extends HttpServlet {
             paginatedSubjects = new ArrayList<>();
         }
 
-  
+        // Thiết lập các thuộc tính cho request
         request.setAttribute("listl", paginatedSubjects);
         request.setAttribute("currentPage", pageIndex);
         request.setAttribute("totalPage", totalPage);

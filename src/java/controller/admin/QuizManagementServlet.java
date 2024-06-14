@@ -51,10 +51,13 @@ public class QuizManagementServlet extends HttpServlet {
                 case "search":
                     searchQuiz(request, response);
                     break;
+                case "filter":
+                    filterQuiz(request, response);
+                    break;
             }
         } else {
-            url = "login";
-            request.getRequestDispatcher(url).forward(request, response);
+            url = request.getContextPath() + "/login";
+            response.sendRedirect(url);
         }
     }
 
@@ -109,6 +112,8 @@ public class QuizManagementServlet extends HttpServlet {
             }
             int index = Integer.parseInt(indexS);
             QuizDAO quizDAO = new QuizDAO();
+            CategoryDAO cateDAO = new CategoryDAO();
+            List<Category> listCate = cateDAO.getAllCategory();
             List<Quiz> listQuiz = quizDAO.getListQuizPage(index);
             int total = quizDAO.getTotalList();
             int lastPage = total / 6;
@@ -117,6 +122,7 @@ public class QuizManagementServlet extends HttpServlet {
             }
             if (listQuiz != null) {
                 request.setAttribute("QUIZS", listQuiz);
+                request.setAttribute("CATEGORIES", listCate);
                 request.setAttribute("endP", lastPage);
                 request.setAttribute("selectedPage", index);
             }
@@ -252,16 +258,62 @@ public class QuizManagementServlet extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             String search = request.getParameter("search");
+            String filter = request.getParameter("categoryId");
             String indexS = request.getParameter("index");
             String url = "manage-quiz.jsp";
-            if (search != null) {
+            if (indexS == null) {
+                indexS = "1";
+            }
+            int index = Integer.parseInt(indexS);
+            int categoryId = 0;
+            String searchS = "";
+            if(search != null) {
+                searchS = search;
+            }
+            if (filter == null) {
+                categoryId = Integer.parseInt(filter);
+            }
+            QuizDAO quizDAO = new QuizDAO();
+            List<Quiz> listQuiz = quizDAO.searchQuiz(index, searchS, categoryId);
+            CategoryDAO cateDAO = new CategoryDAO();
+            List<Category> listCate = cateDAO.getAllCategory();
+            int total = quizDAO.getTotalListSearch(search);
+            int lastPage = total / 6;
+            if (total % 6 != 0) {
+                lastPage++;
+            }
+            if (listQuiz != null) {
+                request.setAttribute("QUIZS", listQuiz);
+                request.setAttribute("endP", lastPage);
+                request.setAttribute("selectedPage", index);
+            }
+            request.setAttribute("categoryId", categoryId);
+            request.setAttribute("CATEGORIES", listCate);
+            request.setAttribute("search", search);
+            request.getRequestDispatcher(url).forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void filterQuiz(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            HttpSession session = request.getSession();
+            String filter = request.getParameter("categoryId");
+            int categoryId = Integer.parseInt(filter);
+            String indexS = request.getParameter("index");
+            String url = "manage-quiz.jsp";
+            if (filter != null) {
                 if (indexS == null) {
                     indexS = "1";
                 }
                 int index = Integer.parseInt(indexS);
+                CategoryDAO cateDAO = new CategoryDAO();
+                List<Category> listCate = cateDAO.getAllCategory();
                 QuizDAO quizDAO = new QuizDAO();
-                List<Quiz> listQuiz = quizDAO.searchQuiz(index, search);
-                int total = quizDAO.getTotalListSearch(search);
+                List<Quiz> listQuiz = quizDAO.filterQuizByCategory(index, categoryId);
+                int total = quizDAO.getTotalfilterQuizByCategory(categoryId);
                 int lastPage = total / 6;
                 if (total % 6 != 0) {
                     lastPage++;
@@ -271,7 +323,8 @@ public class QuizManagementServlet extends HttpServlet {
                     request.setAttribute("endP", lastPage);
                     request.setAttribute("selectedPage", index);
                 }
-                request.setAttribute("search", search);
+                request.setAttribute("categoryId", categoryId);
+                request.setAttribute("CATEGORIES", listCate);
                 request.getRequestDispatcher(url).forward(request, response);
             }
         } catch (Exception e) {
