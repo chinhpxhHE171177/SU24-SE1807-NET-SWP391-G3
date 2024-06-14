@@ -222,14 +222,14 @@
             <h3 style="color: blue; text-align: center">${mess}</h3>
         </div>
 
-         <script type="text/javascript">
+<!--         <script type="text/javascript">
             function doDeletebySubject(id) {
                 if (confirm("Are you sure to delete subject with id =" + id)) {
                     window.location = "delete-subject?id=" + id;
                     
                 }
             }
-        </script>
+        </script>-->
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     </body>
