@@ -57,7 +57,7 @@ public class PackageDAO extends DBContext {
             pst.setInt(5, p.getDuration());
             pst.setString(6, p.getStatus());
             pst.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.getStackTrace();
         }
     }

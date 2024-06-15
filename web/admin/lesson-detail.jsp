@@ -53,7 +53,6 @@
                 background-color: #f4f4f4;
             }
 
-            /* Content Header */
             .content h1 {
                 font-size: 28px;
                 color: #007bff;
