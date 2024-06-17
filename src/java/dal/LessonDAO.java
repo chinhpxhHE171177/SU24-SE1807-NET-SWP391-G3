@@ -107,8 +107,7 @@ public class LessonDAO extends DBContext {
                         rs.getString(11));
                 list.add(e);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
         }
         return list;
     }
@@ -167,7 +166,7 @@ public class LessonDAO extends DBContext {
                         rs.getString(11));
                 list.add(e);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
@@ -237,7 +236,7 @@ public class LessonDAO extends DBContext {
                         rs.getString(11));
                 list.add(e);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return list;
     }
