@@ -116,6 +116,10 @@
         <servlet-name>DeletePackageServlet</servlet-name>
         <servlet-class>controller.admin.DeletePackageServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HomeServlet</servlet-name>
+        <servlet-class>controller.admin.HomeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SubjectListServlet</servlet-name>
         <url-pattern>/admin/subject-list</url-pattern>
@@ -231,5 +235,9 @@
     <servlet-mapping>
         <servlet-name>DeletePackageServlet</servlet-name>
         <url-pattern>/admin/delete-package</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomeServlet</servlet-name>
+        <url-pattern>/home</url-pattern>
     </servlet-mapping>
 </web-app>

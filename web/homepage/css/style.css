@@ -1,0 +1,401 @@
+/* 
+    Created on : Jun 8, 2024, 8:21:24 PM
+    Author     : Admin
+*/
+
+* {
+    font-family: 'Poppins', 'sans-serif';
+}
+
+.video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    overflow: hidden;
+}
+
+li {
+    list-style-type: none;
+}
+/* Navbar */
+.navbar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s;
+}
+
+.navbar:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+}
+
+.back-button {
+    font-size: 24px;
+    color: white;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.nav-text h1 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.nav-text p {
+    margin: 0;
+    font-size: 14px;
+    color: #cbd5e0;
+    /* Light grey-blue color */
+}
+
+.nav-right p {
+    margin: 0;
+    font-size: 14px;
+    text-align: right;
+}
+
+.nav-right p:first-child {
+    font-weight: bold;
+}
+
+.scrollable-div {
+    overflow: auto;
+    height: 90vh;
+}
+
+/* Tùy chỉnh thanh cuộn */
+.scrollable-div::-webkit-scrollbar {
+    width: 7px;
+}
+
+.scrollable-div::-webkit-scrollbar-thumb {
+    background-color: #d9d9d9;
+    /* Đặt màu sắc của thanh cuộn */
+    border-radius: 4px;
+    /* Đặt viền cong của thanh cuộn */
+}
+
+.scrollable-div::-webkit-scrollbar-thumb:hover {
+    background-color: #ffffff;
+    /* Đặt màu sắc khi hover lên thanh cuộn */
+}
+
+.accordion {
+    padding-left: 0;
+}
+
+.accordion li {
+    list-style: none;
+    width: 100%;
+    background-color: #edeff1;
+    box-shadow: 6px 6px 10px -1px rgba(0, 0, 0, 0.15);
+}
+
+.accordion li label {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    padding-bottom: 5px;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+label::before {
+    content: "+";
+    margin-right: 10px;
+    margin-left: 10px;
+    align-items: center;
+    font-size: 18px;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+.accordion li {
+    border-bottom: 1px solid #bbbcc0;
+}
+
+.accordion .content {
+    background-color: white;
+    line-height: 26px;
+    max-height: 0;
+    overflow: hidden;
+    padding-bottom: 0px;
+    transition: max-height 0.5s, padding 0.5s;
+}
+
+.accordion .content a {
+    text-decoration: none;
+    margin-left: 2rem;
+    color: black;
+    cursor: pointer;
+}
+
+.content a:focus p {
+    font-weight: bold;
+    color: #2bc5d4
+}
+
+.accordion .content :hover {
+    color: #2bc5d4;
+}
+
+.accordion input[type="checkbox"]:checked+label+.content {
+    max-height: 400px;
+    padding: 0px 10px 0px 40px;
+}
+
+.accordion input[type="checkbox"]:checked+label::before {
+    content: "-";
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.lesson .lesson-content {
+    width: 90%;
+}
+
+.lesson .lesson-content:last-child {
+    margin-bottom: 2rem;
+}
+
+.icons {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Comments Section */
+.item-widget {
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+.widget-rating {
+    display: none;
+    width: 80%;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+}
+
+.widget-rating.active {
+    display: block;
+}
+
+.item-widget h2 {
+    margin-left: 2rem;
+    cursor: pointer;
+    font-size: 16px;
+    color: blue;
+    font-weight: 600;
+}
+
+.widget-rating .reviews,
+.widget-rating .review-form {
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    padding-top: 20px;
+}
+.widget-rating .reviews ul{
+    border-top: 1px solid #737373;
+    padding-top: 15px;
+    margin-top: 15px;
+    margin-bottom: 1rem;
+}
+.widget-rating .reviews .input.removeButton{
+    background: #3D4399;
+    color: #fff;
+    padding: 0.1rem 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: lighter;
+    letter-spacing: 2px;
+    &:hover{
+        background: #989898;
+        transition: all 1s;
+    }
+}
+.widget-rating .reviews:last-child,
+.widget-rating .review-form {
+    border-bottom: none;
+}
+
+.widget-ratingt .review-header,
+.widget-rating .review-form .form-info {
+    display: flex;
+    align-items: center;
+}
+
+.widget-rating .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.widget-rating .reviews-author {
+    font-weight: bold;
+}
+
+.widget-rating .reviews-time {
+    font-size: 12px;
+    color: gray;
+    margin-left: 5px;
+}
+
+.widget-rating .stars {
+    margin-left: auto;
+    color: gold;
+}
+
+.widget-rating .reviews-body {
+    margin-top: 10px;
+}
+
+.widget-rating .reviews-form .form-info {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.widget-rating .reviews-form textarea {
+    width: calc(100% - 60px);
+    height: 80px;
+    padding: 10px;
+    border: 1px solid #eaeaea;
+    border-radius: 5px;
+    resize: none;
+    margin-left: 46px;
+    margin-top: -12px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.widget-rating .reviews-form button {
+    float: right;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+
+.widget-rating .reviews-form button:hover {
+    background-color: #0056b3;
+}
+.dropdown-menu .dropdown-item {
+    font-size: 16px;
+    color: #333;
+}
+
+.review-form .reviews {
+    margin-top: 5rem;
+    padding-top: 5rem;
+}
+
+.rates {
+    float: left;
+    height: 36px;
+    padding: 0 10px;
+}
+
+.rates:not(:checked)>input {
+    position: absolute;
+    top: -9px;
+}
+
+.rates:not(:checked)>label {
+    float: right;
+    width: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 30px;
+    color: #ccc;
+}
+
+.rates:not(:checked)>label:before {
+    content: '★';
+}
+
+.rates>input:checked~label {
+    color: #ffc700;
+}
+
+.rates:not(:checked)>label:hover,
+.rates:not(:checked)>label:hover~label {
+    color: #deb217;
+}
+
+.rates>input:checked+label:hover,
+.rates>input:checked+label:hover~label,
+.rates>input:checked~label:hover,
+.rates>input:checked~label:hover~label,
+.rates>label:hover~input:checked~label {
+    color: #c59b08;
+}
+
+.dropdown {
+    float: right;
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    right: 0;
+}
+
+.dropdown-content a {
+    color: black;
+    font-size: 13px;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.three-dots {
+    cursor: pointer;
+}
+
+hr {
+    border: 0.5;
+    margin-bottom: 0px;
+}
+
+label {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}

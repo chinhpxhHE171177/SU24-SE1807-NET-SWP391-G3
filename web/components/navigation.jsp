@@ -48,8 +48,8 @@
                     </a>
                     <nav class="top-nav-area w-100">
                         <c:choose>
-                            <c:when test="${sessionScope.users != null}">
-                                <button class="user-panel btn btn-outline-primary ms-lg-2">${sessionScope.users.fullname}</button>
+                            <c:when test="${sessionScope.user != null}">
+                                <button class="user-panel btn btn-outline-primary ms-lg-2">${sessionScope.user.fullname}</button>
                                 <a href="${pageContext.request.contextPath}/logout" class="user-panel btn btn-outline-primary ms-lg-2">Logout</a>
                             </c:when>
                             <c:otherwise>
