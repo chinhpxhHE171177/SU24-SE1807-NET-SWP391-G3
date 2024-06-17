@@ -62,7 +62,7 @@ public class LessonListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String txtSearch = request.getParameter("txtSearch");
-        String idRaw = request.getParameter("id");
+        String id_raw = request.getParameter("id");
         String action = request.getParameter("action");
 
         LessonDAO ldao = new LessonDAO();
@@ -76,8 +76,8 @@ public class LessonListServlet extends HttpServlet {
         } else {
             listl = ldao.getAllLesMooc();
         }
-        if (idRaw != null && !idRaw.isEmpty() && action != null) {
-            int id = Integer.parseInt(idRaw);
+        if (id_raw != null && !id_raw.isEmpty() && action != null) {
+            int id = Integer.parseInt(id_raw);
             if ("Deactivate".equals(action)) {
                 ldao.updateNewStatus(id, "Inactive");
             } else if ("Activate".equals(action)) {
