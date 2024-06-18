@@ -49,6 +49,7 @@
 
     </head>
 
+
     <body>
 
         <!-- Header section -->
@@ -327,7 +328,7 @@
              aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header" style="background: url('img/quiz-image/quiz-cover1.jpg'); height: 230px;">
+                    <div class="modal-header" style="background: url('../img/quiz-image/quiz-cover1.jpg'); height: 230px;">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body p-0">
@@ -375,7 +376,7 @@
 
 
         <!-- Featured section -->
-        <section class="featured-section" style="background-image: url('img/featured-bg.jpg');">
+        <section class="featured-section" style="background-image: url('../img/featured-bg.jpg');">
             <div class="featured-bg set-bg" data-setbg="../img/featured-bg.jpg"></div>
             <div class="featured-box">
                 <div class="text-box">
