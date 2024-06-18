@@ -62,14 +62,14 @@
                         </c:choose>
                         <!-- Menu -->
                         <ul class="main-menu primary-menu">
-                            <li><a href="home.jsp" class="active">Home</a></li>
+                            <li><a href="${pageContext.request.contextPath}/home" class="active">Home</a></li>
                             <li><a href="games">Quiz</a>
                                 <ul class="sub-menu">
                                     <li><a href="game-single.html">Game Singel</a></li>
                                 </ul>
                             </li>
                             <!--<li><a href="#">Quiz</a></li>-->
-                            <li><a href="#">Course</a></li>
+                            <li><a href="${pageContext.request.contextPath}/homepage/subject-list">Course</a></li>
                                 <c:choose>
                                     <c:when test="${sessionScope.user != null && sessionScope.user.roleId == 1}">
                                     <!--<li class="nav-item "><a class="nav-link text-white" href="dashboard" class="nav-link ms-lg-2 fs-2">Dashboard</a></li>-->
