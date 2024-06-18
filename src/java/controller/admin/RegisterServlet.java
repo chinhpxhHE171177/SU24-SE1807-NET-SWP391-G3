@@ -5,7 +5,7 @@
 
 package controller.admin;
 
-import dal.QuestionDAO;
+import dal.DBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,11 +13,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.sql.*;
+
 /**
  *
- * @author minh1
+ * @author p.ttrung
  */
-public class AddQuestionServlet extends HttpServlet {
+public class RegisterServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,10 +36,10 @@ public class AddQuestionServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet InsertQuestionServlet</title>");  
+            out.println("<title>Servlet RegisterServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet InsertQuestionServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet RegisterServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -54,7 +56,7 @@ public class AddQuestionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        doPost(request, response);
     } 
 
     /** 
@@ -67,12 +69,27 @@ public class AddQuestionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-         String qdetail = request.getParameter("name");
-        String quizid = request.getParameter("dob");
-        QuestionDAO dao = new QuestionDAO();
-        dao.insertQuestion(qdetail, quizid);
-        response.sendRedirect("list-questions");
- 
+        String fullname = request.getParameter("fullname");
+        String username = request.getParameter("username");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        try {
+            DBContext db = new DBContext();
+            String sql = "INSERT INTO Users (FullName, UserName, Email, Password, RoleID) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement pst = db.connection.prepareStatement(sql);
+            pst.setString(1, fullname);
+            pst.setString(2, username);
+            pst.setString(3, email);
+            pst.setString(4, password);
+            pst.setInt(5, 2); // Default role for normal users
+            pst.executeUpdate();
+
+            response.sendRedirect("login.jsp");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("register.jsp?error=1");
+        }
     }
 
     /** 
