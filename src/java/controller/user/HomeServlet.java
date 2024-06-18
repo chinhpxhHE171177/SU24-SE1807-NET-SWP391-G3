@@ -5,35 +5,43 @@
 package controller.user;
 
 import dal.QuizDAO;
+import dal.SubjectDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import model.User;
-import model.QuizHistoryVM;
-
+import model.Quiz;
+import model.QuizHomePageVM;
+import model.Subject;
 
 /**
  *
- * @author Admin
+ * @author admin
  */
-public class QuizHistoryServlet extends HttpServlet {
+public class HomeServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-               HttpSession session = request.getSession();
-            User user = (User) session.getAttribute("user");
-            String url = "quiz-history.jsp";
             QuizDAO quizDAO = new QuizDAO();
-            List<QuizHistoryVM> listQuizHistory = quizDAO.GetQuizHistory(user.getId());
-            if (listQuizHistory != null) {
-                request.setAttribute("QUIZS", listQuizHistory);
+            SubjectDAO subjectDAO = new SubjectDAO();
+            List<Subject> listSubject = subjectDAO.getAllSubjects();
+            List<QuizHomePageVM> listQuizHomePage = new ArrayList<QuizHomePageVM>();
+            for (Subject subject : listSubject) {
+                List<Quiz> listQuiz = quizDAO.getListQuizHomePageBySubjectId(subject.getId());
+                QuizHomePageVM qHome = new QuizHomePageVM();
+                qHome.setSubjectName(subject.getName());
+                qHome.setSubjectId(subject.getId());
+                qHome.setListQuiz(listQuiz);
+                // check
+                listQuizHomePage.add(qHome);
             }
-            request.getRequestDispatcher(url).forward(request, response);
+            request.setAttribute("QUIZ", listQuizHomePage);
+            request.getRequestDispatcher("homepage.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }
