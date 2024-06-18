@@ -13,9 +13,6 @@ import model.Packages;
  */
 public class PackageDAO extends DBContext {
 
-    /**
-     * @param args the command line arguments
-     */
     public List<Packages> getAllPackage() {
         List<Packages> list = new ArrayList<>();
 
@@ -34,6 +31,7 @@ public class PackageDAO extends DBContext {
                 list.add(p);
             }
         } catch (SQLException e) {
+            e.getStackTrace();
         }
         return list;
     }
@@ -59,7 +57,8 @@ public class PackageDAO extends DBContext {
             pst.setInt(5, p.getDuration());
             pst.setString(6, p.getStatus());
             pst.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            e.getStackTrace();
         }
     }
 
@@ -118,6 +117,7 @@ public class PackageDAO extends DBContext {
             pst.setInt(7, p.getId());
             pst.executeUpdate();
         } catch (Exception e) {
+            e.getStackTrace();
         }
     }
 
@@ -130,6 +130,7 @@ public class PackageDAO extends DBContext {
             pst.setInt(2, id);
             pst.executeUpdate();
         } catch (Exception e) {
+            e.getStackTrace();
         }
     }
 
