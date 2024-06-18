@@ -1,4 +1,4 @@
-package controller.admin;
+package controller.publics;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -51,8 +51,7 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        request.getRequestDispatcher("homepage/home.jsp").forward(request, response);
+        response.sendRedirect("http://localhost:9999/Quizz/homepage/home.jsp");
     }
 
     /**
