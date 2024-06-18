@@ -65,7 +65,7 @@
                     <div class="container">
                         <h2>Quiz Website</h2>
                         <p>Quiz is a free, gamebased learning platform<br>Let's experience and learn together</p>
-                        <a href="About.html" class="site-btn">Read More <img src="../img/icons/double-arrow.png" alt="#" /></a>
+                        <a href="about.jsp" class="site-btn">Read More <img src="../img/icons/double-arrow.png" alt="#" /></a>
                     </div>
                 </div>
                 <div class="hero-item set-bg d-flex align-items-center justify-content-center text-center"
@@ -73,7 +73,7 @@
                     <div class="container">
                         <h2>Quiz Website</h2>
                         <p>Quiz is a free, gamebased learning platform<br>Let's experience and learn together</p>
-                        <a href="About.html" class="site-btn">Read More <img src="../img/icons/double-arrow.png" alt="#" /></a>
+                        <a href="about.jsp" class="site-btn">Read More <img src="../img/icons/double-arrow.png" alt="#" /></a>
                     </div>
                 </div>
             </div>

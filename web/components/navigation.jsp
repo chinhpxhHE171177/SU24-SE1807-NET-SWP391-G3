@@ -54,7 +54,7 @@
                             </c:when>
                             <c:otherwise>
                                 <div class="user-panel">
-                                    <a href="${pageContext.request.contextPath}/login">Login</a> / <a href="Register.html">Register</a>
+                                    <a href="${pageContext.request.contextPath}/login">Login</a> / <a href="${pageContext.request.contextPath}/register">Register</a>
                                 </div>
                             </c:otherwise>
                         </c:choose>
