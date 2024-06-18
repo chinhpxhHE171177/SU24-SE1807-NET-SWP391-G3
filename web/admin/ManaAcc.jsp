@@ -188,7 +188,6 @@
                         <th>Gender</th>                     
                         <th>Created At</th>
                         <th>Avatar</th>
-                        <th> </th>
                     </tr>
                 </thead>
                 <tbody>
