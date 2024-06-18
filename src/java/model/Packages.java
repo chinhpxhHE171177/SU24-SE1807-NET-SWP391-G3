@@ -1,5 +1,6 @@
 package model;
 
+import java.math.BigDecimal;
 
 /**
  *
@@ -7,7 +8,9 @@ package model;
  */
 public class Packages {
 
-
+    /**
+     * @param args the command line arguments
+     */
     private int id;
     private String name;
     private String description;
@@ -107,5 +110,5 @@ public class Packages {
     public String toString() {
         return "Packages{" + "id=" + id + ", name=" + name + ", description=" + description + ", price=" + price + ", salePrice=" + salePrice + ", duration=" + duration + ", status=" + status + '}';
     }
-
+    
 }

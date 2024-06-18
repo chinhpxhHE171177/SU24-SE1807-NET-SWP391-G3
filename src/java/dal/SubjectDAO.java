@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import model.Registrations;
 import model.Subject;
 
 /**
@@ -68,20 +67,6 @@ public class SubjectDAO extends DBContext {
                 list.add(subject);
             }
         } catch (SQLException e) {
-        }
-        return list;
-    }
-
-    public ArrayList<Registrations> getAllSubjectforRegistration() {
-        ArrayList<Registrations> list = new ArrayList<>();
-        try {
-            String sql = "select s.Subject_Name from Subjects as s";
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                list.add(new Registrations(rs.getString(1)));
-            }
-        } catch (Exception e) {
         }
         return list;
     }
@@ -618,103 +603,6 @@ public class SubjectDAO extends DBContext {
             ex.printStackTrace();
         }
         return null;
-    }
-
-    public List<Subject> getSubjectByCateAndPack(int cid, int pid) {
-        List<Subject> list = new ArrayList<>();
-
-        try {
-            String sql = "SELECT s.*, c.category_name, p.package_name, u.UserName, COUNT(l.LessonId) AS numberOfLessons FROM [Subjects] s\n"
-                    + "LEFT JOIN Categories c ON c.CategoryID = s.CategoryID\n"
-                    + "LEFT JOIN Packages p ON p.PackageID = s.PackageID\n"
-                    + "LEFT JOIN Users u ON u.UserID = s.created_by\n"
-                    + "LEFT JOIN Lessons l ON s.SubjectID = l.SubjectID\n"
-                    + "WHERE c.CategoryID = ? AND p.PackageID = ?\n"
-                    + "GROUP BY\n"
-                    + "s.SubjectID,\n"
-                    + "s.Subject_Name,\n"
-                    + "s.Description,\n"
-                    + "s.Image,\n"
-                    + "s.Status,\n"
-                    + "s.PackageId,\n"
-                    + "s.CategoryId,\n"
-                    + "s.created_by,\n"
-                    + "s.Created_at,\n"
-                    + "c.category_name,\n"
-                    + "p.package_name,\n"
-                    + "u.UserName";
-            PreparedStatement pst = connection.prepareStatement(sql);
-            pst.setInt(1, cid);
-            pst.setInt(2, pid);
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                Subject subject = new Subject(
-                        rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getBoolean(5),
-                        rs.getInt(6),
-                        rs.getInt(7),
-                        rs.getInt(8),
-                        rs.getDate(9),
-                        rs.getString(10),
-                        rs.getString(11),
-                        rs.getString(12),
-                        rs.getInt(13));
-                list.add(subject);
-            }
-        } catch (Exception e) {
-        }
-        return list;
-
-    }
-
-    public List<Subject> getSubjectByPid(int id) {
-        List<Subject> list = new ArrayList<>();
-        try {
-            String sql = "SELECT s.*, c.category_name, p.package_name, u.UserName, COUNT(l.LessonId) AS numberOfLessons FROM [Subjects] s\n"
-                    + "LEFT JOIN Categories c ON c.CategoryID = s.CategoryID\n"
-                    + "LEFT JOIN Packages p ON p.PackageID = s.PackageID\n"
-                    + "LEFT JOIN Users u ON u.UserID = s.created_by\n"
-                    + "LEFT JOIN Lessons l ON s.SubjectID = l.SubjectID\n"
-                    + "WHERE p.PackageID = ?\n"
-                    + "GROUP BY\n"
-                    + "s.SubjectID,\n"
-                    + "s.Subject_Name,\n"
-                    + "s.Description,\n"
-                    + "s.Image,\n"
-                    + "s.Status,\n"
-                    + "s.PackageId,\n"
-                    + "s.CategoryId,\n"
-                    + "s.created_by,\n"
-                    + "s.Created_at,\n"
-                    + "c.category_name,\n"
-                    + "p.package_name,\n"
-                    + "u.UserName";
-            PreparedStatement pst = connection.prepareStatement(sql);
-            pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                Subject subject = new Subject(
-                        rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getBoolean(5),
-                        rs.getInt(6),
-                        rs.getInt(7),
-                        rs.getInt(8),
-                        rs.getDate(9),
-                        rs.getString(10),
-                        rs.getString(11),
-                        rs.getString(12),
-                        rs.getInt(13));
-                list.add(subject);
-            }
-        } catch (SQLException e) {
-        }
-        return list;
     }
 
     public static void main(String args[]) {
