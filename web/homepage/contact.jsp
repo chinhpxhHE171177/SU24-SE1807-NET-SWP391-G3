@@ -59,7 +59,6 @@
         </section>
         <!-- Page top end-->
 
-
         <!-- Contact page -->
         <section class="contact-page">
             <div class="container">
@@ -113,8 +112,6 @@
         <%@include file="../components/footer.jsp" %>
         <!-- Footer section end -->
 
-
-        <!--====== Javascripts & Jquery ======-->
         <!--====== Javascripts & Jquery ======-->
         <script src="../js/jquery-3.2.1.min.js"></script>
         <script src="../js/bootstrap.min.js"></script>
