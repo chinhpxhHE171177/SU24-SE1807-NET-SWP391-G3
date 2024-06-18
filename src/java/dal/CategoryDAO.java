@@ -49,7 +49,6 @@ public class CategoryDAO extends DBContext {
     }
 
     public static void main(String args[]) {
-        // TODO code application logic here
         CategoryDAO cdao = new CategoryDAO();
         List<Category> listca = cdao.getAllCategory();
         for (Category category : listca) {
