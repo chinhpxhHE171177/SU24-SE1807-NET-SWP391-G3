@@ -1,26 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
-package controller.Login;
+package controller.admin;
 
-import dal.UserDAO;
+import dal.LessonDAO;
+import dal.SubjectDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
-import java.sql.*;
-import model.User;
+import java.util.List;
+import model.Lessons;
+import model.Subject;
 
 /**
  *
- * @author p.ttrung
+ * @author Admin
  */
-public class LoginServlet extends HttpServlet {
+public class LessonDetailServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +35,10 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");
+            out.println("<title>Servlet LessonDetailServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet LessonDetailServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,8 +56,22 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("login/login.jsp").forward(request, response);
-        doPost(request, response);
+        String id_raw = request.getParameter("id");
+        String action = request.getParameter("action");
+        LessonDAO ldao = new LessonDAO();
+        SubjectDAO sdao = new SubjectDAO();
+        if (id_raw != null) {
+            int id = Integer.parseInt(id_raw);
+            Lessons lesson = ldao.getLessonsBYID(id);
+
+            if ("Activate".equals(action)) {
+                ldao.updateStatus(id, "Active");
+            } else if ("Deactivate".equals(action)) {
+                ldao.updateStatus(id, "Inactive");
+            }
+            request.setAttribute("lesson", lesson);
+        }
+        request.getRequestDispatcher("lesson-detail.jsp").forward(request, response);
     }
 
     /**
@@ -75,22 +85,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-
-        UserDAO ud = new UserDAO();
-        User u = ud.checkLogin(username, password);
-
-        if (u != null) {
-            
-            HttpSession session = request.getSession();
-            session.setAttribute("user", u);
-            response.sendRedirect("http://localhost:9999/Quizz/homepage/home.jsp");
-        } else {
-            response.sendRedirect("login?error=1");
-           
-        }
-
+        processRequest(request, response);
     }
 
     /**

@@ -20,6 +20,8 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
         <!-- Favicon -->
         <link href="img/favicon.ico" rel="shortcut icon"/>
@@ -43,7 +45,7 @@
             <div class="header-warp">
                 <div class="header-bar-warp d-flex">
                     <!-- site logo -->
-                    <a href="home.html" class="site-logo">
+                    <a href="home.jsp" class="site-logo">
                         Quizz.
                     </a>
                     <nav class="top-nav-area w-100">
@@ -54,22 +56,37 @@
                             </c:when>
                             <c:otherwise>
                                 <div class="user-panel">
-                                    <a href="${pageContext.request.contextPath}/login">Login</a> / <a href="Register.html">Register</a>
+                                    <a href="${pageContext.request.contextPath}/login">Login</a> / <a href="${pageContext.request.contextPath}/register">Register</a>
                                 </div>
                             </c:otherwise>
                         </c:choose>
                         <!-- Menu -->
                         <ul class="main-menu primary-menu">
-                            <li><a href="home.html" class="active">Home</a></li>
-                            <li><a href="games.html">Quiz</a>
+                            <li><a href="${pageContext.request.contextPath}/home" class="active">Home</a></li>
+                            <li><a href="games">Quiz</a>
                                 <ul class="sub-menu">
                                     <li><a href="game-single.html">Game Singel</a></li>
                                 </ul>
                             </li>
-                            <li><a href="review.html">Subject</a></li>
-                            <li><a href="review.html">Package</a></li>
-                            <li><a href="About.html">About</a></li>
-                            <li><a href="contact.html">Contact</a></li>
+                            <!--<li><a href="#">Quiz</a></li>-->
+                            <li><a href="${pageContext.request.contextPath}/homepage/subject-list">Course</a></li>
+                                <c:choose>
+                                    <c:when test="${sessionScope.user != null && sessionScope.user.roleId == 1}">
+                                    <!--<li class="nav-item "><a class="nav-link text-white" href="dashboard" class="nav-link ms-lg-2 fs-2">Dashboard</a></li>-->
+                                    <li style="list-style-type: none" class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle text-white" id="navbarDropdown" href="#" role="button"
+                                           data-bs-toggle="dropdown" aria-expanded="false">Dashboard</a>
+                                        <ul class="dropdown-menu text-black" aria-labelledby="navbarDropdown" style="background-color: #000">
+                                            <li style="color: black"><a class="dropdown-item text-black" href="dashboard">DashBoard</a></li>
+                                            <li style="color: black"><a class="dropdown-item text-black" href="/Quizz/admin/subject-list">Subject Management</a></li>
+                                            <li style="color: black"><a class="dropdown-item text-black" href="/Quizz/admin/lessons">Lessons Management</a></li>
+                                            <li style="color: black"><a class="dropdown-item text-black" href="/Quizz/admin/price-package">Package Management</a></li>
+                                        </ul>
+                                    </li>
+                                </c:when>
+                            </c:choose>
+                            <li><a href="about.jsp">About</a></li>
+                            <li><a href="contact.jsp">Contact</a></li>
                             <li>
                                 <!-- Search bar -->
                                 <div class="search-box">
@@ -78,19 +95,19 @@
                                 </div>
                             </li>
                         </ul>
+
                     </nav>
                 </div>
-
         </header>
         <!-- Header section end -->
 
         <!--====== Javascripts & Jquery ======-->
-        <script src="js/jquery-3.2.1.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+        <script src="../js/jquery-3.2.1.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
         <script src="../js/jquery.slicknav.min.js"></script>
-        <script src="js/owl.carousel.min.js"></script>
-        <script src="js/jquery.sticky-sidebar.min.js"></script>
-        <script src="js/jquery.magnific-popup.min.js"></script>
+        <script src="../js/owl.carousel.min.js"></script>
+        <script src="../js/jquery.sticky-sidebar.min.js"></script>
+        <script src="../js/jquery.magnific-popup.min.js"></script>
         <script src="../js/main.js"></script>
     </body>
 </html>
