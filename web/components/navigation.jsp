@@ -43,7 +43,7 @@
             <div class="header-warp">
                 <div class="header-bar-warp d-flex">
                     <!-- site logo -->
-                    <a href="home.html" class="site-logo">
+                    <a href="home.jsp" class="site-logo">
                         Quizz.
                     </a>
                     <nav class="top-nav-area w-100">
@@ -60,16 +60,16 @@
                         </c:choose>
                         <!-- Menu -->
                         <ul class="main-menu primary-menu">
-                            <li><a href="home.html" class="active">Home</a></li>
-                            <li><a href="games.html">Quiz</a>
+                            <li><a href="home.jsp" class="active">Home</a></li>
+                            <li><a href="games">Quiz</a>
                                 <ul class="sub-menu">
                                     <li><a href="game-single.html">Game Singel</a></li>
                                 </ul>
                             </li>
-                            <li><a href="review.html">Subject</a></li>
-                            <li><a href="review.html">Package</a></li>
-                            <li><a href="About.html">About</a></li>
-                            <li><a href="contact.html">Contact</a></li>
+                            <!--<li><a href="#">Quiz</a></li>-->
+                            <li><a href="#">Course</a></li>
+                            <li><a href="about.jsp">About</a></li>
+                            <li><a href="contact.jsp">Contact</a></li>
                             <li>
                                 <!-- Search bar -->
                                 <div class="search-box">

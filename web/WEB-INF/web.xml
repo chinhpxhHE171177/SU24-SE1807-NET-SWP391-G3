@@ -120,6 +120,10 @@
         <servlet-name>HomeServlet</servlet-name>
         <servlet-class>controller.admin.HomeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AboutServlet</servlet-name>
+        <servlet-class>controller.admin.AboutServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SubjectListServlet</servlet-name>
         <url-pattern>/admin/subject-list</url-pattern>
@@ -239,5 +243,9 @@
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AboutServlet</servlet-name>
+        <url-pattern>/about</url-pattern>
     </servlet-mapping>
 </web-app>
