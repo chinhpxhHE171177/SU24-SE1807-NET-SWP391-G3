@@ -128,7 +128,7 @@
         <servlet-name>ListSubjectServlet</servlet-name>
         <servlet-class>controller.publics.ListSubjectServlet</servlet-class>
     </servlet>
-       <servlet>
+    <servlet>
         <servlet-name>ManagementAccount</servlet-name>
         <servlet-class>controller.admin.ManagementAccount</servlet-class>
     </servlet>
@@ -260,15 +260,16 @@
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
     </servlet-mapping>
-     <servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListSubjectServlet</servlet-name>
+        <url-pattern>/homepage/subject-list</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ManagementAccount</servlet-name>
         <url-pattern>/ManaAcc</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeleteAccount</servlet-name>
         <url-pattern>/DelAcc</url-pattern>
-    <servlet-mapping>
-        <servlet-name>ListSubjectServlet</servlet-name>
-        <url-pattern>/homepage/subject-list</url-pattern>
     </servlet-mapping>
 </web-app>

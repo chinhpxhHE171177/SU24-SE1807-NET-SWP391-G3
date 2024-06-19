@@ -4,7 +4,6 @@
  */
 package controller.admin;
 
-
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -36,7 +35,7 @@ public class DeleteAccount extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DeleteAccount</title>");            
+            out.println("<title>Servlet DeleteAccount</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet DeleteAccount at " + request.getContextPath() + "</h1>");
@@ -54,15 +53,14 @@ public class DeleteAccount extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UserDAO dao=new UserDAO();
+        UserDAO dao = new UserDAO();
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             dao.deleteAccount(id);
-            request.getRequestDispatcher("ManaAcc").forward(request, response);     
+            request.getRequestDispatcher("ManaAcc").forward(request, response);
         } catch (NumberFormatException e) {
             e.printStackTrace();
             request.getRequestDispatcher("/admin/DeleteAccount.jsp").forward(request, response);
