@@ -1,23 +1,22 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package controller.admin;
 
-import dal.LessonDAO;
-import dal.SubjectDAO;
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.LesMooc;
-import model.Lessons;
-import model.Subject;
 
 /**
  *
- * @author Admin
+ * @author nguye
  */
-public class DetailSubjectServlet extends HttpServlet {
+public class DeleteAccount extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +35,10 @@ public class DetailSubjectServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SubjectDetailServlet</title>");
+            out.println("<title>Servlet DeleteAccount</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SubjectDetailServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DeleteAccount at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,26 +56,15 @@ public class DetailSubjectServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id_raw = request.getParameter("id");
-        SubjectDAO sdao = new SubjectDAO();
-        LessonDAO ldao = new LessonDAO();
-        List<Subject> lists = sdao.getAllSubjects();
-        List<LesMooc> listl = ldao.getAllLesMooc();
-
+        UserDAO dao = new UserDAO();
         try {
-            int id = Integer.parseInt(id_raw);
-            Subject subject = sdao.getSubjectById(id);
-            List<Lessons> lesson = ldao.getLesMoocsBySubjectId(id);
-
-            request.setAttribute("subject", subject);
-            request.setAttribute("lists", lists);
-            request.setAttribute("listl", listl);
-            request.setAttribute("lessons", lesson);
+            int id = Integer.parseInt(request.getParameter("id"));
+            dao.deleteAccount(id);
+            request.getRequestDispatcher("ManaAcc").forward(request, response);
         } catch (NumberFormatException e) {
             e.printStackTrace();
+            request.getRequestDispatcher("/admin/DeleteAccount.jsp").forward(request, response);
         }
-
-        request.getRequestDispatcher("detail-subject.jsp").forward(request, response);
     }
 
     /**
