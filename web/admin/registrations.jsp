@@ -210,13 +210,13 @@
         <div class="container">
             <h1>Registrations</h1>
             <div class="filters">
-                <form action="add-registration" method="get" class="add-new">
+                <form action="AddRegis" method="get" class="add-new">
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-plus"></i> 
                     </button>
                 </form>
 
-                <form action="filter" method="get">
+                <form action="Filter" method="get">
                     <select name="subject">
                         <option value="as">All</option>
                         <c:forEach items="${listSubject}" var="s">
@@ -276,7 +276,7 @@
                             <td>${o.validTo}</td>
                             <td>${o.createdAt}</td>
                             <td>
-                                <form action="delete-registration" style="text-align: center">
+                                <form action="DelRegis" style="text-align: center">
                                     <button type="submit" class="btn-trash">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
@@ -284,7 +284,7 @@
                                 </form>
                             </td>
                             <td>
-                                <form action="update-registration" method="post" style="text-align: center">
+                                <form action="UpdateRegis" method="post" style="text-align: center">
                                     <button type="submit" class="btn-edit">
                                         <i class="fas fa-pencil-alt"></i>
                                     </button>

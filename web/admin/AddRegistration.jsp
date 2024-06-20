@@ -14,6 +14,7 @@
                 margin: 0;
                 padding: 0;
             }
+
             .container {
                 width: 80%;
                 margin: 40px auto;
@@ -29,12 +30,12 @@
                 color: #333;
             }
 
-            form {
+            .form {
                 background: #f8f9fa;
                 padding: 20px;
                 border-radius: 8px;
                 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-                text-align: center;
+                text-align: center; /* Đặt nút ở giữa */
             }
 
             label {
@@ -53,9 +54,9 @@
                 margin-bottom: 10px;
                 border: 1px solid #ccc;
                 border-radius: 4px;
-                width: 100%;
+                width: 100%; /* Chiều rộng trừ đi 20px từ hai bên */
                 box-sizing: border-box;
-                font-size: 16px;
+                font-size: 16px; /* Tăng cỡ chữ */
 
             }
 
@@ -72,7 +73,7 @@
                 text-align: center;
             }
 
-            button {
+            submit {
                 padding: 10px 20px;
                 border: none;
                 border-radius: 4px;
@@ -83,17 +84,17 @@
                 transition: background-color 0.3s;
             }
 
-            button[type="submit"]:hover {
+            submit[type="submit"]:hover {
                 background-color: #218838;
             }
 
-            button[type="button"] {
+            submit[type="submit"] {
                 background-color: #6c757d;
                 color: white;
                 margin-left: 10px;
             }
 
-            button[type="button"]:hover {
+            submit[type="submit"]:hover {
                 background-color: #5a6268;
             }
 
@@ -102,25 +103,66 @@
     <body>
         <div class="container">
             <h1 style="text-align: center;">Add Registration</h1> 
-            <form action="add-registration" method="post">
-                <label for="userID">User ID:</label>
-                <input type="text" id="userID" name="userID"><br>
-                <label for="subjectID">Subject ID:</label>
-                <input type="text" id="subjectID" name="subjectID"><br>
-                <label for="packageID">Package ID:</label>
-                <input type="text" id="packageID" name="packageID"><br>
-                <label for="totalCost">Total Cost:</label>
-                <input type="text" id="totalCost" name="totalCost"><br>
-                <label for="status">Status:</label>
-                <input type="text" id="status" name="status"><br>
-                <label for="validFrom">Valid From:</label>
-                <input type="date" id="validFrom" name="validFrom"><br>
-                <label for="validTo">Valid To:</label>
-                <input type="date" id="validTo" name="validTo"><br><br>
-                <div class="submit-container">
-                    <button type="submit">Add</button>
-                </div>
-            </form>
+
+            <script>
+                window.onload = function () {
+                    document.getElementById("status").value = "1";
+                };
+                function updateTotalCost() {
+                    var packageID = document.getElementById("packageID").value;
+                    var totalCostInput = document.getElementById("totalCost");
+
+                    switch (packageID) {
+                        case "1":
+                            totalCostInput.value = "0";
+                            break;
+                        case "2":
+                            totalCostInput.value = "200";
+                            break;
+                        case "3":
+                            totalCostInput.value = "350";
+                            break;
+                        case "4":
+                            totalCostInput.value = "800";
+                            break;
+                        default:
+                            totalCostInput.value = "1"; // Nếu không khớp với bất kỳ trường hợp nào, đặt giá trị rỗng
+                            break;
+                    }
+                }
+            </script>
+            <form action="AddRegis" method="post">
+                UserID: <input type="text" name="userID"><br>
+                SubjectID: <select name="subjectID" required>
+                    <option value="1">Physics</option>
+                    <option value="2">Calculus</option>
+                    <option value="3">History VN</option>
+                    <option value="4">Literature VN</option> 
+                    <option value="5">Geography VN</option>
+                    <option value="6">MAE101</option>
+                    <option value="7">PRF192</option>
+                    <option value="8">CEA201</option> 
+                    <option value="9">CSI104</option>
+                    <option value="10">SSL101c</option>
+                </select><br>
+                PackageID:
+                <select name="packageID" id="packageID" required onchange="updateTotalCost()">
+                    <option value="1">Free</option>
+                    <option value="2">Basic Package</option>
+                    <option value="3">Medium Package</option>
+                    <option value="4">Premium Package</option>
+                </select><br>
+                Total Cost: <input type="text" name="totalCost" id="totalCost" readonly><br>
+                Status:
+                <select name="status" id="status" required>           
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select><br>
+                Valid From: <input type="date" name="validFrom"><br>
+                <button type="submit">add<button>
+            </form>   
         </div>
     </body>
 </html>
