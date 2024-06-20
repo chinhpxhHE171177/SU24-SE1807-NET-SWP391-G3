@@ -136,6 +136,8 @@
         }
 
         .info-box .info-item {
+            /*display: flex;*/
+            /*justify-content: space-between;*/
             padding: 10px 0;
         }
 
@@ -273,19 +275,15 @@
         </div>
 
         <!-- Subject Lessons --> 
-        <!-- Subject Lessons --> 
         <div class="lesson-container">
             <h2>Lessons</h2>
             <div class="lessons-grid">
                 <c:forEach items="${lessons}" var="lesson">
-                    <<<<<<< HEAD:web/admin/detail-subject.jsp
-                    =======
                     <c:if test="${lesson.subjectId == subject.id}" />
-                    >>>>>>> e9863f1ef86cb0f8593b920be034b0484a55dbb0:web/admin/subject-detail.jsp
                     <div class="lesson-box">
                         <div class="position-relative overflow-hidden">
                             <a>
-                                <img src="../images/subjects/${lesson.image}" width="100%" height="200px" alt=""/>
+                                <img src="../images/subjects/${subject.image}" width="100%" height="200px" alt=""/>
                             </a>
                         </div>
                         <div class="text-center p-4 pb-0">

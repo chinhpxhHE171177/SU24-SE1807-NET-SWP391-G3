@@ -112,7 +112,7 @@ public class UserDAO extends DBContext {
         }
         return null;
     }
-    
+
     public User checkLoginWithGoogle(String email, String id) {
         DBContext db = null;
         PreparedStatement pst = null;
@@ -162,9 +162,9 @@ public class UserDAO extends DBContext {
             }
         }
         return null;
-    
+
     }
-    
+
     public User checkEmailExits(String email) {
         String sql = "select * from Users \n"
                 + "where Email = ?\n";
@@ -184,7 +184,7 @@ public class UserDAO extends DBContext {
         }
         return null;
     }
-    
+
     public User checkAccountExits(String user) {
         String sql = "select * from Users \n"
                 + "where UserName = ?\n";
@@ -204,7 +204,7 @@ public class UserDAO extends DBContext {
         }
         return null;
     }
-    
+
     public void CreateAccWithGoogle(String email, String id, java.sql.Date createAt) {
         String sql = "INSERT INTO [dbo].[Users]\n"
                 + "           ([Email]\n"
@@ -213,7 +213,7 @@ public class UserDAO extends DBContext {
                 + "           ,[Create_at])\n"
                 + "     VALUES\n"
                 + "           (?,?,?,?)";
-        
+
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
 
@@ -221,15 +221,15 @@ public class UserDAO extends DBContext {
             ps.setString(2, id);
             ps.setInt(3, 2);
             ps.setDate(4, createAt);
-            
+
             ps.executeUpdate();
 
         } catch (Exception e) {
-            
+
         }
     }
-    
-    public boolean CreateAccount(String fullname, String username, String email, String dob, String password, boolean gender , java.sql.Date create_At){
+
+    public boolean CreateAccount(String fullname, String username, String email, String dob, String password, boolean gender, java.sql.Date create_At) {
         try {
             DBContext db = new DBContext();
             String sql = "INSERT INTO [dbo].[Users]\n"
@@ -249,16 +249,60 @@ public class UserDAO extends DBContext {
             pst.setString(3, dob);
             pst.setString(4, email);
             pst.setString(5, password);
-            pst.setBoolean(6, gender); 
+            pst.setBoolean(6, gender);
             pst.setInt(7, 2); // Default role for normal users
             pst.setDate(8, create_At);
             pst.executeUpdate();
             return true;
-            } catch (Exception e) {
-                return false;
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
+
+    public List<User> ManaAccount() {
+        List<User> list = new ArrayList<>();
+        try {
+            String sql = "SELECT u.UserID, u.RoleId, u.FullName, u.UserName, u.DateOfBirth, u.Email, "
+                    + "u.Password, u.Phone, u.Address, u.Gender, u.Avatar, u.Create_at, r.role_name "
+                    + "FROM Users u "
+                    + "INNER JOIN Roles r ON r.RoleID = u.RoleID";
+            PreparedStatement pst = connection.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                User Acc = new User(
+                        rs.getInt("UserID"),
+                        rs.getString("FullName"),
+                        rs.getString("UserName"),
+                        rs.getDate("DateOfBirth"),
+                        rs.getString("Email"),
+                        rs.getString("Password"),
+                        rs.getString("Phone"),
+                        rs.getString("Address"),
+                        rs.getBoolean("Gender"),
+                        rs.getInt("RoleId"),
+                        rs.getString("Avatar"),
+                        rs.getTimestamp("Create_at"),
+                        rs.getString("role_name"));
+                list.add(Acc);
             }
-            
-        
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    public void deleteAccount(int id) {
+
+        try {
+            String sql = "DELETE FROM Users WHERE UserID = ?";
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, id);
+            stmt.execute();
+
+        } catch (Exception e) {
+
+        }
+
     }
 
     public static void main(String args[]) {
@@ -275,5 +319,4 @@ public class UserDAO extends DBContext {
         }
     }
 
-    
 }

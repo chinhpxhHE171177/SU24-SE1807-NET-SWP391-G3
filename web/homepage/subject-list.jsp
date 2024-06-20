@@ -10,41 +10,31 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="description" content="EndGam Gaming Magazine Template">
-        <meta name="keywords" content="endGam,gGaming, magazine, html">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Favicon -->
-        <link href="../img/favicon.ico" rel="shortcut icon" />
 
-        <!-- Google Font -->
-        <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
-        <!-- Link Font Awesome CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-        <!-- Script -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-
-        <!-- Stylesheets -->
-        <link rel="stylesheet" href="../css/bootstrap.min.css" />
-        <link rel="stylesheet" href="../css/font-awesome.min.css" />
-        <link rel="stylesheet" href="../css/slicknav.min.css" />
-        <link rel="stylesheet" href="../css/owl.carousel.min.css" />
-        <link rel="stylesheet" href="../css/magnific-popup.css" />
-        <link rel="stylesheet" href="../css/animate.css" />
+        <!--Google Web Fonts--> 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap"
+            rel="stylesheet">
+        <!--Icon Font Stylesheet--> 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
               integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
               crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <!--Libraries Stylesheet--> 
+        <link href="css/animate.min.css" rel="stylesheet">
+        <link href="css/owl.carousel.min.css" rel="stylesheet">
 
-        <link rel="stylesheet" href="../css/style.css" />
-
-        <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <!--Customized Bootstrap Stylesheet--> 
+        <link rel="stylesheet" href="../homepage/css/slicknav.min.css" />
+        <link href="css/bootstraps.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
         <!--Template Stylesheet--> 
         <link href="../homepage/css/styles.css" rel="stylesheet">
@@ -53,12 +43,12 @@
 
     <body>
         <!--Spinner Start--> 
-        <!--        <div id="spinner"
-                     class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-                    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                </div>-->
+        <div id="spinner"
+             class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
         <!--Spinner End--> 
 
         <!--navigation-->
@@ -217,13 +207,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
-    <!--====== Javascripts & Jquery ======-->
-    <script src="../js/jquery-3.2.1.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/jquery.slicknav.min.js"></script>
-    <script src="../js/owl.carousel.min.js"></script>
-    <script src="../js/jquery.sticky-sidebar.min.js"></script>
-    <script src="../js/jquery.magnific-popup.min.js"></script>
     <script src="../homepage/js/main.js"></script>
 
     <script>
