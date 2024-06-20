@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.LesMooc;
 import model.Lessons;
 import model.Subject;
 
@@ -57,16 +56,17 @@ public class DetailSubjectServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //processRequest(request, response);
         String id_raw = request.getParameter("id");
         SubjectDAO sdao = new SubjectDAO();
         LessonDAO ldao = new LessonDAO();
         List<Subject> lists = sdao.getAllSubjects();
-        List<LesMooc> listl = ldao.getAllLesMooc();
+        List<Lessons> listl = ldao.getAllLessons();
 
         try {
             int id = Integer.parseInt(id_raw);
             Subject subject = sdao.getSubjectById(id);
-            List<Lessons> lesson = ldao.getLesMoocsBySubjectId(id);
+            List<Lessons> lesson = ldao.getLessonsBySubjectId(id);
 
             request.setAttribute("subject", subject);
             request.setAttribute("lists", lists);
