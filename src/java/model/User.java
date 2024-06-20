@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -36,10 +37,30 @@ public class User {
     private int roleId;
     private String avatar;
     private Date createAt;
-
+    private String Role;
+    private Timestamp CreAt;
+    
     public User() {
     }
 
+    public User(int id, String fullname, String username, Date dob, String email, String password, String phone, String address, boolean gender, int roleId, String avatar, Date createAt, String Role) {
+        this.id = id;
+        this.fullname = fullname;
+        this.username = username;
+        this.dob = dob;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.address = address;
+        this.gender = gender;
+        this.roleId = roleId;
+        this.avatar = avatar;
+        this.createAt = createAt;
+        this.Role = Role;
+    }
+    
+    
+     
     public User(int id, String fullname, String username, Date dob, String email, String password, String phone, String address, boolean gender, int roleId, String avatar, Date createAt) {
         this.id = id;
         this.fullname = fullname;
@@ -151,10 +172,27 @@ public class User {
         this.createAt = createAt;
     }
 
+    public String getRole() {
+        return Role;
+    }
+
+    public void setRole(String Role) {
+        this.Role = Role;
+    }
+
+    public Timestamp getCreAt() {
+        return CreAt;
+    }
+
+    public void setCreAt(Timestamp CreAt) {
+        this.CreAt = CreAt;
+    }
+
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", fullname=" + fullname + ", username=" + username + ", dob=" + dob + ", email=" + email + ", password=" + password + ", phone=" + phone + ", address=" + address + ", gender=" + gender + ", roleId=" + roleId + ", avatar=" + avatar + ", createAt=" + createAt + '}';
+        return "User{" + "id=" + id + ", fullname=" + fullname + ", username=" + username + ", dob=" + dob + ", email=" + email + ", password=" + password + ", phone=" + phone + ", address=" + address + ", gender=" + gender + ", roleId=" + roleId + ", avatar=" + avatar + ", createAt=" + createAt + ", Role=" + Role + ", CreAt=" + CreAt + '}';
     }
-    
+
+  
     
 }
