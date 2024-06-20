@@ -10,10 +10,10 @@
         <title>Registrations</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
               rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-        <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Thêm Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
             body {
                 box-sizing: border-box;
@@ -148,6 +148,18 @@
             .rol1{
                 background-color: antiquewhite ;
             }
+            .btn-trash {
+                background: none;
+                border: none;
+                color: red;
+                font-size: 1.5rem; /* Kích thước biểu tượng */
+                cursor: pointer;
+                padding: 0;
+            }
+
+            .btn-trash:hover {
+                color: darkred;
+            }
         </style>
     </head>
 
@@ -188,7 +200,6 @@
                         <th style="padding-left: 40px; padding-right: 40px">Valid From</th>
                         <th style="padding-left: 40px; padding-right: 40px">Valid To</th>
                         <th style="padding-left: 40px; padding-right: 40px">Created At</th>
-
                         <th></th>
                         <th></th>
                     </tr>
@@ -207,7 +218,9 @@
                             <td>${o.createdAt}</td>
 
                             <td><form action="DelRegis" style="text-align: center">
-                                    <button type="submit" class="btn btn-warning" >Delete Registrations</button>
+                                    <button type="submit" class="btn-trash">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
                                     <input type="hidden" name="id" value="${o.registerID}">
                                 </form>  </td>
                             <td> <form action="UpdateRegis" method="post" style="text-align: center">
@@ -222,11 +235,11 @@
             <h3 style="color: blue; text-align: center">${mess}</h3>
         </div>
 
-         <script type="text/javascript">
+        <script type="text/javascript">
             function doDeletebySubject(id) {
                 if (confirm("Are you sure to delete subject with id =" + id)) {
                     window.location = "delete-subject?id=" + id;
-                    
+
                 }
             }
         </script>
