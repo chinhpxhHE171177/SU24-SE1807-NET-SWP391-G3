@@ -129,12 +129,23 @@
         <servlet-class>controller.publics.ListSubjectServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>DeleteAccount</servlet-name>
+        <servlet-class>controller.admin.DeleteAccount</servlet-class>
+    </servlet><servlet>
         <servlet-name>ManagementAccount</servlet-name>
         <servlet-class>controller.admin.ManagementAccount</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteAccount</servlet-name>
         <servlet-class>controller.admin.DeleteAccount</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddAccount</servlet-name>
+        <servlet-class>controller.admin.AddAccount</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FilterManaAccount</servlet-name>
+        <servlet-class>controller.admin.FilterManaAccount</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SubjectListServlet</servlet-name>
@@ -271,5 +282,13 @@
     <servlet-mapping>
         <servlet-name>DeleteAccount</servlet-name>
         <url-pattern>/DelAcc</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddAccount</servlet-name>
+        <url-pattern>/AddAcc</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FilterManaAccount</servlet-name>
+        <url-pattern>/FilAcc</url-pattern>
     </servlet-mapping>
 </web-app>

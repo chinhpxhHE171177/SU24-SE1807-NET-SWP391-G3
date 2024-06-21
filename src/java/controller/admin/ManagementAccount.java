@@ -38,7 +38,7 @@ public class ManagementAccount extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ManagementAccount</title>");
+            out.println("<title>Servlet ManagementAccount</title>");            
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet ManagementAccount at " + request.getContextPath() + "</h1>");
@@ -61,9 +61,11 @@ public class ManagementAccount extends HttpServlet {
             throws ServletException, IOException {
         UserDAO udao = new UserDAO();
         List<User> listu = udao.ManaAccount();
+        List<User> list = udao.getAllRoleNameforUser();
+        request.setAttribute("listRole", list);
         request.setAttribute("listu", listu);
         request.getRequestDispatcher("/admin/ManaAcc.jsp").forward(request, response);
-
+        
     }
 
     /**

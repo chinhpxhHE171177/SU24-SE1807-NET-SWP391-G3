@@ -4,7 +4,6 @@
  */
 package controller.admin;
 
-
 import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,12 +11,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.User;
 
 /**
  *
  * @author nguye
  */
-public class DeleteAccount extends HttpServlet {
+public class FilterManaAccount extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +37,10 @@ public class DeleteAccount extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DeleteAccount</title>");            
+            out.println("<title>Servlet FilterManaAccount</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DeleteAccount at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet FilterManaAccount at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -54,19 +55,21 @@ public class DeleteAccount extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UserDAO dao=new UserDAO();
-        try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            dao.deleteAccount(id);
-            request.getRequestDispatcher("ManaAcc").forward(request, response);     
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            request.getRequestDispatcher("/admin/DeleteAccount.jsp").forward(request, response);
+        String role = request.getParameter("role");
+        if (role.equals("rl")) {
+            response.sendRedirect("ManaAcc");
+            return;
         }
+        UserDAO udao = new UserDAO();
+        List<User> listAc = udao.getAllRoleNameforUser();
+        List<User> list = udao.getAccountFlowingRole(role);
+        request.setAttribute("listRole", list);
+        request.setAttribute("listAc", listAc);
+        request.setAttribute("role", role);
+        request.getRequestDispatcher("/admin/ManaAcc.jsp").forward(request, response);
     }
 
     /**
