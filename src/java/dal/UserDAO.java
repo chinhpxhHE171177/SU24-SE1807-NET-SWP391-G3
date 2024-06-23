@@ -76,10 +76,10 @@ public class UserDAO extends DBContext {
             rs = pst.executeQuery();
 
             if (rs.next()) {
-                return new User(rs.getInt("UserID"),
+                User u = new User(rs.getInt("UserID"),
                         rs.getString("FullName"),
                         rs.getString("UserName"),
-                        rs.getDate("DateOfBirth"),
+                        rs.getDate(4),
                         rs.getString("Email"),
                         rs.getString("Password"),
                         rs.getString("Phone"),
@@ -88,6 +88,8 @@ public class UserDAO extends DBContext {
                         rs.getInt("RoleID"),
                         rs.getString("Avatar"),
                         rs.getDate("Create_at"));
+
+                return u;
             } else {
                 System.out.println("No user found with the provided credentials.");
             }
@@ -300,88 +302,21 @@ public class UserDAO extends DBContext {
         } catch (Exception e) {
 
         }
-    }
 
-    public ArrayList<User> getAllRoleNameforUser() {
-        ArrayList<User> list = new ArrayList<>();
-        try {
-            String sql = "select r.role_name from Roles r";
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                list.add(new User(rs.getString(1)));
-            }
-        } catch (Exception e) {
-        }
-        return list;
-    }
-
-    public ArrayList<User> getAccountFlowingRole(String Role) {
-        ArrayList<User> list = new ArrayList<>();
-        try {
-            String sql = "SELECT u.UserID, u.RoleId, u.FullName, u.UserName, u.Email, \n"
-                    + "                    u.Password, u.Gender, u.Create_at, r.role_name \n"
-                    + "                    FROM Users u \n"
-                    + "                    INNER JOIN Roles r ON r.RoleID = u.RoleID\n"
-                    + "                    where r.role_name = ?";
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, Role);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                list.add(new User(rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getString(5),
-                        rs.getBoolean(6),
-                        rs.getInt(7),
-                        rs.getDate(8),
-                        rs.getString(9)));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-
-    public void AddAccount(String username, String password, int roleId, String email, Boolean gender, Date createAt) {
-        try {
-            String sql = "INSERT INTO Users (UserName, Password, RoleID, Email,Gender,Create_at)\n"
-                    + "   VALUES (?,?,?,?,?,?);";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, username);
-            statement.setString(2, password);
-            statement.setInt(3, roleId);
-            statement.setString(4, email);
-            statement.setBoolean(5, gender);
-            statement.setDate(6, new java.sql.Date(createAt.getTime()));
-            int rowsInserted = statement.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("A new acc was inserted successfully!");
-            }
-        } catch (Exception e) {
-            System.out.println("cut roi");
-        }
     }
 
     public static void main(String args[]) {
         // TODO code application logic here
         UserDAO udao = new UserDAO();
-        User u = udao.checkLogin("phamchinh", "123456");
-        if(u!= null) {
-            System.out.println("Login success");
-        } else {
-            System.out.println("Login Failed");
-        }
 //        List<User> listu = udao.getAllUser();
 //        for (User user : listu) {
 //            System.out.println(user);
 //        }
 
-//        List<Role> listu = udao.getAllRole();
-//        for (Role r : listu) {
-//            System.out.println(r);
-//        }
+        List<Role> listu = udao.getAllRole();
+        for (Role r : listu) {
+            System.out.println(r);
+        }
     }
 
 }
