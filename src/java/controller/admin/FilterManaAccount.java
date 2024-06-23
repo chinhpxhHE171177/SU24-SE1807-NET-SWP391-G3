@@ -11,7 +11,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.HashSet;
 import java.util.List;
 import model.User;
 
@@ -19,7 +18,7 @@ import model.User;
  *
  * @author nguye
  */
-public class ManagementAccount extends HttpServlet {
+public class FilterManaAccount extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +37,10 @@ public class ManagementAccount extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ManagementAccount</title>");
+            out.println("<title>Servlet FilterManaAccount</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ManagementAccount at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet FilterManaAccount at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,13 +58,18 @@ public class ManagementAccount extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String role = request.getParameter("role");
+        if (role.equals("rl")) {
+            response.sendRedirect("ManaAcc");
+            return;
+        }
         UserDAO udao = new UserDAO();
-        List<User> listu = udao.ManaAccount();
-        List<User> list = udao.getAllRoleNameforUser();
+        List<User> listAc = udao.getAllRoleNameforUser();
+        List<User> list = udao.getAccountFlowingRole(role);
         request.setAttribute("listRole", list);
-        request.setAttribute("listu", listu);
-        request.getRequestDispatcher("/admin/ManaAcc.jsp").forward(request, response);
-
+        request.setAttribute("listAc", listAc);
+        request.setAttribute("role", role);
+        request.getRequestDispatcher("ManaAcc.jsp").forward(request, response);
     }
 
     /**
