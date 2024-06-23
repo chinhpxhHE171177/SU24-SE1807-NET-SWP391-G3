@@ -24,6 +24,7 @@ public class User {
 //	[RoleID] [int] NOT NULL,
 //	[Avatar] [nvarchar](400) NULL,
 //	[Create_at] [date] NULL
+    
     private int id;
     private String fullname;
     private String username;
@@ -38,33 +39,8 @@ public class User {
     private Date createAt;
     private String Role;
     private Timestamp CreAt;
-    private String Description;
-
+    
     public User() {
-    }
-
-    public User(String Role) {
-        this.Role = Role;
-    }
-
-    public User(int id, String fullname, String username, String email, String password, boolean gender, int roleId, Date createAt, String Role) {
-        this.id = id;
-        this.fullname = fullname;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.gender = gender;
-        this.roleId = roleId;
-        this.createAt = createAt;
-        this.Role = Role;
-    }
-
-    public User(String username, String email, String password, boolean gender, int roleId) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.gender = gender;
-        this.roleId = roleId;
     }
 
     public User(int id, String fullname, String username, Date dob, String email, String password, String phone, String address, boolean gender, int roleId, String avatar, Date createAt, String Role) {
@@ -82,7 +58,9 @@ public class User {
         this.createAt = createAt;
         this.Role = Role;
     }
-
+    
+    
+     
     public User(int id, String fullname, String username, Date dob, String email, String password, String phone, String address, boolean gender, int roleId, String avatar, Date createAt) {
         this.id = id;
         this.fullname = fullname;
@@ -96,14 +74,6 @@ public class User {
         this.roleId = roleId;
         this.avatar = avatar;
         this.createAt = createAt;
-    }
-
-    public String getDescription() {
-        return Description;
-    }
-
-    public void setDescription(String Description) {
-        this.Description = Description;
     }
 
     public int getId() {
@@ -223,4 +193,6 @@ public class User {
         return "User{" + "id=" + id + ", fullname=" + fullname + ", username=" + username + ", dob=" + dob + ", email=" + email + ", password=" + password + ", phone=" + phone + ", address=" + address + ", gender=" + gender + ", roleId=" + roleId + ", avatar=" + avatar + ", createAt=" + createAt + ", Role=" + Role + ", CreAt=" + CreAt + '}';
     }
 
+  
+    
 }

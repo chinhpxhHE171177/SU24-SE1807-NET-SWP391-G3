@@ -61,8 +61,6 @@ public class ManagementAccount extends HttpServlet {
             throws ServletException, IOException {
         UserDAO udao = new UserDAO();
         List<User> listu = udao.ManaAccount();
-        List<User> list = udao.getAllRoleNameforUser();
-        request.setAttribute("listRole", list);
         request.setAttribute("listu", listu);
         request.getRequestDispatcher("/admin/ManaAcc.jsp").forward(request, response);
 
