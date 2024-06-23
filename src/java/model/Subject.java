@@ -33,10 +33,8 @@ public class Subject {
     private String category_name;
     private String package_name;
     private String userName;
-    private String fullName;
     private int numberOfLessons;
-    private int totalEnroll; // tong so nguoi dk vao mon hoc 
-
+    private int totalEnroll; //tong user dk subject
     public Subject() {
     }
 
@@ -91,23 +89,6 @@ public class Subject {
         this.category_name = category_name;
         this.package_name = package_name;
         this.userName = userName;
-        this.numberOfLessons = numberOfLessons;
-    }
-
-    public Subject(int id, String name, String description, String image, boolean status, int packageId, int categoryId, int created_by, Date created_at, String category_name, String package_name, String userName, String fullName, int numberOfLessons) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.image = image;
-        this.status = status;
-        this.packageId = packageId;
-        this.categoryId = categoryId;
-        this.created_by = created_by;
-        this.created_at = created_at;
-        this.category_name = category_name;
-        this.package_name = package_name;
-        this.userName = userName;
-        this.fullName = fullName;
         this.numberOfLessons = numberOfLessons;
     }
 
@@ -223,17 +204,8 @@ public class Subject {
         this.totalEnroll = totalEnroll;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
     @Override
     public String toString() {
-        return "Subject{" + "id=" + id + ", name=" + name + ", description=" + description + ", image=" + image + ", status=" + status + ", packageId=" + packageId + ", categoryId=" + categoryId + ", created_by=" + created_by + ", created_at=" + created_at + ", category_name=" + category_name + ", package_name=" + package_name + ", userName=" + userName + ", fullName=" + fullName + ", numberOfLessons=" + numberOfLessons + ", totalEnroll=" + totalEnroll + '}';
+        return "Subject{" + "id=" + id + ", name=" + name + ", description=" + description + ", image=" + image + ", status=" + status + ", packageId=" + packageId + ", categoryId=" + categoryId + ", created_by=" + created_by + ", created_at=" + created_at + ", category_name=" + category_name + ", package_name=" + package_name + ", userName=" + userName + ", numberOfLessons=" + numberOfLessons + '}';
     }
-
 }
