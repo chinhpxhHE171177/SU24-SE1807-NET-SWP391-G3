@@ -7,8 +7,7 @@ package model;
  */
 public class Packages {
 
-    /**
-     */
+
     private int id;
     private String name;
     private String description;

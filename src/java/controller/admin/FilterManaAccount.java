@@ -1,7 +1,10 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package controller.admin;
 
-import dal.LessonDAO;
-import dal.SubjectDAO;
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -9,15 +12,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.LesMooc;
-import model.Lessons;
-import model.Subject;
+import model.User;
 
 /**
  *
- * @author Admin
+ * @author nguye
  */
-public class DetailSubjectServlet extends HttpServlet {
+public class FilterManaAccount extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +37,10 @@ public class DetailSubjectServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SubjectDetailServlet</title>");
+            out.println("<title>Servlet FilterManaAccount</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SubjectDetailServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet FilterManaAccount at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,26 +58,18 @@ public class DetailSubjectServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id_raw = request.getParameter("id");
-        SubjectDAO sdao = new SubjectDAO();
-        LessonDAO ldao = new LessonDAO();
-        List<Subject> lists = sdao.getAllSubjects();
-        List<LesMooc> listl = ldao.getAllLesMooc();
-
-        try {
-            int id = Integer.parseInt(id_raw);
-            Subject subject = sdao.getSubjectById(id);
-            List<Lessons> lesson = ldao.getLesMoocsBySubjectId(id);
-
-            request.setAttribute("subject", subject);
-            request.setAttribute("lists", lists);
-            request.setAttribute("listl", listl);
-            request.setAttribute("lessons", lesson);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
+        String role = request.getParameter("role");
+        if (role.equals("rl")) {
+            response.sendRedirect("ManaAcc");
+            return;
         }
-
-        request.getRequestDispatcher("detail-subject.jsp").forward(request, response);
+        UserDAO udao = new UserDAO();
+        List<User> listAc = udao.getAllRoleNameforUser();
+        List<User> list = udao.getAccountFlowingRole(role);
+        request.setAttribute("listRole", list);
+        request.setAttribute("listAc", listAc);
+        request.setAttribute("role", role);
+        request.getRequestDispatcher("ManaAcc.jsp").forward(request, response);
     }
 
     /**

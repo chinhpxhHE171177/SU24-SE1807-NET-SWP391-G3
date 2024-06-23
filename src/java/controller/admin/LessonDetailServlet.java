@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.LesMooc;
 import model.Lessons;
 import model.Subject;
 
@@ -17,7 +16,7 @@ import model.Subject;
  *
  * @author Admin
  */
-public class DetailSubjectServlet extends HttpServlet {
+public class LessonDetailServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +35,10 @@ public class DetailSubjectServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SubjectDetailServlet</title>");
+            out.println("<title>Servlet LessonDetailServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SubjectDetailServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet LessonDetailServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,25 +57,21 @@ public class DetailSubjectServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String id_raw = request.getParameter("id");
-        SubjectDAO sdao = new SubjectDAO();
+        String action = request.getParameter("action");
         LessonDAO ldao = new LessonDAO();
-        List<Subject> lists = sdao.getAllSubjects();
-        List<LesMooc> listl = ldao.getAllLesMooc();
-
-        try {
+        SubjectDAO sdao = new SubjectDAO();
+        if (id_raw != null) {
             int id = Integer.parseInt(id_raw);
-            Subject subject = sdao.getSubjectById(id);
-            List<Lessons> lesson = ldao.getLesMoocsBySubjectId(id);
+            Lessons lesson = ldao.getLessonsBYID(id);
 
-            request.setAttribute("subject", subject);
-            request.setAttribute("lists", lists);
-            request.setAttribute("listl", listl);
-            request.setAttribute("lessons", lesson);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
+            if ("Activate".equals(action)) {
+                ldao.updateStatus(id, "Active");
+            } else if ("Deactivate".equals(action)) {
+                ldao.updateStatus(id, "Inactive");
+            }
+            request.setAttribute("lesson", lesson);
         }
-
-        request.getRequestDispatcher("detail-subject.jsp").forward(request, response);
+        request.getRequestDispatcher("lesson-detail.jsp").forward(request, response);
     }
 
     /**

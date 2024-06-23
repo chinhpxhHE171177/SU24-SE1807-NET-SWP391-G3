@@ -129,12 +129,20 @@
         <servlet-class>controller.publics.ListSubjectServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ManagementAccount</servlet-name>
-        <servlet-class>controller.admin.ManagementAccount</servlet-class>
+        <servlet-name>AddAccountServlet</servlet-name>
+        <servlet-class>controller.admin.AddAccountServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>DeleteAccount</servlet-name>
-        <servlet-class>controller.admin.DeleteAccount</servlet-class>
+        <servlet-name>DeleteAccountServlet</servlet-name>
+        <servlet-class>controller.admin.DeleteAccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FilterManaAccount</servlet-name>
+        <servlet-class>controller.admin.FilterManaAccount</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManagementAccount</servlet-name>
+        <servlet-class>controller.admin.ManagementAccount</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SubjectListServlet</servlet-name>
@@ -265,11 +273,19 @@
         <url-pattern>/homepage/subject-list</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ManagementAccount</servlet-name>
-        <url-pattern>/ManaAcc</url-pattern>
+        <servlet-name>AddAccountServlet</servlet-name>
+        <url-pattern>/admin/AddAcc</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>DeleteAccount</servlet-name>
-        <url-pattern>/DelAcc</url-pattern>
+        <servlet-name>DeleteAccountServlet</servlet-name>
+        <url-pattern>/admin/DelAcc</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FilterManaAccount</servlet-name>
+        <url-pattern>/admin/FilAcc</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManagementAccount</servlet-name>
+        <url-pattern>/admin/ManaAcc</url-pattern>
     </servlet-mapping>
 </web-app>
