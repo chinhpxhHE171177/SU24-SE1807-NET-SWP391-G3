@@ -131,7 +131,7 @@
                     }
                 }
             </script>
-            <form action="AddRegis" method="post">
+            <form action="add-registration" method="post">
                 UserID: <input type="text" name="userID"><br>
                 SubjectID: <select name="subjectID" required>
                     <option value="1">Physics</option>

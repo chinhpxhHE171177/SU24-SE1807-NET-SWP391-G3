@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller.admin;
 
 import dal.UserDAO;
@@ -11,15 +7,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.HashSet;
-import java.util.List;
-import model.User;
 
 /**
  *
- * @author nguye
+ * @author Admin
  */
-public class ManagementAccount extends HttpServlet {
+public class DeleteAccountServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +31,10 @@ public class ManagementAccount extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ManagementAccount</title>");
+            out.println("<title>Servlet DeleteAccountServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ManagementAccount at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DeleteAccountServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,13 +52,15 @@ public class ManagementAccount extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UserDAO udao = new UserDAO();
-        List<User> listu = udao.ManaAccount();
-        List<User> list = udao.getAllRoleNameforUser();
-        request.setAttribute("listRole", list);
-        request.setAttribute("listu", listu);
-        request.getRequestDispatcher("/admin/ManaAcc.jsp").forward(request, response);
-
+        UserDAO dao = new UserDAO();
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            dao.deleteAccount(id);
+            request.getRequestDispatcher("ManaAcc").forward(request, response);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            request.getRequestDispatcher("DeleteAccount.jsp").forward(request, response);
+        }
     }
 
     /**

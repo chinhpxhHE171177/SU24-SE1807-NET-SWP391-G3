@@ -11,12 +11,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 /**
  *
  * @author nguye
  */
-public class DeleteAccount extends HttpServlet {
+public class AddAccountServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +36,10 @@ public class DeleteAccount extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DeleteAccount</title>");
+            out.println("<title>Servlet AddAccount</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DeleteAccount at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddAccount at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,15 +57,7 @@ public class DeleteAccount extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UserDAO dao = new UserDAO();
-        try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            dao.deleteAccount(id);
-            request.getRequestDispatcher("ManaAcc").forward(request, response);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            request.getRequestDispatcher("/admin/DeleteAccount.jsp").forward(request, response);
-        }
+        request.getRequestDispatcher("AddAcc.jsp").forward(request, response);
     }
 
     /**
@@ -78,7 +71,19 @@ public class DeleteAccount extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String UserName = request.getParameter("UserName");
+        String PassWord = request.getParameter("PassWord");
+        int roleId = 0; // Giá trị mặc định nếu roleId không được gửi từ form
+        if (request.getParameter("roleId") != null) {
+            roleId = Integer.parseInt(request.getParameter("roleId"));
+        }
+        String email = request.getParameter("email");
+        boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
+        Date createAt = new Date(System.currentTimeMillis());
+
+        UserDAO dao = new UserDAO();
+        dao.AddAccount(UserName, PassWord, roleId, email, gender, (java.sql.Date) createAt);
+        request.getRequestDispatcher("ManaAcc").forward(request, response);
     }
 
     /**

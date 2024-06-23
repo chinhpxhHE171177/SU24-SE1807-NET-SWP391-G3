@@ -7,13 +7,14 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Registrations</title>
+        <title>Management User</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
               rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
             body {
                 box-sizing: border-box;
@@ -79,7 +80,7 @@
 
             .add-new {
                 text-align: right;
-                margin-bottom: 20px;
+
             }
 
             .add-new a {
@@ -147,47 +148,77 @@
             }
             .rol1{
                 background-color: antiquewhite ;
+                text-align: center;
+            }
+            .btn-trash {
+                background: none;
+                border: none;
+                color: red;
+                font-size: 1.5rem;
+                cursor: pointer;
+                padding: 0;
+            }
+
+            .btn-trash:hover {
+                color: darkred;
+            }
+
+            .btn-edit {
+                background: none;
+                border: none;
+                color: #007BFF;
+                font-size: 1.5rem;
+                cursor: pointer;
+                padding: 0;
+            }
+
+            .btn-edit:hover {
+                color: #0056b3;
             }
         </style>
     </head>
 
     <body>
         <div class="container">
-            <h1>Management Account</h1>
+            <h1>Management User</h1>
             <div class="filters">
-                <form action="AddRegis" method="get">
-                    <button type="submit" class="btn btn-primary">Add New Account</button>
+                <form action="AddAcc" method="get" class="add-new">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> 
+                    </button>
                 </form>
-                <form action="Filter" method="get">
-                    <label for="property">Filter:</label>
 
-                    <select name="subject">
-                        <option value="as">All</option>
-                        <c:forEach items="${listSubject}" var="s">
+                <form action="FilAcc" method="get">
+                    <select name="role">
+                        <option value="rl">All</option>
+                        <c:forEach items="${listRole}" var="r">
 
-                            <option value="${s.subjectName}" ${s.subjectName == subject ? 'selected' : ''}>
-                                ${s.subjectName}
+                            <option value="${r.role}" ${r.role == role ? 'selected' : ''}>
+                                ${r.role}
                             </option>
                         </c:forEach>
                     </select>
 
-                    <!--<input type="text" name="value" class="form-control" >-->
+
                     <button type="submit" class="btn btn-secondary">Filter</button>
                 </form>
             </div>
             <table class="table table-striped">
                 <thead>
                     <tr class="rol1">
-                        <th >Full Name</th>
-                        <th >Email</th>
-                        <th >Date Of Birthday</th>
+                        <th style="padding-right: 100px;">Full Name</th>
+                        <th>Email</th>
+                        <th>Date Of Birthday</th>  
+                        <th>Phone</th>
                         <th>Account</th>
                         <th>Password</th>
-                        <th>Phone</th>
+                        <th>User Role</th>
                         <th>Address</th>
                         <th>Gender</th>                     
                         <th>Created At</th>
                         <th>Avatar</th>
+                        <th>    </th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -196,18 +227,37 @@
                             <td>${o.fullname}</td>                 
                             <td>${o.email}</td>
                             <td>${o.dob}</td>
+                            <td>${o.phone}</td>
                             <td>${o.username}</td> 
                             <td >${o.password}</td>
-                            <td>${o.phone}</td>
+                            <td>${o.role} </td>
                             <td>${o.address}</td>
-                            <td>${o.gender}</td>                  
-                            <td>${o.createAt}</td>
-                            <td>${o.avatar}</td>
-
+                            <td>
+                                <c:choose>
+                                    <c:when test="${o.gender}">
+                                        Male
+                                    </c:when>
+                                    <c:otherwise>
+                                        Female
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>                  
+                            <td>${o.createAt}</td>   
+                            <td></td>
                             <td><form action="DelAcc"  method="get" style="text-align: center">
-                                    <button type="submit" class="btn btn-warning" >Delete</button>
+                                    <button type="submit" class="btn-trash">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
                                     <input type="hidden" name="id" value="${o.id}">
                                 </form>  </td>
+                            <td>
+                                <form action="UpdateAcc" method="post" style="text-align: center">
+                                    <button type="submit" class="btn-edit">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </button>
+
+                                </form>
+                            </td>
                         </tr>
                     </c:forEach>
                 </tbody>
@@ -225,5 +275,3 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     </body>
-
-</html>
