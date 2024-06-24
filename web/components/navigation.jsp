@@ -74,7 +74,7 @@
                                     <c:when test="${sessionScope.user != null && sessionScope.user.roleId == 1}">
                                     <!--<li class="nav-item "><a class="nav-link text-white" href="dashboard" class="nav-link ms-lg-2 fs-2">Dashboard</a></li>-->
                                     <li style="list-style-type: none" class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle text-white" id="navbarDropdown" href="#" role="button"
+                                        <a class="nav-link text-white" id="navbarDropdown" href="#" role="button"
                                            data-bs-toggle="dropdown" aria-expanded="false">Dashboard</a>
                                         <ul class="dropdown-menu text-black" aria-labelledby="navbarDropdown" style="background-color: #000">
                                             <li style="color: black"><a class="dropdown-item text-black" href="dashboard">DashBoard</a></li>

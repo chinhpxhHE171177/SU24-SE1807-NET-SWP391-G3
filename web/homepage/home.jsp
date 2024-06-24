@@ -30,7 +30,7 @@
                 integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 
-        <!-- Stylesheets -->
+         <!--Stylesheets--> 
         <link rel="stylesheet" href="../css/bootstrap.min.css" />
         <link rel="stylesheet" href="../css/font-awesome.min.css" />
         <link rel="stylesheet" href="../css/slicknav.min.css" />
