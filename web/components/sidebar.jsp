@@ -221,7 +221,7 @@
                 <button class="dropdown-btn"><i class="fas fa-eye"></i> Courses</button>
                 <div class="dropdown-container">
                     <a href="subject-list">Course Manage</a>
-                    <a href="lesson">Lesson Manage</a>
+                    <a href="lessons">Lesson Manage</a>
                     <a href="price-package">Package Manage</a>
                 </div>
                 <a class="nav-link" href="#"><i class="fas fa-comments"></i> Comments</a>
