@@ -44,15 +44,20 @@
                 color: #333;
                 line-height: 1.6;
             }
+
+
+
             /* Content */
             .content {
                 width: 80%;
+                /*margin-left: 270px;*/
                 margin: 0 auto;
                 padding: 20px;
                 min-height: 100vh;
                 background-color: #f4f4f4;
             }
 
+            /* Content Header */
             .content h1 {
                 font-size: 28px;
                 color: #007bff;
@@ -180,15 +185,15 @@
                 background-color: #007bff;
             }
             .back-button {
-/*                position: absolute;
-                bottom: 10px;  
-                left: 10px;   */
+                /*                position: absolute;
+                                bottom: 10px;  
+                                left: 10px;   */
                 float: right;
                 padding: 10px 18px;
                 border-radius: 4px;
                 font-size: 14px;
                 cursor: pointer;
-                background-color: #007bff; 
+                background-color: #007bff;
                 color: #fff;
                 transition: background-color 0.3s;
             }
@@ -260,13 +265,17 @@
                             <div class="info-box w-full txt-c-mobile">
                                 <div class="box p-20 d-flex align-center">
                                     <h4 class="c-grey fs-15 m-0 w-full">General Information</h4>
+                                    <div class="fs-14 info-item col-lg-6">
+                                        <span class="c-grey">Subject:</span>
+                                        <span>${lesson.subjectName}</span>
+                                    </div>
                                     <div class="fs-14 info-item">
                                         <span class="c-grey">Lesson Name:</span>
                                         <span>${lesson.name}</span>
                                     </div>
                                     <div class="fs-14 info-item">
                                         <span class="c-grey">Category:</span>
-                                        <span>${lesson.category_name}</span>
+                                        <span>${lesson.categoryName}</span>
                                     </div>
                                 </div>
                                 <div class="info-btn" style="margin-bottom: 20px;">
@@ -294,7 +303,7 @@
                                         <a onclick="confirmBan()" href="lesson-detail?id=${lesson.id}&action=Activate" class="label btn-shape bg-green c-white">Activate</a>
                                     </c:otherwise>
                                 </c:choose>
-                                        <button type="button" class="label btn-shape bg-blue c-white back-button" onclick="history.back()">Back</button>
+                                <button type="button" class="label btn-shape bg-blue c-white back-button" onclick="history.back()">Back</button>
                                 <script>
                                     function confirmBan() {
                                         if (confirm("Are you sure you want to reject?")) {
