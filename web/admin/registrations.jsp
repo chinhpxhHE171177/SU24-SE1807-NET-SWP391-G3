@@ -2,7 +2,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -205,7 +204,6 @@
             }
         </style>
     </head>
-
     <body>
         <div class="container">
             <h1>Registrations</h1>
@@ -252,7 +250,7 @@
                             <td>${o.fullName}</td>
                             <td>${o.subjectName}</td>
                             <td>${o.packageName}</td>
-                            <td>${o.listPrice}</td>
+                            <td>${o.totalCost}</td>
                             <td>
                                 <c:choose>
                                     <c:when test="${o.status == 1}">
@@ -284,7 +282,7 @@
                                 </form>
                             </td>
                             <td>
-                                <form action="UpdateRegis" method="post" style="text-align: center">
+                                <form action="UpdateRegis" method="get" style="text-align: center">
                                     <button type="submit" class="btn-edit">
                                         <i class="fas fa-pencil-alt"></i>
                                     </button>
@@ -295,9 +293,13 @@
                     </c:forEach>
                 </tbody>
             </table>
+            <div class="pagination">
+                <c:forEach var="i" begin="1" end="${totalPages}">
+                    <a href="list-regis?page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+                </c:forEach>
+            </div>
             <h3 style="color: blue; text-align: center">${mess}</h3>
         </div>
-
         <script type="text/javascript">
             function doDeletebySubject(id) {
                 if (confirm("Are you sure to delete subject with id =" + id)) {
@@ -305,9 +307,6 @@
                 }
             }
         </script>
-
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
     </body>
-
 </html>

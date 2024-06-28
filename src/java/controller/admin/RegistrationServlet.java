@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package controller.admin;
 
 import dal.RegistrationDAO;
@@ -12,10 +16,19 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Registration;
 
+
 /**
  *
- * @author Admin
+ * @author nguye
  */
+//s
+//<script type="text/javascript">
+//            function doDeletebySubject(id) {
+//                if (confirm("Are you sure to delete subject with id =" + id)) {
+//                    window.location = "delete-subject?id=" + id;
+//                }
+//            }
+//        </script>
 public class RegistrationServlet extends HttpServlet {
 
     /**
@@ -31,13 +44,14 @@ public class RegistrationServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RegistrationServlet</title>");            
+            out.println("<title>Servlet registrationsServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RegistrationServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet registrationsServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -52,18 +66,56 @@ public class RegistrationServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-     protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    private static final long serialVersionUID = 1L;
+    private static final int RECORDS_PER_PAGE = 5;
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        int page = 1;
+        if (request.getParameter("page") != null) {
+            try {
+                page = Integer.parseInt(request.getParameter("page"));
+            } catch (NumberFormatException e) {
+                page = 1; // Nếu không thể phân tích số trang, đặt mặc định là trang 1
+            }
+        }
+
         RegistrationDAO rdao = new RegistrationDAO();
-        SubjectDAO sdao=new SubjectDAO();
-        List<Registration> listRg = rdao.getRegistration();
-        ArrayList<Registration> list=sdao.getAllSubjectforRegistration();
+        SubjectDAO sdao = new SubjectDAO();
+
+        // Lấy danh sách phân trang
+        List<Registration> listRg = rdao.getRegistration(page, RECORDS_PER_PAGE);
+
+        // Lấy danh sách tổng số bản ghi để tính tổng số trang
+        int totalRecords = rdao.getTotalRecords();
+        int totalPages = (int) Math.ceil((double) totalRecords / RECORDS_PER_PAGE);
+
+        // Lấy danh sách subjects
+        ArrayList<Registration> list = sdao.getAllSubjectforRegistration();
+
+        // Đặt các thuộc tính cho request
         request.setAttribute("listSubject", list);
         request.setAttribute("listRg", listRg);
-        request.getRequestDispatcher("registrations.jsp").forward(request, response);
-        
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+
+        // Chuyển tiếp đến trang JSP
+        request.getRequestDispatcher("/admin/registrations.jsp").forward(request, response);
+//        RegistrationDAO rdao = new RegistrationDAO();
+//        SubjectDAO sdao=new SubjectDAO();
+//        List<Registrations> listRg = rdao.getRegistration();
+//        ArrayList<Registrations> list=sdao.getAllSubjectforRegistration();
+//        request.setAttribute("listSubject", list);
+//        request.setAttribute("listRg", listRg);
+//        request.getRequestDispatcher("/admin/registrations.jsp").forward(request, response);
+
     }
+//    select u.UserID,u.UserName,s.Subject_Name,p.package_name,p.listPrice,r.status,r.valid_from,r.valid_to,r.created_at from Registrations as r
+//inner join  Users as u on r.UserID=u.UserID
+//inner join Subjects as s on r.SubjectID=s.SubjectID
+//inner join Packages as p on p.PackageID=r.PackageID
+//where r.RegisterID=?
 
     /**
      * Handles the HTTP <code>POST</code> method.

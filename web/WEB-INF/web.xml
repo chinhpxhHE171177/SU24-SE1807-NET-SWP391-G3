@@ -129,11 +129,9 @@
         <servlet-class>controller.publics.ListSubjectServlet</servlet-class>
     </servlet>
     <servlet>
-<<<<<<< HEAD
         <servlet-name>DeleteAccount</servlet-name>
         <servlet-class>controller.admin.DeleteAccount</servlet-class>
     </servlet><servlet>
-=======
         <servlet-name>AddAccountServlet</servlet-name>
         <servlet-class>controller.admin.AddAccountServlet</servlet-class>
     </servlet>
@@ -146,7 +144,6 @@
         <servlet-class>controller.admin.FilterManaAccount</servlet-class>
     </servlet>
     <servlet>
->>>>>>> e43299d489c1d4dd86ebeec90b4c717418eb3963
         <servlet-name>ManagementAccount</servlet-name>
         <servlet-class>controller.admin.ManagementAccount</servlet-class>
     </servlet>

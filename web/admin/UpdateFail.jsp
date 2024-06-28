@@ -1,10 +1,11 @@
 <%-- 
     Document   : UpdateFail
     Created on : May 28, 2024, 3:35:13 AM
-    Author     : duc
+    Author     : nguye
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +13,7 @@
 </head>
 <body>
     <h2>Failed to update the registration!</h2>
+    <p><a href="list-regis" id="contBtn">View Registrations</a></p>
     <a href="index.html">Back to Home</a>
 </body>
 </html>

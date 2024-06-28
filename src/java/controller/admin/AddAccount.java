@@ -71,8 +71,8 @@ public class AddAccount extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String UserName = request.getParameter("UserName");
-        String PassWord = request.getParameter("PassWord");
+        String userName = request.getParameter("UserName");
+        String password = request.getParameter("PassWord");
         int roleId = 0; // Giá trị mặc định nếu roleId không được gửi từ form
         if (request.getParameter("roleId") != null) {
             roleId = Integer.parseInt(request.getParameter("roleId"));
@@ -80,10 +80,9 @@ public class AddAccount extends HttpServlet {
         String email = request.getParameter("email");
         boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
         Date createAt = new Date(System.currentTimeMillis());
-
         UserDAO dao = new UserDAO();
-        dao.AddAccount(UserName, PassWord, roleId, email, gender, createAt);
-        request.getRequestDispatcher("ManaAcc").forward(request, response);
+        dao.AddAccount(userName, password, roleId, email, gender, createAt);
+        request.getRequestDispatcher("/admin/Success.jsp").forward(request, response);
     }
 
     /**

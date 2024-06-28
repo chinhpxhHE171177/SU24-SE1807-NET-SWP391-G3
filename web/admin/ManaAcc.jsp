@@ -1,5 +1,5 @@
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,8 +8,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Management User</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
-              rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+              rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+              crossorigin="anonymous">
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
@@ -19,7 +20,7 @@
             body {
                 box-sizing: border-box;
                 font-family: 'Poppins', 'sans-serif';
-                font-size: 18px;
+                font-size: 16px;
                 background-color: #f4f4f4;
                 margin: 0;
                 padding: 0;
@@ -59,14 +60,14 @@
 
             .filters select,
             .filters input {
-                padding: 5px;
+                padding: 3px;
                 margin-right: 10px;
                 border: 1px solid #ccc;
                 border-radius: 3px;
             }
 
             .filters button {
-                padding: 5px 10px;
+                padding: 3px 8px;
                 border: none;
                 border-radius: 3px;
                 background-color: #4CAF50;
@@ -80,7 +81,6 @@
 
             .add-new {
                 text-align: right;
-
             }
 
             .add-new a {
@@ -109,17 +109,24 @@
 
             th,
             td {
-                padding: 12px;
+                padding: 8px;
                 text-align: left;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
             th {
                 background-color: #f2f2f2;
             }
 
-            th,
-            td:nth-child(1) {
+            .icon-cell {
+                width: 40px;
                 text-align: center;
+            }
+
+            .birthday-cell {
+                max-width: 120px;
             }
 
             .pagination {
@@ -146,10 +153,12 @@
             .pagination a:hover:not(.active) {
                 background-color: #ddd;
             }
-            .rol1{
-                background-color: antiquewhite ;
+
+            .rol1 {
+                background-color: antiquewhite;
                 text-align: center;
             }
+
             .btn-trash {
                 background: none;
                 border: none;
@@ -184,7 +193,7 @@
             <div class="filters">
                 <form action="AddAcc" method="get" class="add-new">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> 
+                        <i class="fas fa-plus"></i>
                     </button>
                 </form>
 
@@ -192,13 +201,11 @@
                     <select name="role">
                         <option value="rl">All</option>
                         <c:forEach items="${listRole}" var="r">
-
                             <option value="${r.role}" ${r.role == role ? 'selected' : ''}>
                                 ${r.role}
                             </option>
                         </c:forEach>
                     </select>
-
 
                     <button type="submit" class="btn btn-secondary">Filter</button>
                 </form>
@@ -208,29 +215,29 @@
                     <tr class="rol1">
                         <th style="padding-right: 100px;">Full Name</th>
                         <th>Email</th>
-                        <th>Date Of Birthday</th>  
+                        <th class="birthday-cell">Date of birth</th>
                         <th>Phone</th>
                         <th>Account</th>
                         <th>Password</th>
                         <th>User Role</th>
                         <th>Address</th>
-                        <th>Gender</th>                     
+                        <th>Gender</th>
                         <th>Created At</th>
                         <th>Avatar</th>
-                        <th>    </th>
-                        <th></th>
+                        <th class="icon-cell"></th>
+                        <th class="icon-cell"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <c:forEach items="${listu}" var="o">
                         <tr>
-                            <td>${o.fullname}</td>                 
+                            <td>${o.fullname}</td>
                             <td>${o.email}</td>
-                            <td>${o.dob}</td>
+                            <td class="birthday-cell">${o.dob}</td>
                             <td>${o.phone}</td>
-                            <td>${o.username}</td> 
-                            <td >${o.password}</td>
-                            <td>${o.role} </td>
+                            <td>${o.username}</td>
+                            <td>${o.password}</td>
+                            <td>${o.role}</td>
                             <td>${o.address}</td>
                             <td>
                                 <c:choose>
@@ -241,21 +248,22 @@
                                         Female
                                     </c:otherwise>
                                 </c:choose>
-                            </td>                  
-                            <td>${o.createAt}</td>   
+                            </td>
+                            <td><fmt:formatDate value="${o.createAt}" pattern="yyyy-MM-dd"/></td>
                             <td></td>
-                            <td><form action="DelAcc"  method="get" style="text-align: center">
+                            <td class="icon-cell">
+                                <form action="DelAcc" method="get">
                                     <button type="submit" class="btn-trash">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                     <input type="hidden" name="id" value="${o.id}">
-                                </form>  </td>
-                            <td>
-                                <form action="UpdateAcc" method="post" style="text-align: center">
+                                </form>
+                            </td>
+                            <td class="icon-cell">
+                                <form action="UpdateAcc" method="post">
                                     <button type="submit" class="btn-edit">
                                         <i class="fas fa-pencil-alt"></i>
                                     </button>
-
                                 </form>
                             </td>
                         </tr>
@@ -275,3 +283,5 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     </body>
+
+</html>

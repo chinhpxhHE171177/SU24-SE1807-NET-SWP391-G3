@@ -71,6 +71,8 @@
 
             .submit-container {
                 text-align: center;
+                margin-top: 20px;
+                
             }
 
             submit {
@@ -131,7 +133,7 @@
                     }
                 }
             </script>
-            <form action="add-registration" method="post">
+            <form action="AddRegis" method="post">
                 UserID: <input type="text" name="userID"><br>
                 SubjectID: <select name="subjectID" required>
                     <option value="1">Physics</option>
@@ -161,7 +163,9 @@
                     <option value="4">4</option>
                 </select><br>
                 Valid From: <input type="date" name="validFrom"><br>
-                <button type="submit">add<button>
+                <div class="submit-container">
+                    <button type="submit" style="background-color: #28a745">Add</button>
+                </div>
             </form>   
         </div>
     </body>
