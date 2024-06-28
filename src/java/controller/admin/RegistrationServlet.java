@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
-import model.Registrations;
+import model.Registration;
 
 /**
  *
@@ -57,8 +57,8 @@ public class RegistrationServlet extends HttpServlet {
         
         RegistrationDAO rdao = new RegistrationDAO();
         SubjectDAO sdao=new SubjectDAO();
-        List<Registrations> listRg = rdao.getRegistration();
-        ArrayList<Registrations> list=sdao.getAllSubjectforRegistration();
+        List<Registration> listRg = rdao.getRegistration();
+        ArrayList<Registration> list=sdao.getAllSubjectforRegistration();
         request.setAttribute("listSubject", list);
         request.setAttribute("listRg", listRg);
         request.getRequestDispatcher("registrations.jsp").forward(request, response);
