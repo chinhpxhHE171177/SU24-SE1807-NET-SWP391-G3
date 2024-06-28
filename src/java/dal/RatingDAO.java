@@ -613,10 +613,10 @@ public class RatingDAO extends DBContext {
         System.out.println(num);
         //System.out.println(numOfReviews);
         //rdao.insertRating(1, 1, 3, "Not Good But Not Bad");
-//        List<Ratings> lists = rdao.getAllRatingByLesMocID(1);
-//        for (Ratings list : lists) {
-//            System.out.println(list);
-//        }
+        List<Ratings> lists = rdao.getAllRatingByLID(1);
+        for (Ratings list : lists) {
+            System.out.println(list);
+        }
 //        String averageRating = rdao.getAverageRatingByLessonID(2);
 //        System.out.println("Average Rating for Lesson 1: " + averageRating);
     }

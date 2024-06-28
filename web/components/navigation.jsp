@@ -37,6 +37,47 @@
         <link rel="stylesheet" href="../homepage/css/animate.css"/>
 
         <link href="../homepage/css/styles.css" rel="stylesheet">
+        <style>
+            .user-panel-container {
+                float: right;
+                position: relative;
+                display: inline-block;
+            }
+
+            .user-panel-avatar {
+                cursor: pointer;
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+            }
+
+            .user-dropdown-content {
+                display: none;
+                float: right;
+                position: absolute;
+                background-color: #f9f9f9;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+                right: 0; /* Align to the right */
+            }
+
+            .user-dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+            .user-dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+
+            /* Show the dropdown content when the user hovers over the container */
+            .user-panel-container:hover .user-dropdown-content {
+                display: block;
+            }
+        </style>
     </head>
     <body>
 
@@ -51,8 +92,13 @@
                     <nav class="top-nav-area w-100">
                         <c:choose>
                             <c:when test="${sessionScope.user != null}">
-                                <button class="user-panel btn btn-outline-primary ms-lg-2">${sessionScope.user.fullname}</button>
-                                <a href="${pageContext.request.contextPath}/logout" class="user-panel btn btn-outline-primary ms-lg-2">Logout</a>
+                                <div class="user-panel-container">
+                                    <img class="user-panel-avatar ms-lg-2" src="../images/users/${sessionScope.user.avatar}" alt="avatar"/>
+                                    <div class="user-dropdown-content">
+                                        <a href="${pageContext.request.contextPath}/profile">User Profile</a>
+                                        <a href="${pageContext.request.contextPath}/logout">Logout</a>
+                                    </div>
+                                </div>
                             </c:when>
                             <c:otherwise>
                                 <div class="user-panel">

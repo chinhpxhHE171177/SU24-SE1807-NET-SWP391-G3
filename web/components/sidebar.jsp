@@ -34,6 +34,13 @@
             background-color: #003366;
         }
 
+        .sidebar h4 {
+            font-size: 32px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            filter: drop-shadow(0 0 5px #09001d);
+        }
         .container-fluid {
             padding-left: 0;
         }
@@ -211,7 +218,7 @@
         <!-- sidebar start -->
         <div class="col-2 sidebar">
             <!-- Sidebar content here -->
-            <h4 class="text-center"><a href="${pageContext.request.contextPath}/home">Quizz..</a></h4>
+            <h4 class="text-center"><a href="${pageContext.request.contextPath}/home">Quizz.</a></h4>
             <nav class="nav flex-column">
                 <a class="nav-link active" href="#"><i class="fas fa-home"></i> Dashboard</a>
                 <a class="nav-link" href="#"><i class="fas fa-wrench"></i> Settings</a>

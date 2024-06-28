@@ -210,13 +210,13 @@
         <div class="container">
             <h1>Registrations</h1>
             <div class="filters">
-                <form action="AddRegis" method="get" class="add-new">
+                <form action="add-registration" method="get" class="add-new">
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-plus"></i> 
                     </button>
                 </form>
 
-                <form action="Filter" method="get">
+                <form action="filter" method="get">
                     <select name="subject">
                         <option value="as">All</option>
                         <c:forEach items="${listSubject}" var="s">

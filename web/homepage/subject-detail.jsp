@@ -43,13 +43,6 @@
         <!-- Main Stylesheets -->
         <link rel="stylesheet" href="../homepage/css/detailStyle.css"/>
 
-        <!--        <%
-                                   String originalUrl = "https://www.youtube.com/embed?v=NR0mRaRwukk"; // Sử dụng phương thức getVideoLink() để lấy URL video từ đối tượng lesson
-                                   String embedUrl = "";
-                                   if (originalUrl != null && originalUrl.contains("watch?v=")) {
-                                       embedUrl = originalUrl.replace("watch?v=", "embed/");
-                                   }
-        %> -->
     </head>
     <body>
         <!--Page Preloder--> 
@@ -83,15 +76,6 @@
                             allowfullscreen>
                     </iframe>
 
-                            <!--                            <ul class="certification" style="padding: 1rem;">
-                                                            <div class="certificate-image">
-                                                                <img src="https://certifier.io/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fcertifier%2Fimage%2Fupload%2Fv1709650101%2Fsmall_51_participation_formal_darkviolet_landscape_ff5e55e81a.png&w=1920&q=75" width="100%" height="auto" alt="alt"/>
-                                                            </div>
-                                                        </ul>
-                                                        <ul class="button-cer"style=" padding: 0rem 5rem;">
-                                                            <input type="hidden" name="quizId" value="${quiz.quizID}">
-                                                            <button style="width: 100%;padding: 0.5rem; border-radius: 5px;"><a style="text-decoration: none; color: #333; font-family: cursive;" href="${pageContext.request.contextPath}/exam/certificate?userId=${sessionScope.users.id}&subjectId=${subject.id}">View Certificate</a></button>
-                                                        </ul>-->
                 </div>
                 <div class="col-md-4">
                     <div class="card border-0">
@@ -99,10 +83,6 @@
                             <img src="../images/subjects/${subject.image}" style="width: 100%; height: 260px; border: 2px solid; border-radius: 10px">
                             <input type="hidden" name="packageId" value="${subject.packageId}">
                             <marquee class="mt-3 animate-charcter" style="color: #c40094; font-weight: bold; font-size: 40px">${subject.package_name}</marquee><br>
-                            <!--                            <div class="d-flex justify-content-center mt-3">
-                                                            <input type="hidden" name="subjectId" value="${subject.id}">
-                                                            <button name="button-enroll" id="button-enroll" onclick="enrollSubject(${subject.id}, ${subject.packageId})" type="button" class="btn btn-primary btn-lg">Enroll Now</button>
-                                                        </div>-->
                             <div class="d-flex justify-content-center mt-3">
                                 <div>
                                     <c:choose>
@@ -168,7 +148,6 @@
                                 <div class="rating-widget">
                                     <h4 class="widget-title">${nol} <i>Reviews</i></h4>
                                     <div class="rating">
-                                        <!--<h5><i>Rating</i><span>${average[lesson.id]}</span> / 5</h5>-->
                                         <h5><i>Rating</i><span>${avr}</span> / 5</h5>
                                     </div>
                                 </div>
@@ -212,36 +191,6 @@
                             </div>
                         </div>
                     </c:forEach>
-
-                    <!--                    <div class="reviews-form">
-                                            <form action="subject-detail" method="POST">
-                                                <div class="form-info" style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                                                    <div style="display: flex; align-items: center;">
-                                                        <img src="../images/users/${sessionScope.users.avatar}" alt="avatar" class="avatar" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
-                                                        <div class="stars" id="stars" style="margin: 0;">
-                                                            <div class="rates">
-                                                                <input type="radio" id="star5" name="rate" value="5" />
-                                                                <label for="star5" title="text">5 stars</label>
-                                                                <input type="radio" id="star4" name="rate" value="4" />
-                                                                <label for="star4" title="text">4 stars</label>
-                                                                <input type="radio" id="star3" name="rate" value="3" />
-                                                                <label for="star3" title="text">3 stars</label>
-                                                                <input type="radio" id="star2" name="rate" value="2" />
-                                                                <label for="star2" title="text">2 stars</label>
-                                                                <input type="radio" id="star1" name="rate" value="1" />
-                                                                <label for="star1" title="text">1 star</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                    
-                                                </div>
-                                                <textarea name="comment" placeholder="Write a message..."></textarea>
-                                                <input type="hidden" name="userId" value="${sessionScope.users.id}" />
-                                                <input type="hidden" name="lessonId" value="${lesson.id}" />
-                                                <input type="hidden" name="subjectId" value="${subject.id}" />
-                                                <button type="submit">Send</button>
-                                            </form>
-                                        </div>-->
                 </div>
             </div>
         </section>
