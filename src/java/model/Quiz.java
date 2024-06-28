@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.util.Date;
+
 /**
  *
  * @author Admin
@@ -19,6 +21,8 @@ public class Quiz {
     private int SubjectID;
     private String CreateAt;
     private int createById;
+    private int duration;
+    private Date createdAt;
 
     public Quiz() {
     }
@@ -105,6 +109,22 @@ public class Quiz {
 
     public int getCreateById() {
         return createById;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
 }

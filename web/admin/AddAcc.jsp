@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+=======
+<%-- 
+    Document   : AddAcc
+    Created on : Jun 23, 2024, 7:04:47 AM
+    Author     : Admin
+--%>
+
+>>>>>>> e43299d489c1d4dd86ebeec90b4c717418eb3963
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +24,11 @@
                 padding: 0;
             }
 
+<<<<<<< HEAD
             .container {     
+=======
+            .container {
+>>>>>>> e43299d489c1d4dd86ebeec90b4c717418eb3963
                 width: 80%;
                 margin: 40px auto;
                 padding: 20px;

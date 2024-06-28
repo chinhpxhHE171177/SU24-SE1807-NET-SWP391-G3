@@ -59,9 +59,12 @@ public class User {
         this.Role = Role;
     }
 
+<<<<<<< HEAD
     
 
     
+=======
+>>>>>>> e43299d489c1d4dd86ebeec90b4c717418eb3963
     public User(String username, String email, String password, boolean gender, int roleId) {
         this.username = username;
         this.email = email;

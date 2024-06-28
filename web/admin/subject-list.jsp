@@ -11,118 +11,165 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Subjects List</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <title>Course Manager</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <style>
-            *{
-                font-family: 'Poppins', 'sans-serif';
-            }
             body {
-                box-sizing: border-box;
-                font-family: 'Poppins', sans-serif;
-                background-color: #f4f4f4;
-                margin: 0;
-                padding: 0;
+                font-family: Arial, sans-serif;
+                background-color: #f5f5f5;
             }
 
-            .container {
-                max-width: 95%;
-                margin: 20px auto;
-                padding: 20px;
-                background-color: #fff;
-                border-radius: 5px;
-                box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            .sidebar {
+                width: 150px;
+                background-color: #004d99;
+                color: white;
+                padding-top: 20px;
             }
 
-            a {
+            .sidebar a {
+                color: white;
+                display: block;
+                padding: 10px 20px;
                 text-decoration: none;
-                color: #333;
             }
 
-            h1 {
-                text-align: center;
-                margin-bottom: 20px;
+            .sidebar a:hover {
+                background-color: #003366;
             }
 
-            .filters {
+            .sidebar .nav-link.active {
+                background-color: #003366;
+            }
+
+            .container-fluid {
+                padding-left: 0;
+            }
+
+            .content {
+                padding: 10px;
+                /* margin: 10px; */
+            }
+
+            .content h2 {
+                padding: 0px 20px 20px 20px;
+                border-bottom: 2px solid #f1efef;
+            }
+
+            .btn-toolbar {
+                /* margin-bottom: 10px;
+                padding-bottom: 30px; */
                 display: flex;
-                justify-content: space-between;
-                margin-bottom: 20px;
+                justify-content: flex-end;
+                width: 100%;
             }
 
-            .filters div,
-            .filters form {
-                display: flex;
-                align-items: center;
+            .btn-toolbar button {
+                margin: 4px 2px;
             }
 
-            .filters label {
+            .form-inline {
+                padding: 10px 20px 0px 20px;
+            }
+
+            .form-inline input,
+            .form-inline select {
                 margin-right: 10px;
             }
 
-            .filters select,
-            .filters input {
-                padding: 5px;
-                margin-right: 10px;
-                border: 1px solid #ccc;
-                border-radius: 3px;
+            @media (min-width: 576px) {
+                .form-inline .form-control {
+                    display: inline-block;
+                    width: 275px;
+                    vertical-align: middle;
+                }
             }
 
-            .filters button {
-                padding: 5px 10px;
+            .form-inline button {
+                width: 100px;
+                padding: 6.7px 20px;
+                margin-right: 55px;
                 border: none;
                 border-radius: 3px;
-                background-color: #007BFF;
+                background-color: #3698D8;
                 color: white;
                 cursor: pointer;
                 transition: background-color 0.3s;
             }
 
-            .filters button:hover {
+            .btn-pub,
+            .btn-unp,
+            .btn-edit,
+            .btn-dele {
+                background-color: #ECE9E8;
+            }
+
+            .btn-prary,
+            .btn-secondary {
+                width: 200px;
+                padding: 10px 20px;
+                border: none;
+                color: white;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 4px;
+            }
+
+            .fa-plus-circle {
+                color: #fff;
+            }
+
+            .btn-prary {
+                background-color: #87B880;
+                /* Bootstrap Primary Blue */
+            }
+
+            .btn-prary:hover {
+                background-color: #6b9d64;
+            }
+
+            .btn-secondary {
+                background-color: #6c757d;
+                /* Bootstrap Secondary Grey */
+            }
+
+            .form-inline button:hover {
                 background-color: #0056b3;
             }
 
-            .add-new {
-                text-align: right;
-                margin-bottom: 20px;
+            .table thead th {
+                background-color: #e9ecef;
+                font-size: 14px;
+            }
+            .table tbody td {
+                font-size: 12px;
             }
 
-            .add-new a {
-                padding: 10px 20px;
-                background-color: #28a745;
-                color: white;
-                text-decoration: none;
-                border-radius: 3px;
-                transition: background-color 0.3s;
+            .table td a {
+                color: #004d99;
             }
 
-            .add-new a:hover {
-                background-color: #218838;
+            .fa-check-circle {
+                color: green;
             }
 
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-bottom: 20px;
+            .fa-times-circle {
+                color: red;
             }
 
-            table,
-            th,
-            td {
-                border: 1px solid #ddd;
+            .alert-info {
+                background-color: #e7f3fe;
+                border-color: #d3e7fd;
+                color: #31708f;
             }
 
-            th,
-            td {
-                padding: 12px;
-                text-align: left;
+            .table-responsive {
+                overflow-x: auto;
             }
-
-            th {
-                background-color: #f8f9fa;
-            }
-
             .pagination {
                 text-align: center;
                 margin-top: 20px;
@@ -176,121 +223,137 @@
                 background-color: #e9ecef;
                 border-color: #dee2e6;
             }
-
         </style>
     </head>
 
     <body>
-        <!--Sidebar-->
+        <div class="container-fluid">
+            <div class="row no-gutters">
+                <!--Start SideBar-->
+                <%@include file="../components/sidebar.jsp" %>
 
-        <div class="container">
-            <h1>Subjects List</h1>
-            <div class="filters">
-                <form id="searchForm" action="subject-list">
-                    <label for="search">Search by Name:</label>
-                    <input value="${txtSearch}" type="text" id="search" name="txtSearch" placeholder="Subject name">
-                    <button type="submit">Search</button>
-                </form>
-                <div>
-                    <form action="subject-list" method="POST">
-                        <label for="categoryFilter">Category:</label>
-                        <select name="cateid" class="form-select">
-                            <option value="0" <c:if test="${cateid == 0}">selected</c:if>>All</option>
-                            <c:forEach items="${listca}" var="c">
-                                <c:choose>
-                                    <c:when test="${c.id == cateid}">
-                                        <option value="${c.id}" selected>${c.name}</option>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <option value="${c.id}">${c.name}</option>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:forEach>
-                        </select>
-
-                        <label for="statusFilter">Status:</label>
-                        <select name="status" class="form-select">
-                            <option value="-1" <c:if test="${status == -1}">selected</c:if>>All</option>
-                            <option value="0" <c:if test="${status == 0}">selected</c:if>>Unpublished</option>
-                            <option value="1" <c:if test="${status == 1}">selected</c:if>>Published</option>
-                            </select>
-                            <button type="submit">Filter</button>
+                <div class="col-10 content">
+                    <!-- <div class="content-header"> -->
+                    <div class="btn-toolbar mb-md-0">
+                        <button class="btn btn-pub"><i class="fa fa-check-circle" aria-hidden="true"></i> | Publish</button>
+                        <button class="btn btn-unp"><i class="far fa-times-circle"></i> | Unpublish</button>
+                        <a href="new-subject" class="btn btn-prary"><i class="fas fa-plus-circle"> New</i></a>
+                        <!-- <button class="btn btn-secondary">Copy</button> -->
+                        <button class="btn btn-edit"><i class="fas fa-edit"></i> | Edit</button>
+                        <button class="btn btn-dele"><i class="fas fa-trash-alt"></i> | Delete</button>
+                    </div>
+                    <h2>Course Manager</h2>
+                    <!-- </div> -->
+                    <div class="form-inline mb-3">
+                        <form id="searchForm" action="subject-list">
+                            <input class="form-control mr-2" value="${txtSearch}" type="text" id="search" name="txtSearch"
+                                   placeholder="Search">
+                            <button type="submit">Search</button>
                         </form>
+                        <form action="subject-list" method="POST">
+                            <select class="form-control mr-2" name="cateid" class="form-select">
+                                <option value="0" <c:if test="${cateid == 0}">selected</c:if>>All Categories</option>
+                                <c:forEach items="${listca}" var="c">
+                                    <c:choose>
+                                        <c:when test="${c.id == cateid}">
+                                            <option value="${c.id}" selected>${c.name}</option>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <option value="${c.id}">${c.name}</option>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+                            </select>
+
+                            <select name="status" class="form-control">
+                                <option value="-1" <c:if test="${status == -1}">selected</c:if>>All Status</option>
+                                <option value="0" <c:if test="${status == 0}">selected</c:if>>Unpublished</option>
+                                <option value="1" <c:if test="${status == 1}">selected</c:if>>Published</option>
+                                </select>
+                                <button type="submit">Filter</button>
+                            </form>
+                        </div>
+                        <div class="alert alert-info" role="alert">
+                            Here you can manage all your courses. When you click on the course name, you get the course Table of Content.
+                            If you click Edit, you get the rest of the settings of this course.
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Category</th>
+                                        <th>Description</th>
+                                        <th>Package</th>
+                                        <th>Owner</th>
+                                        <th>Status</th>
+                                        <th>Image</th>
+                                        <th>NumOfLess</th>
+                                        <th>Create At</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${lists}" var="s" varStatus="status">
+                                    <tr>
+                                        <td>${(currentPage - 1) * pageSize + status.index + 1}</td>
+                                        <td>
+                                            <a href="detail-subject?id=${s.id}">${s.name}</a>
+                                        </td>
+                                        <td>${s.category_name}</td>
+                                        <td>${s.description}</td>
+                                        <td>${s.package_name}</td>
+                                        <td>${s.userName}</td>
+                                        <td>${s.status ? '<i class="fa fa-check-circle" aria-hidden="true"></i>' : '<i class="far fa-times-circle"></i>'}</td>
+                                        <td><img src="../images/subjects/${s.image}" width="30" height="25" /></td>
+                                        <td>${s.numberOfLessons}</td>
+                                        <td>
+                                            <fmt:formatDate value="${s.created_at}" pattern="dd/MM/yyyy" />
+                                        </td>
+                                        <td style="display: flex">
+                                            <a href="update-subject?id=${s.id}" class="btn btn-sm"><i class="fas fa-edit"></i></a>
+                                            <a href="#" onclick="doDeletebySubject('${s.id}')" class="btn btn-sm"><i class="fas fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                <!-- Repeat the above <tr> for each course -->
+                            </tbody>
+                        </table>
+                        <h3 style="color: blue; text-align: center">${mess}</h3>
+                        <nav aria-label="Page navigation example" class="d-flex justify-content-center">
+                            <ul class="pagination">
+                                <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                    <a class="page-link" href="subject-list?pageIndex=${currentPage - 1}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <c:forEach begin="1" end="${totalPage}" var="i">
+                                    <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                        <a class="page-link" href="subject-list?pageIndex=${i}">${i}</a>
+                                    </li>
+                                </c:forEach>
+                                <li class="page-item ${currentPage == totalPage ? 'disabled' : ''}">
+                                    <a class="page-link" href="subject-list?pageIndex=${currentPage + 1}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
-                <div class="add-new">
-                    <a href="new-subject">Add New Subject</a>
-                </div>
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Description</th>
-                            <th>Package</th>
-                            <th>Owner</th>
-                            <th>Status</th>
-                            <th>Image</th>
-                            <th>NumOfLess</th>
-                            <th>Create At</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="courseList">
-                    <c:forEach items="${lists}" var="s" varStatus="status">
-                        <tr>
-                            <td>${(currentPage - 1) * pageSize + status.index + 1}</td>
-                            <td>
-                                <a href="detail-subject?id=${s.id}">${s.name}</a>
-                            </td>
-                            <td>${s.category_name}</td>
-                            <td>${s.description}</td>
-                            <td>${s.package_name}</td>
-                            <td>${s.userName}</td>
-                            <td>${s.status ? 'Published' : 'Unpublished'}</td>
-                            <td><img src="../images/subjects/${s.image}" width="30" height="25" /></td>
-                            <td>${s.numberOfLessons}</td>
-                            <td>
-                                <fmt:formatDate value="${s.created_at}" pattern="dd/MM/yyyy" />
-                            </td>
-                            <td>
-                                <a href="update-subject?id=${s.id}" class="btn btn-warning btn-sm">Edit</a>
-                                <a href="#" onclick="doDeletebySubject('${s.id}')" class="btn btn-danger btn-sm">Delete</a>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
-            <h3 style="color: blue; text-align: center">${mess}</h3>
-            <nav aria-label="Page navigation example" class="d-flex justify-content-center">
-                <ul class="pagination">
-                    <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                        <a class="page-link" href="subject-list?pageIndex=${currentPage - 1}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <c:forEach begin="1" end="${totalPage}" var="i">
-                        <li class="page-item ${i == currentPage ? 'active' : ''}">
-                            <a class="page-link" href="subject-list?pageIndex=${i}">${i}</a>
-                        </li>
-                    </c:forEach>
-                    <li class="page-item ${currentPage == totalPage ? 'disabled' : ''}">
-                        <a class="page-link" href="subject-list?pageIndex=${currentPage + 1}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        <script type="text/javascript">
-            function doDeletebySubject(id) {
-                if (confirm("Are you sure to delete subject with id =" + id)) {
-                    window.location = "delete-subject?id=" + id;
+            </div>
+            <script type="text/javascript">
+                function doDeletebySubject(id) {
+                    if (confirm("Are you sure to delete subject with id =" + id)) {
+                        window.location = "delete-subject?id=" + id;
+                    }
                 }
-            }
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+            </script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
 
 </html>
