@@ -63,7 +63,7 @@ public class FilterRegistrationServlet extends HttpServlet {
         }
         RegistrationDAO rdao = new RegistrationDAO();
         SubjectDAO sdao = new SubjectDAO();
-        List<Registration> listRg = rdao.getRegistrationFlowingSubjectName(subject);
+        List<Registration> listRg = rdao.getRegistrationsFlowingSubjectName(subject);
         ArrayList<Registration> list = sdao.getAllSubjectforRegistration();
         request.setAttribute("listSubject", list);
         request.setAttribute("listRg", listRg);

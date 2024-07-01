@@ -61,15 +61,15 @@ public class FilterRegistration extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String subject=request.getParameter("subject");
-        if(subject.equals("as")){
+        String subject = request.getParameter("subject");
+        if (subject.equals("as")) {
             response.sendRedirect("list-regis");
             return;
         }
         RegistrationDAO rdao = new RegistrationDAO();
-        SubjectDAO sdao=new SubjectDAO();
-        List<Registration> listRg = rdao.getRegistrationFlowingSubjectName(subject);
-        ArrayList<Registration> list=sdao.getAllSubjectforRegistration();
+        SubjectDAO sdao = new SubjectDAO();
+        List<Registration> listRg = rdao.getRegistrationsFlowingSubjectName(subject);
+        ArrayList<Registration> list = sdao.getAllSubjectforRegistration();
         request.setAttribute("listSubject", list);
         request.setAttribute("listRg", listRg);
         request.setAttribute("subject", subject);

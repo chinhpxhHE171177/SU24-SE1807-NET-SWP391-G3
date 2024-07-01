@@ -81,7 +81,7 @@ public class AddAccount extends HttpServlet {
         boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
         Date createAt = new Date(System.currentTimeMillis());
         UserDAO dao = new UserDAO();
-        dao.AddAccount(userName, password, roleId, email, gender, createAt);
+        dao.AddAccount(userName, password, roleId, email, gender,(java.sql.Date) createAt);
         request.getRequestDispatcher("/admin/Success.jsp").forward(request, response);
     }
 
