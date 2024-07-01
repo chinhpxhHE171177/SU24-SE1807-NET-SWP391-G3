@@ -4,27 +4,20 @@
  */
 package controller.admin;
 
-import dal.PackageDAO;
-import dal.RegistrationDAO;
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.util.List;
-import model.Packages;
-import model.Registration;
-import java.text.SimpleDateFormat;
-import java.util.TimeZone;
+import java.util.Date;
 
 /**
  *
  * @author nguye
  */
-public class UpdateRegistrationServlet extends HttpServlet {
+public class AddAccount extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,10 +36,10 @@ public class UpdateRegistrationServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateRegistrations</title>");
+            out.println("<title>Servlet AddAccount</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdateRegistrations at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddAccount at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,14 +57,7 @@ public class UpdateRegistrationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int registerId = Integer.parseInt(request.getParameter("id"));
-        RegistrationDAO dao = new RegistrationDAO();
-        PackageDAO pdao = new PackageDAO();
-        Registration registration = dao.getRegistrationById(registerId);
-        List<Packages> packages = pdao.getAllPackage(); // Lấy tất cả các package để hiển thị trong dropdown
-        request.setAttribute("registration", registration);
-        request.setAttribute("packages", packages);
-        request.getRequestDispatcher("/admin/UpdateRegis.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/AddAcc.jsp").forward(request, response);
     }
 
     /**
@@ -85,31 +71,18 @@ public class UpdateRegistrationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int registerID = Integer.parseInt(request.getParameter("registerID"));
-        int packageID = Integer.parseInt(request.getParameter("packageID"));
-        BigDecimal totalCost = new BigDecimal(request.getParameter("totalCost"));
-        int status = Integer.parseInt(request.getParameter("status"));
-        Date validFrom = Date.valueOf(request.getParameter("validFrom"));
-        Date validTo = Date.valueOf(request.getParameter("validTo"));
-
-        // Lấy thông tin đăng ký từ cơ sở dữ liệu
-        RegistrationDAO dao = new RegistrationDAO();
-        Registration registration = dao.getRegistrationById(registerID);
-        if (registration != null) {
-            registration.setPackageID(packageID);
-            registration.setTotalCost(totalCost);
-            registration.setStatus(status);
-            registration.setValidFrom(validFrom);
-            registration.setValidTo(validTo);
-
-            boolean isUpdated = dao.updateRegistration(registration);
-
-            if (isUpdated) {
-                request.getRequestDispatcher("/admin/UpdateSuccess.jsp").forward(request, response);
-            } else {
-                request.getRequestDispatcher("/admin/UpdateFail.jsp").forward(request, response);
-            }
+        String userName = request.getParameter("UserName");
+        String password = request.getParameter("PassWord");
+        int roleId = 0; // Giá trị mặc định nếu roleId không được gửi từ form
+        if (request.getParameter("roleId") != null) {
+            roleId = Integer.parseInt(request.getParameter("roleId"));
         }
+        String email = request.getParameter("email");
+        boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
+        Date createAt = new Date(System.currentTimeMillis());
+        UserDAO dao = new UserDAO();
+        dao.AddAccount(userName, password, roleId, email, gender, createAt);
+        request.getRequestDispatcher("/admin/Success.jsp").forward(request, response);
     }
 
     /**

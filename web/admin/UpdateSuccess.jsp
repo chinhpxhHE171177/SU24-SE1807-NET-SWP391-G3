@@ -105,6 +105,7 @@
         <div id='card' class="animated fadeIn">
             <div id='upper-side'>
                 <?xml version="1.0" encoding="utf-8"?>
+                <!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
                 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
                 <svg version="1.1" id="checkmark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" xml:space="preserve">
                     <path d="M131.583,92.152l-0.026-0.041c-0.713-1.118-2.197-1.447-3.316-0.734l-31.782,20.257l-4.74-12.65
@@ -120,7 +121,7 @@
             </div>
             <div id='lower-side'>
                 <p id='message'>Congratulations, Registrations has been successfully updated.</p>
-                <p><a href="update-registration" id="contBtn">Update Another</a></p>
+                <p><a href="list-regis" id="contBtn">View Registrations</a></p>
                 <p><a href="index.html" id="contBtn" style="margin-top: auto;top: 60px;">Back to Home</a></p>
             </div>
         </div>
