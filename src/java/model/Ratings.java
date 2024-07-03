@@ -47,6 +47,20 @@ public class Ratings {
         this.avatar = avatar;
     }
 
+    public Ratings(int ratingId, int userId, int lessonId, int rating, String comment, Timestamp createdAt, int like, boolean isReply, boolean status, String fullname, String avatar) {
+        this.ratingId = ratingId;
+        this.userId = userId;
+        this.lessonId = lessonId;
+        this.rating = rating;
+        this.comment = comment;
+        this.createdAt = createdAt;
+        this.like = like;
+        this.isReply = isReply;
+        this.status = status;
+        this.fullname = fullname;
+        this.avatar = avatar;
+    }
+
     public int getRatingId() {
         return ratingId;
     }
