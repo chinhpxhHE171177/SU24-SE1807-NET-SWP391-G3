@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.LesMooc;
 import model.Lessons;
 import model.Subject;
 
@@ -60,14 +59,15 @@ public class LessonDetailServlet extends HttpServlet {
         String id_raw = request.getParameter("id");
         String action = request.getParameter("action");
         LessonDAO ldao = new LessonDAO();
+        SubjectDAO sdao = new SubjectDAO();
         if (id_raw != null) {
             int id = Integer.parseInt(id_raw);
-            LesMooc lesson = ldao.getLesMoocById(id);
+            Lessons lesson = ldao.getLessonsBYID(id);
 
             if ("Activate".equals(action)) {
-                ldao.updateNewStatus(id, "Active");
+                ldao.updateStatus(id, "Active");
             } else if ("Deactivate".equals(action)) {
-                ldao.updateNewStatus(id, "Inactive");
+                ldao.updateStatus(id, "Inactive");
             }
             request.setAttribute("lesson", lesson);
         }
