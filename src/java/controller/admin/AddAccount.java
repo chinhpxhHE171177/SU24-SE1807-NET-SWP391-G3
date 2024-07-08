@@ -1,23 +1,23 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package controller.admin;
 
-import dal.LessonDAO;
-import dal.SubjectDAO;
+import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.LesMooc;
-import model.Lessons;
-import model.Subject;
+import java.util.Date;
 
 /**
  *
- * @author Admin
+ * @author nguye
  */
-public class LessonDetailServlet extends HttpServlet {
+public class AddAccount extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +36,10 @@ public class LessonDetailServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LessonDetailServlet</title>");
+            out.println("<title>Servlet AddAccount</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LessonDetailServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddAccount at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,21 +57,7 @@ public class LessonDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id_raw = request.getParameter("id");
-        String action = request.getParameter("action");
-        LessonDAO ldao = new LessonDAO();
-        if (id_raw != null) {
-            int id = Integer.parseInt(id_raw);
-            LesMooc lesson = ldao.getLesMoocById(id);
-
-            if ("Activate".equals(action)) {
-                ldao.updateNewStatus(id, "Active");
-            } else if ("Deactivate".equals(action)) {
-                ldao.updateNewStatus(id, "Inactive");
-            }
-            request.setAttribute("lesson", lesson);
-        }
-        request.getRequestDispatcher("lesson-detail.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/AddAcc.jsp").forward(request, response);
     }
 
     /**
@@ -85,7 +71,18 @@ public class LessonDetailServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String userName = request.getParameter("UserName");
+        String password = request.getParameter("PassWord");
+        int roleId = 0; // Giá trị mặc định nếu roleId không được gửi từ form
+        if (request.getParameter("roleId") != null) {
+            roleId = Integer.parseInt(request.getParameter("roleId"));
+        }
+        String email = request.getParameter("email");
+        boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
+        Date createAt = new Date(System.currentTimeMillis());
+        UserDAO dao = new UserDAO();
+        dao.AddAccount(userName, password, roleId, email, gender,(java.sql.Date) createAt);
+        request.getRequestDispatcher("/admin/Success.jsp").forward(request, response);
     }
 
     /**

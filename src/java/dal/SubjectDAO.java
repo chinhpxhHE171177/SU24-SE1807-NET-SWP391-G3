@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Category;
 import model.Packages;
-import model.Registrations;
+import model.Registration;
 import model.Subject;
 import model.User;
 
@@ -761,14 +761,14 @@ public class SubjectDAO extends DBContext {
         return list;
     }
 
-    public ArrayList<Registrations> getAllSubjectforRegistration() {
-        ArrayList<Registrations> list = new ArrayList<>();
+    public ArrayList<Registration> getAllSubjectforRegistration() {
+        ArrayList<Registration> list = new ArrayList<>();
         try {
             String sql = "select s.Subject_Name from Subjects as s";
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(new Registrations(rs.getString(1)));
+                list.add(new Registration(rs.getString(1)));
             }
         } catch (Exception e) {
         }
