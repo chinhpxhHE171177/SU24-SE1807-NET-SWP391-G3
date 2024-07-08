@@ -368,7 +368,7 @@ public class UserDAO extends DBContext {
         // TODO code application logic here
         UserDAO udao = new UserDAO();
         User u = udao.checkLogin("phamchinh", "123456");
-        if(u!= null) {
+        if (u != null) {
             System.out.println("Login success");
         } else {
             System.out.println("Login Failed");
