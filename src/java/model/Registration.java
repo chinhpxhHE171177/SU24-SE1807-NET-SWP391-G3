@@ -8,7 +8,7 @@ import java.util.Date;
  *
  * @author Duc
  */
-public class Registrations {
+public class Registration {
 
     /**
      * @param args the command line arguments
@@ -32,11 +32,11 @@ public class Registrations {
         return "Registrations{" + "registerID=" + registerID + ", userID=" + userID + ", subjectID=" + subjectID + ", packageID=" + packageID + ", totalCost=" + totalCost + ", status=" + status + ", validFrom=" + validFrom + ", validTo=" + validTo + ", createdAt=" + createdAt + ", FullName=" + FullName + ", PackageName=" + PackageName + ", SubjectName=" + SubjectName + ", listPrice=" + listPrice + '}';
     }
 
-    public Registrations(String SubjectName) {
+    public Registration(String SubjectName) {
         this.SubjectName = SubjectName;
     }
 
-    public Registrations(int userID, int status, Date validFrom, Date validTo, Timestamp createdAt, String FullName, String PackageName, String SubjectName, float listPrice) {
+    public Registration(int userID, int status, Date validFrom, Date validTo, Timestamp createdAt, String FullName, String PackageName, String SubjectName, float listPrice) {
         this.userID = userID;
         this.status = status;
         this.validFrom = validFrom;
@@ -49,7 +49,7 @@ public class Registrations {
     }
     
 
-    public Registrations(int userID, BigDecimal totalCost, int status, Date validFrom, Date validTo, Timestamp createdAt, String FullName, String PackageName, String SubjectName) {
+    public Registration(int userID, BigDecimal totalCost, int status, Date validFrom, Date validTo, Timestamp createdAt, String FullName, String PackageName, String SubjectName) {
         this.userID = userID;
         this.totalCost = totalCost;
         this.status = status;
@@ -61,7 +61,7 @@ public class Registrations {
         this.SubjectName = SubjectName;
     }
     
-    public Registrations(int registerID, int userID, int subjectID, int packageID, BigDecimal totalCost, int status, Date validFrom, Date validTo, Timestamp createdAt, String FullName, String PackageName, String SubjectName, float listPrice) {
+    public Registration(int registerID, int userID, int subjectID, int packageID, BigDecimal totalCost, int status, Date validFrom, Date validTo, Timestamp createdAt, String FullName, String PackageName, String SubjectName, float listPrice) {
         this.registerID = registerID;
         this.userID = userID;
         this.subjectID = subjectID;
@@ -77,7 +77,7 @@ public class Registrations {
         this.listPrice = listPrice;
     }
 
-    public Registrations(int registerID, int userID, int subjectID, int packageID, BigDecimal totalCost, int status, Date validFrom, Date validTo, Timestamp createdAt) {
+    public Registration(int registerID, int userID, int subjectID, int packageID, BigDecimal totalCost, int status, Date validFrom, Date validTo, Timestamp createdAt) {
         this.registerID = registerID;
         this.userID = userID;
         this.subjectID = subjectID;
@@ -105,7 +105,7 @@ public class Registrations {
         this.listPrice = listPrice;
     }
 
-    public Registrations() {
+    public Registration() {
     }
 
     public int getRegisterID() {
