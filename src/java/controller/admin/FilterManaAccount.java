@@ -69,7 +69,7 @@ public class FilterManaAccount extends HttpServlet {
         request.setAttribute("listRole", list);
         request.setAttribute("listAc", listAc);
         request.setAttribute("role", role);
-        request.getRequestDispatcher("ManaAcc.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/ManaAcc.jsp").forward(request, response);
     }
 
     /**
