@@ -66,8 +66,7 @@ public class LoginGoogleServlet extends HttpServlet {
                     if (u != null) {
                         HttpSession session = request.getSession();
                         session.setAttribute("user", u);
-                      //  response.sendRedirect("homepage/home.jsp");
-                        request.getRequestDispatcher("homepage/home.jsp").forward(request, response);
+                        request.getRequestDispatcher("/homepage/home.jsp").forward(request, response);
                         break;
                     } else {
                         ud.CreateAccWithGoogle(googlePojo.getEmail(), googlePojo.getId(), createAt);
