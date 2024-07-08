@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
-import model.Registration;
+import model.Registrations;
 
 /**
  *
@@ -61,15 +61,15 @@ public class FilterRegistration extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String subject = request.getParameter("subject");
-        if (subject.equals("as")) {
+        String subject=request.getParameter("subject");
+        if(subject.equals("as")){
             response.sendRedirect("list-regis");
             return;
         }
         RegistrationDAO rdao = new RegistrationDAO();
-        SubjectDAO sdao = new SubjectDAO();
-        List<Registration> listRg = rdao.getRegistrationsFlowingSubjectName(subject);
-        ArrayList<Registration> list = sdao.getAllSubjectforRegistration();
+        SubjectDAO sdao=new SubjectDAO();
+        List<Registrations> listRg = rdao.getRegistrationsFlowingSubjectName(subject);
+        ArrayList<Registrations> list=sdao.getAllSubjectforRegistration();
         request.setAttribute("listSubject", list);
         request.setAttribute("listRg", listRg);
         request.setAttribute("subject", subject);
