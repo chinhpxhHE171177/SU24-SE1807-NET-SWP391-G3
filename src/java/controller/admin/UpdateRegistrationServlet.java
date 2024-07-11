@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
-import model.Registration;
+import model.Registrations;
 
 /**
  *
@@ -67,8 +67,8 @@ public class UpdateRegistrationServlet extends HttpServlet {
             // Tạo đối tượng RegistrationDAO để thực hiện cập nhật
             RegistrationDAO registrationDAO = new RegistrationDAO();
 
-            // Tạo đối tượng Registration để chứa thông tin cần cập nhật
-            Registration rUp = new Registration();
+            // Tạo đối tượng Registrations để chứa thông tin cần cập nhật
+            Registrations rUp = new Registrations();
             rUp.setRegisterID(registerID);
             rUp.setUserID(userID);
             rUp.setSubjectID(subjectID);

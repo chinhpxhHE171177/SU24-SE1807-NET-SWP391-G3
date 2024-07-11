@@ -59,9 +59,6 @@ public class User {
         this.Role = Role;
     }
 
-    
-
-    
     public User(String username, String email, String password, boolean gender, int roleId) {
         this.username = username;
         this.email = email;
