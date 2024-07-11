@@ -4,12 +4,11 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import model.Registration;
+import model.Registrations;
 
 /**
  *
@@ -17,8 +16,8 @@ import model.Registration;
  */
 public class RegistrationDAO extends DBContext {
 
-    public ArrayList<Registration> getRegistrationsFlowingSubjectName(String subjectName) {
-        ArrayList<Registration> list = new ArrayList<>();
+    public ArrayList<Registrations> getRegistrationsFlowingSubjectName(String subjectName) {
+        ArrayList<Registrations> list = new ArrayList<>();
         try {
             String sql = "select u.UserID,u.UserName,s.Subject_Name,p.package_name,p.listPrice,r.status,r.valid_from,r.valid_to,r.created_at from Registrations as r\n"
                     + "inner join  Users as u on r.UserID=u.UserID\n"
@@ -29,7 +28,7 @@ public class RegistrationDAO extends DBContext {
             ps.setString(1, subjectName);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(new Registration(rs.getInt(1),
+                list.add(new Registrations(rs.getInt(1),
                         rs.getInt(6),
                         rs.getDate(7),
                         rs.getDate(8),
@@ -42,10 +41,9 @@ public class RegistrationDAO extends DBContext {
         }
         return list;
     }
-
-
-    public List<Registration> getRegistration() {
-        List<Registration> list = new ArrayList<>();
+    
+    public List<Registrations> getRegistration() {
+        List<Registrations> list = new ArrayList<>();
         try {
             String sql = "  Select r.*, u.FullName, p.package_name,p.listPrice ,s.Subject_Name from Registrations r \n"
                     + "   join Users u on u.UserID = r.UserID\n"
@@ -54,7 +52,7 @@ public class RegistrationDAO extends DBContext {
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                Registration registration = new Registration(
+                Registrations registration = new Registrations(
                         rs.getInt("RegisterID"),
                         rs.getInt("UserID"),
                         rs.getInt("SubjectID"),
@@ -74,9 +72,9 @@ public class RegistrationDAO extends DBContext {
         } catch (Exception e) {
         }
         return list;
-
+        
     }
-
+    
     public void addRegistration(int userID, int subjectID, int packageID, BigDecimal totalCost, int status, Date validFrom, Date validTo, Timestamp createdAt) {
         try {
             String sql = "INSERT INTO Registrations (UserID, SubjectID, PackageID, total_cost, status, valid_from, valid_to, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -98,22 +96,22 @@ public class RegistrationDAO extends DBContext {
 
         }
     }
-
+    
     public void deleteRegistration(int id) {
-
+        
         try {
             String sql = "DELETE FROM Registrations WHERE RegisterID = ?";
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, id);
             stmt.execute();
-
+            
         } catch (Exception e) {
-
+            
         }
-
+        
     }
-
-    public boolean updateRegistration(Registration registration) {
+    
+    public boolean updateRegistration(Registrations registration) {
         try {
             String sql = "UPDATE Registrations SET UserID = ?, SubjectID = ?, PackageID = ?, total_cost = ?, status = ? WHERE RegisterID = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -123,7 +121,7 @@ public class RegistrationDAO extends DBContext {
             statement.setBigDecimal(4, registration.getTotalCost());
             statement.setInt(5, registration.getStatus());
             statement.setInt(6, registration.getRegisterID());
-
+            
             int rowsUpdated = statement.executeUpdate();
             return rowsUpdated > 0;
         } catch (Exception e) {
@@ -131,9 +129,9 @@ public class RegistrationDAO extends DBContext {
         }
         return false;
     }
-
-    public List<Registration> filterRegistration(String property, int value) {
-        List<Registration> list = new ArrayList<>();
+    
+    public List<Registrations> filterRegistration(String property, int value) {
+        List<Registrations> list = new ArrayList<>();
         try {
             String sql = "Select r.*, u.FullName, p.package_name,p.listPrice ,s.Subject_Name from Registrations as r "
                     + "   join Users u on u.UserID = r.UserID\n"
@@ -144,7 +142,7 @@ public class RegistrationDAO extends DBContext {
             statement.setInt(1, value);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                Registration rg = new Registration(
+                Registrations rg = new Registrations(
                         rs.getInt("RegisterID"),
                         rs.getInt("UserID"),
                         rs.getInt("SubjectID"),
@@ -166,55 +164,11 @@ public class RegistrationDAO extends DBContext {
         }
         return list;
     }
-
-    public Registration getRegBySubjectAndUser(int sid, int uid) {
-        String sql = "SELECT * FROM Registrations WHERE SubjectID = ? AND UserID = ?";
-        try {
-            PreparedStatement pst = connection.prepareStatement(sql);
-            pst.setInt(1, sid);
-            pst.setInt(2, uid);
-            ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                return new Registration(
-                        rs.getInt(1),
-                        rs.getInt(2),
-                        rs.getInt(3),
-                        rs.getInt(4),
-                        rs.getBigDecimal(5),
-                        rs.getInt(6),
-                        rs.getDate(7),
-                        rs.getDate(8),
-                        rs.getTimestamp(9));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public int totalSubjectEnroll(int id) {
-        String sql = "SELECT COUNT(*) AS totalUser "
-                + "FROM Registrations r "
-                + "WHERE r.SubjectID = ?";
-        try (PreparedStatement pst = connection.prepareStatement(sql)) {
-            pst.setInt(1, id);
-            try (ResultSet rs = pst.executeQuery()) {
-                if (rs.next()) {
-                    int totalUser = rs.getInt("totalUser");
-                    System.out.println("Total enrolled users: " + totalUser); // Add this line for logging
-                    return totalUser;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
+    
     public static void main(String[] args) {
         RegistrationDAO registrationsDBContext = new RegistrationDAO();
-        List<Registration> registrations = registrationsDBContext.getRegistrationsFlowingSubjectName("Calculus");
-        for (Registration registration : registrations) {
+        List<Registrations> registrations = registrationsDBContext.getRegistrationsFlowingSubjectName("Calculus");
+        for (Registrations registration : registrations) {
             System.out.println(registration.getSubjectName());
         }
 //          <td>${o.FullName}</td>
@@ -251,7 +205,7 @@ public class RegistrationDAO extends DBContext {
 //        // Hiển thị tất cả các bản ghi trước khi xóa
 //        System.out.println("Danh sách trước khi xóa:");
 //        List<Registrations> registrations = dao.getAllRegistrations();
-//        for (Registration registration : registrations) {
+//        for (Registrations registration : registrations) {
 //            System.out.println(registration);
 //        }
 //
@@ -267,21 +221,21 @@ public class RegistrationDAO extends DBContext {
 //        // Hiển thị tất cả các bản ghi sau khi xóa
 //        System.out.println("Danh sách sau khi xóa:");
 //        registrations = dao.getAllRegistrations();
-//        for (Registration registration : registrations) {
+//        for (Registrations registration : registrations) {
 //            System.out.println(registration);
 //        }
         // Tạo một đối tượng RegistrationDAO
 //    RegistrationDAO registrationDAO = new RegistrationDAO();
 //
 //    // Hiển thị thông tin trước khi cập nhật
-//    System.out.println("Registration before update:");
+//    System.out.println("Registrations before update:");
 //    List<Registrations> registrationsBeforeUpdate = registrationDAO.getAllRegistrations();
-//    for (Registration registration : registrationsBeforeUpdate) {
+//    for (Registrations registration : registrationsBeforeUpdate) {
 //        System.out.println(registration);
 //    }
 //
-//    // Tạo một đối tượng Registration mới để cập nhật
-//    Registration registrationToUpdate = new Registration();
+//    // Tạo một đối tượng Registrations mới để cập nhật
+//    Registrations registrationToUpdate = new Registrations();
 //    registrationToUpdate.setRegisterID(6); // Đặt ID của bản ghi cần cập nhật
 //    registrationToUpdate.setUserID(2); // Đặt UserID mới
 //    registrationToUpdate.setSubjectID(2); // Đặt SubjectID mới
@@ -298,17 +252,17 @@ public class RegistrationDAO extends DBContext {
 //    }
 //
 //    // Hiển thị thông tin sau khi cập nhật
-//    System.out.println("Registration after update:");
+//    System.out.println("Registrations after update:");
 //    List<Registrations> registrationsAfterUpdate = registrationDAO.getAllRegistrations();
-//    for (Registration registration : registrationsAfterUpdate) {
+//    for (Registrations registration : registrationsAfterUpdate) {
 //        System.out.println(registration);
 ////    }
 //        RegistrationDAO registrationDAO = new RegistrationDAO();
 ////
 ////        // Test lấy tất cả các đăng ký
 //        List<Registrations> allRegistrations = registrationDAO.getAllRegistrations();
-//        System.out.println("All Registration:");
-//        for (Registration registration : allRegistrations) {
+//        System.out.println("All Registrations:");
+//        for (Registrations registration : allRegistrations) {
 //            System.out.println(registration);
 //        }
 
@@ -316,8 +270,8 @@ public class RegistrationDAO extends DBContext {
 //        String propertyToFilter = "UserID"; // Đổi thành thuộc tính bạn muốn lọc (UserID, SubjectID, PackageID, hoặc Status)
 //        int valueToFilter = 1; // Đổi thành giá trị bạn muốn lọc
 //        List<Registrations> filtered = RegistrationDAO.filterRegistration(propertyToFilter, valueToFilter);
-//        System.out.println("\nFiltered Registration (by " + propertyToFilter + " = " + valueToFilter + "):");
-//        for (Registration registration : filtered) {
+//        System.out.println("\nFiltered Registrations (by " + propertyToFilter + " = " + valueToFilter + "):");
+//        for (Registrations registration : filtered) {
 //            System.out.println(registration);
 //        }
 //        RegistrationDAO registrationDAO = new RegistrationDAO();
@@ -326,7 +280,7 @@ public class RegistrationDAO extends DBContext {
 //        List<Registrations> registrationList = registrationDAO.filterRegistration(propertyToFilter, 2);
 //
 //        // In ra thông tin của các đăng ký
-//        for (Registration registration : registrationList) {
+//        for (Registrations registration : registrationList) {
 //            System.out.println(registration);
 //        }
     }
