@@ -81,7 +81,7 @@ public class QuizDAO extends DBContext {
             if (!(search.equals("")) && categoryId != 0) {
                 sql = "SELECT * FROM [Quizzes] WHERE title LIKE ? AND CategoryID = ?  ORDER BY QuizID DESC OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY";
                 ps = connection.prepareStatement(sql);
-                ps.setString(1, "%" + search + "%");      
+                ps.setString(1, "%" + search + "%");
                 ps.setInt(2, categoryId);
                 ps.setInt(2, (index - 1) * 6);
             } else if (search.equals("")) {
@@ -89,13 +89,13 @@ public class QuizDAO extends DBContext {
                 ps = connection.prepareStatement(sql);
                 ps.setString(1, "%" + search + "%");
                 ps.setInt(2, (index - 1) * 6);
-            }else  if (categoryId != 0) {
+            } else if (categoryId != 0) {
                 sql = "SELECT * FROM [Quizzes] WHERE CategoryID = ? ORDER BY QuizID DESC OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY";
                 ps = connection.prepareStatement(sql);
                 ps.setInt(1, categoryId);
                 ps.setInt(2, (index - 1) * 6);
             } else {
-                 sql = "SELECT * FROM [Quizzes] ORDER BY QuizID DESC OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY";
+                sql = "SELECT * FROM [Quizzes] ORDER BY QuizID DESC OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY";
                 ps = connection.prepareStatement(sql);
                 ps.setInt(1, (index - 1) * 6);
             }
@@ -443,6 +443,31 @@ public class QuizDAO extends DBContext {
             return listQuestion;
         } catch (SQLException ex) {
             ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public Quiz getSubjectQuiz(int sid) {
+        try {
+            String sql = "SELECT * FROM Quizzes WHERE SubjectID = ?";
+            PreparedStatement pst = connection.prepareStatement(sql);
+            pst.setInt(1, sid);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Quiz quiz = new Quiz();
+                quiz.setQuizID(rs.getInt("QuizID"));
+                quiz.setTitle(rs.getString("title"));
+                quiz.setImage(rs.getString("Image"));
+                quiz.setDescription(rs.getString("description"));
+                quiz.setLevel(rs.getInt("Level"));
+                quiz.setSubjectID(rs.getInt("SubjectID"));
+                quiz.setCategoryID(rs.getInt("CategoryID"));
+                quiz.setCreateById(rs.getInt("created_by"));
+                quiz.setCreatedAt(rs.getDate("created_at"));
+                quiz.setDuration(rs.getInt("duration"));
+                return quiz;
+            }
+        } catch (Exception e) {
         }
         return null;
     }

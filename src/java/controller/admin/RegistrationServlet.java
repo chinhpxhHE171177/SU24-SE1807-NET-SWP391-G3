@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
-import model.Registrations;
+import model.Registration;
 
 /**
  *
@@ -34,7 +34,7 @@ public class RegistrationServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RegistrationServlet</title>");            
+            out.println("<title>Servlet RegistrationServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet RegistrationServlet at " + request.getContextPath() + "</h1>");
@@ -52,17 +52,17 @@ public class RegistrationServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-     protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         RegistrationDAO rdao = new RegistrationDAO();
-        SubjectDAO sdao=new SubjectDAO();
-        List<Registrations> listRg = rdao.getRegistration();
-        ArrayList<Registrations> list=sdao.getAllSubjectforRegistration();
+        SubjectDAO sdao = new SubjectDAO();
+        List<Registration> listRg = rdao.getRegistration();
+        ArrayList<Registration> list = sdao.getAllSubjectforRegistration();
         request.setAttribute("listSubject", list);
         request.setAttribute("listRg", listRg);
         request.getRequestDispatcher("registrations.jsp").forward(request, response);
-        
+
     }
 
     /**
