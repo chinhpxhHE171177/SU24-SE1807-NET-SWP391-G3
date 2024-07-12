@@ -221,7 +221,6 @@ public class RatingDAO extends DBContext {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return 0.0;
     }
@@ -233,7 +232,6 @@ public class RatingDAO extends DBContext {
             pst.setInt(2, id);
             pst.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 

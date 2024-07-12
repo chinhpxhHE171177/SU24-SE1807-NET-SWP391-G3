@@ -22,9 +22,6 @@ public class SubjectDAO extends DBContext {
      * @param args the command line arguments
      * @return
      */
-    /*----------- 
-    Admin 
-------------*/
     public List<Subject> getAllSubjects() {
         List<Subject> list = new ArrayList<>();
 
