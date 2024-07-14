@@ -471,4 +471,147 @@ public class QuizDAO extends DBContext {
         }
         return null;
     }
+
+    public List<Quiz> getListQuizByUserId(int userId) {
+        String sql = "SELECT * FROM [Quizzes] q WHERE created_by = ?";
+        List<Quiz> listQuiz = new ArrayList();
+        try {
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, userId);
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Quiz quiz = new Quiz();
+                byte[] imgData = rs.getBytes("Image");
+                String base64Image = Base64.getEncoder().encodeToString(imgData);
+                quiz.setImage((base64Image));
+                quiz.setQuizID(rs.getInt("QuizID"));
+                quiz.setTitle(rs.getString("title"));
+                quiz.setDescription(rs.getString("description"));
+                quiz.setLevel(rs.getInt("Level"));
+                quiz.setCategoryID(rs.getInt("CategoryID"));
+                quiz.setSubjectID(rs.getInt("SubjectID"));
+
+                quiz.setCreateAt(rs.getDate("created_at").toString());
+                listQuiz.add(quiz);
+            }
+            return listQuiz;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public int GetQuizHistoryTotal(int userId) {
+        String sql = "SELECT COUNT(*) FROM [Quizzes] q JOIN [User_Quiz_Results] hq ON q.QuizID = hq.QuizID WHERE hq.UserID = ?";
+        try {
+            List<QuizHistoryVM> listHistory = new ArrayList();
+            CategoryDAO cateDAO = new CategoryDAO();
+            SubjectDAO subjectDAO = new SubjectDAO();
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, userId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<QuizHistoryVM> GetQuizHistory(int userId, int index) {
+        String sql = "SELECT * FROM [Quizzes] q JOIN [User_Quiz_Results] hq ON q.QuizID = hq.QuizID WHERE hq.UserID = ? ORDER BY hq.completed_at DESC "
+                + "OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY";
+        try {
+            List<QuizHistoryVM> listHistory = new ArrayList();
+            CategoryDAO cateDAO = new CategoryDAO();
+            SubjectDAO subjectDAO = new SubjectDAO();
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, userId);
+            ps.setInt(2, (index - 1) * 6);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                QuizHistoryVM hq = new QuizHistoryVM();
+                hq.setQuizID(rs.getInt("QuizID"));
+                hq.setTitle(rs.getString("title"));
+                hq.setDescription(rs.getString("description"));
+                hq.setLevel(rs.getInt("Level"));
+                String cateName = cateDAO.GetById(rs.getInt("CategoryID"));
+                String subjectName = subjectDAO.GetById(rs.getInt("SubjectID"));
+                hq.setCategory(cateName);
+                hq.setSubject(subjectName);
+                byte[] imgData = rs.getBytes("Image");
+                String base64Image = Base64.getEncoder().encodeToString(imgData);
+                hq.setImage((base64Image));
+                hq.setCreateAt(rs.getString("created_at").toString());
+                hq.setCompleteAt(rs.getString("completed_at").toString());
+                hq.setScore(rs.getInt("score"));
+                listHistory.add(hq);
+            }
+            return listHistory;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public int GetQuizHistorySearchTotal(int userId, String search) {
+        String sql = "SELECT COUNT(*) FROM [Quizzes] q JOIN [User_Quiz_Results] hq ON q.QuizID = hq.QuizID WHERE hq.UserID = ? AND q.title LIKE ? ";
+        try {
+            List<QuizHistoryVM> listHistory = new ArrayList();
+            CategoryDAO cateDAO = new CategoryDAO();
+            SubjectDAO subjectDAO = new SubjectDAO();
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, userId);
+            ps.setString(2, "%" + search + "%");
+
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<QuizHistoryVM> GetQuizHistorySearch(int userId, int index, String search) {
+        String sql = "SELECT * FROM [Quizzes] q JOIN [User_Quiz_Results] hq ON q.QuizID = hq.QuizID WHERE hq.UserID = ?  AND q.title LIKE ? ORDER BY hq.completed_at DESC "
+                + "OFFSET ? ROWS FETCH NEXT 6 ROWS ONLY";
+        try {
+            List<QuizHistoryVM> listHistory = new ArrayList();
+            CategoryDAO cateDAO = new CategoryDAO();
+            SubjectDAO subjectDAO = new SubjectDAO();
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, userId);
+            ps.setString(2, "%" + search + "%");
+            ps.setInt(2, (index - 1) * 6);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                QuizHistoryVM hq = new QuizHistoryVM();
+                hq.setQuizID(rs.getInt("QuizID"));
+                hq.setTitle(rs.getString("title"));
+                hq.setDescription(rs.getString("description"));
+                hq.setLevel(rs.getInt("Level"));
+                String cateName = cateDAO.GetById(rs.getInt("CategoryID"));
+                String subjectName = subjectDAO.GetById(rs.getInt("SubjectID"));
+                hq.setCategory(cateName);
+                hq.setSubject(subjectName);
+                byte[] imgData = rs.getBytes("Image");
+                String base64Image = Base64.getEncoder().encodeToString(imgData);
+                hq.setImage((base64Image));
+                hq.setCreateAt(rs.getString("created_at").toString());
+                hq.setCompleteAt(rs.getString("completed_at").toString());
+                hq.setScore(rs.getInt("score"));
+                listHistory.add(hq);
+            }
+            return listHistory;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
 }

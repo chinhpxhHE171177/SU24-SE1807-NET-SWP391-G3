@@ -40,10 +40,6 @@
             <div class="collapse bg-dark" id="navbarHeader">
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm-8 col-md-7 py-4">
-                            <h4 class="text-white">About</h4>
-                            <p class="text-muted">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
-                        </div>
                         <div class="col-sm-4 offset-md-1 py-4">
                             <h4 class="text-white">Contact</h4>
                             <ul class="list-unstyled">
@@ -74,7 +70,11 @@
                 <div class="row py-lg-5">
                     <div class="col-lg-6 col-md-8 mx-auto">
                         <h1 class="fw-light">Quiz History</h1>
-                        <!--<p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>-->
+                        <form class="d-flex" action="quiz-history">
+                            <input type="hidden" name="action" value="search"/>
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" value="${search}">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
                         <p>
                         </p>
                     </div>
@@ -82,23 +82,31 @@
             </section>
 
             <div class="album py-5 bg-light">
+                <a href="home" class="btn btn-success">Trở về homepage</a>
                 <div class="container">
+                    <c:if test="${QUIZS == null}">
+                        <h4>Bạn chưa có thực hiện bài quiz nào!</h4>
+                    </c:if>
 
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
                         <c:forEach items="${QUIZS}" var="quiz">
                             <div class="col">
                                 <div class="card shadow-sm">
-                                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                                    <div style="text-align: center">
+                                        <img src="data:image/png;base64,${quiz.image}" alt="#" style="width: 100%; height: 250px">
+                                    </div>
                                     <div class="card-body">
                                         <p class="card-text">Title: ${quiz.title}</p>      
                                         <p class="card-text">Level: ${quiz.level}</p>   
                                         <p class="card-text">Subject: ${quiz.subject}</p>
                                         <p class="card-text">Category: ${quiz.category}</p>
+                                        <p class="card-text">Score: ${quiz.score}</p>
+                                        <p class="card-text">Completed At: ${quiz.completeAt}</p>
 
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                                <a href="QuizHistoryDetailServlet?quizId=${quiz.quizID}" class="btn btn-success">View</a>
                                             </div>
                                             <small class="text-muted">Finish at: ${quiz.completeAt}</small>
                                         </div>
@@ -109,6 +117,34 @@
                     </div>
                 </div>
             </div>
+
+            <nav aria-label="Page navigation example" style="display: flex; justify-content:center;">
+                <ul class="pagination">
+                    <c:choose>
+                        <c:when test ="${selectedPage - 1 < 1}">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#">«</a>
+                            </li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="page-item"><a class="page-link" href="quiz-history?search=${search}&index=${selectedPage-1}">«</a></li>
+                            </c:otherwise>
+                        </c:choose>
+                        <c:forEach var="i" begin="1" end="${endP}">
+                        <li class="page-item ${i == selectedPage ? "active" : "" }"> <a class="page-link" href="quiz-history?search=${search}&index=${i}">${i}</a> <li>
+                        </c:forEach>
+                        <c:choose>
+                            <c:when test ="${selectedPage >= endP}">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#">»</a>
+                            </li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="page-item"><a class="page-link" href="quiz-history?search=${search}&index=${selectedPage+1}">»</a></li>
+                            </c:otherwise>
+                        </c:choose>
+                </ul>
+            </nav>
 
         </main>
 
@@ -122,8 +158,8 @@
             </div>
         </footer>
 
-        
-        
+
+
         <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

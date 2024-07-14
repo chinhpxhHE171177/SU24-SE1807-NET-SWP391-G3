@@ -4,14 +4,18 @@
  */
 package model;
 
+import java.util.List;
+
 /**
  *
  * @author Datnt
  */
 public class Question {
+
     private int QuestionId;
     private String QuestionDetail;
     private int QuizId;
+    private List<Answer> listAnswer;
 
     public Question() {
     }
@@ -20,6 +24,13 @@ public class Question {
         this.QuestionId = QuestionId;
         this.QuestionDetail = QuestionDetail;
         this.QuizId = QuizId;
+    }
+
+    public Question(int QuestionId, String QuestionDetail, int QuizId, List<Answer> listAnswer) {
+        this.QuestionId = QuestionId;
+        this.QuestionDetail = QuestionDetail;
+        this.QuizId = QuizId;
+        this.listAnswer = listAnswer;
     }
 
     public int getQuestionId() {
@@ -34,6 +45,10 @@ public class Question {
         return QuizId;
     }
 
+    public List<Answer> getListAnswer() {
+        return listAnswer;
+    }
+
     public void setQuestionId(int QuestionId) {
         this.QuestionId = QuestionId;
     }
@@ -45,5 +60,9 @@ public class Question {
     public void setQuizId(int QuizId) {
         this.QuizId = QuizId;
     }
-    
+
+    public void setListAnswer(List<Answer> listAnswer) {
+        this.listAnswer = listAnswer;
+    }
+
 }
