@@ -220,7 +220,8 @@
                                              data-bs-target="#quizModal-${quiz.quizID}">
                                             <div class="featured-section-list">
                                                 <div class="content-container" style="height: 200px; overflow: hidden;  background: white;">
-                                                    <img style="width: 100%" src="data:image/png;base64,${quiz.image}" alt="">
+                                                    <!--<img style="width: 100%" src="data:image/png;base64,${quiz.image}" alt="">-->
+                                                    <img style="width: 100%" src="img/quiz-image/quiz-cover1.jpg" alt="">
                                                 </div>
                                                 <div class="content-quiz-info">
                                                     <div class="quiz-info">

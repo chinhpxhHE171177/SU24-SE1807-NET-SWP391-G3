@@ -374,7 +374,8 @@ public class QuizDAO extends DBContext {
                 Quiz quiz = new Quiz();
                 byte[] imgData = rs.getBytes("Image");
                 String base64Image = Base64.getEncoder().encodeToString(imgData);
-                quiz.setImage((base64Image));
+                //quiz.setImage((base64Image));
+                quiz.setImage(rs.getString("Image"));
                 quiz.setQuizID(rs.getInt("QuizID"));
                 quiz.setTitle(rs.getString("title"));
                 quiz.setDescription(rs.getString("description"));
@@ -405,7 +406,8 @@ public class QuizDAO extends DBContext {
                 Quiz quiz = new Quiz();
                 byte[] imgData = rs.getBytes("Image");
                 String base64Image = Base64.getEncoder().encodeToString(imgData);
-                quiz.setImage((base64Image));
+                //quiz.setImage((base64Image));
+                quiz.setImage(rs.getString("Image"));
                 quiz.setQuizID(rs.getInt("QuizID"));
                 quiz.setTitle(rs.getString("title"));
                 quiz.setDescription(rs.getString("description"));
@@ -613,5 +615,14 @@ public class QuizDAO extends DBContext {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public static void main(String args[]) {
+        QuizDAO sdao = new QuizDAO();
+        List<Quiz> q = new ArrayList<>();
+        q = sdao.getListQuizHomePageBySubjectId(1);
+        for (Quiz quiz : q) {
+            System.out.println(quiz);
+        }
     }
 }
