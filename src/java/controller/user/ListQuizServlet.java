@@ -6,6 +6,7 @@ package controller.user;
 
 import dal.QuizDAO;
 import dal.SubjectDAO;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 import model.Quiz;
+import model.Subject;
 
 /**
  *
@@ -119,7 +121,7 @@ public class ListQuizServlet extends HttpServlet {
     }
 
     private void filterQuiz(HttpServletRequest request, HttpServletResponse response) {
-        try {
+       try {
             HttpSession session = request.getSession();
             String levelS = request.getParameter("level");
             String indexS = request.getParameter("index");

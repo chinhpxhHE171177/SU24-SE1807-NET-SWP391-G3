@@ -82,14 +82,13 @@ public class LoginServlet extends HttpServlet {
         User u = ud.checkLogin(username, password);
 
         if (u != null) {
-
+            
             HttpSession session = request.getSession();
             session.setAttribute("user", u);
-            //response.sendRedirect("homepage/home.jsp");
-            response.sendRedirect("home");
+            response.sendRedirect("homepage/home.jsp");
         } else {
             response.sendRedirect("login?error=1");
-
+           
         }
 
     }
