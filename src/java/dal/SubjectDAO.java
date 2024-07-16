@@ -22,9 +22,6 @@ public class SubjectDAO extends DBContext {
      * @param args the command line arguments
      * @return
      */
-    /*----------- 
-    Admin 
-------------*/
     public List<Subject> getAllSubjects() {
         List<Subject> list = new ArrayList<>();
 
@@ -771,6 +768,78 @@ public class SubjectDAO extends DBContext {
                 list.add(new Registration(rs.getString(1)));
             }
         } catch (Exception e) {
+        }
+        return list;
+    }
+
+    public int getAllSubjectsInHomePageTotal() {
+        List<Subject> list = new ArrayList<>();
+        try {
+            String sql = "SELECT COUNT(*) FROM [Subjects]";
+            PreparedStatement pst = connection.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<Subject> getAllSubjectsInHomePage(int index) {
+        List<Subject> list = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM [Subjects] ORDER BY SubjectID OFFSET ? ROW FETCH NEXT 5 ROWS ONLY";
+            PreparedStatement pst = connection.prepareStatement(sql);
+            pst.setInt(1, (index - 1) * 5);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Subject subject = new Subject();
+                subject.setId(rs.getInt("SubjectID"));
+                subject.setName(rs.getString("Subject_Name"));
+                list.add(subject);
+            }
+            return list;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public int getAllSubjectsInHomePageSearchTotal(String search) {
+        List<Subject> list = new ArrayList<>();
+        try {
+            String sql = "SELECT COUNT(*) FROM [Subjects] WHERE Subject_Name LIKE ? ";
+            PreparedStatement pst = connection.prepareStatement(sql);
+            pst.setString(1, "%" + search + "%");
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<Subject> getAllSubjectsInHomePageSearch(int index, String search) {
+        List<Subject> list = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM [Subjects] WHERE Subject_Name Like ? ORDER BY SubjectID OFFSET ? ROW FETCH NEXT 5 ROWS ONLY";
+            PreparedStatement pst = connection.prepareStatement(sql);
+            pst.setString(1, "%" + search + "%");
+            pst.setInt(2, (index - 1) * 5);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Subject subject = new Subject();
+                subject.setId(rs.getInt("SubjectID"));
+                subject.setName(rs.getString("Subject_Name"));
+                list.add(subject);
+            }
+            return list;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return list;
     }
