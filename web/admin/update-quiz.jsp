@@ -3,82 +3,59 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Add Content</title>
+        <title>Update Content</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <style>
-            body {
-                font-family: Arial, sans-serif;
-            }
-            label {
-                display: block;
-                margin: 10px 0 5px;
-            }
-            input[type="text"], textarea, input[type="number"] {
-                width: 300px;
-                padding: 8px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-            }
-            input[type="submit"] {
-                background-color: #4CAF50;
-                color: white;
-                padding: 10px 15px;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-            input[type="submit"]:hover {
-                background-color: #45a049;
-            }
             .container {
-                width: 400px;
-                margin: auto;
-                padding-top: 20px;
+                max-width: 600px;
+                margin-top: 20px;
             }
         </style>
     </head>
     <body>
         <div class="container">
-            <h1>Update Quiz</h1>
+            <h1 class="mb-4">Update Quiz</h1>
             <form action="quiz-manage" method="post" enctype="multipart/form-data">
-                   <input type="hidden" name="action" value="update"/>        
-                   <input type="hidden" name="id" value="${QUIZ.quizID}"/>
+                <input type="hidden" name="action" value="update"/>
+                <input type="hidden" name="id" value="${QUIZ.quizID}"/>
 
-                <div>
-                    <label for="title">Title:</label>
-                    <input type="text" id="title" name="title" required value="${QUIZ.title}">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title:</label>
+                    <input type="text" id="title" name="title" required value="${QUIZ.title}" class="form-control">
                 </div>
-                <div>
-                    <label for="description">Description:</label>
-                    <input id="desc" name="desc" required value="${QUIZ.description}"/>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description:</label>
+                    <textarea id="desc" name="desc" required class="form-control">${QUIZ.description}</textarea>
                 </div>
-                <div>
-                    <label for="level">Level:</label>
-                    <input type="text" id="level" name="level" required value="${QUIZ.level}">
+                <div class="mb-3">
+                    <label for="level" class="form-label">Level:</label>
+                    <input type="text" id="level" name="level" required value="${QUIZ.level}" class="form-control">
                 </div>
-                <div>
-                    <label for="image">Image:</label>
-                    <input type="file" id="image" name="image" accept="image/*" value="${QUIZ.image}">
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image:</label>
+                    <input type="file" id="image" name="image" accept="image/*" class="form-control">
                 </div>
-                <div>
-                    <label for="category">Category:</label>
-                    <select id="categoryId" name="categoryId">
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category:</label>
+                    <select id="categoryId" name="categoryId" class="form-select">
                         <c:forEach items="${CATEGORY}" var="cate">
                             <option ${cate.id == QUIZ.categoryID ? 'selected' : ''} value="${cate.id}">${cate.name}</option>
                         </c:forEach>
                     </select>
                 </div>
-                <div>
-                    <label for="subject">Subject:</label>
-                    <select id="subjectId" name="subjectId">
-                        <%-- Sample Data --%>
+                <div class="mb-3">
+                    <label for="subject" class="form-label">Subject:</label>
+                    <select id="subjectId" name="subjectId" class="form-select">
                         <c:forEach items="${SUBJECT}" var="subject">
                             <option value="${subject.id}">${subject.name}</option>
                         </c:forEach>
                     </select>
                 </div>
-                <button type="submit">Update Quiz</button>
+                <button type="submit" class="btn btn-primary">Update Quiz</button>
             </form>
-            <a href="quiz-manage?action=view">Tro ve trang list</a>
+            <a href="quiz-manage?action=view" class="btn btn-link">Back to list</a>
         </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

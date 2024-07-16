@@ -131,7 +131,8 @@
     <servlet>
         <servlet-name>DeleteAccount</servlet-name>
         <servlet-class>controller.admin.DeleteAccount</servlet-class>
-    </servlet><servlet>
+    </servlet>
+    <servlet>
         <servlet-name>AddAccountServlet</servlet-name>
         <servlet-class>controller.admin.AddAccountServlet</servlet-class>
     </servlet>
@@ -158,6 +159,22 @@
     <servlet>
         <servlet-name>FilterManaAccount</servlet-name>
         <servlet-class>controller.admin.FilterManaAccount</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddQuestionWithAnswerServlet</servlet-name>
+        <servlet-class>controller.admin.AddQuestionWithAnswerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AnswerQuizServlet</servlet-name>
+        <servlet-class>controller.user.AnswerQuizServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>QuizHistoryDetailServlet</servlet-name>
+        <servlet-class>controller.user.QuizHistoryDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>QuizServlet</servlet-name>
+        <servlet-class>controller.user.QuizServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SubjectListServlet</servlet-name>
@@ -314,5 +331,21 @@
     <servlet-mapping>
         <servlet-name>FilterManaAccount</servlet-name>
         <url-pattern>/FilAcc</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddQuestionWithAnswerServlet</servlet-name>
+        <url-pattern>/admin/addquestion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AnswerQuizServlet</servlet-name>
+        <url-pattern>/AnswerQuizServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuizHistoryDetailServlet</servlet-name>
+        <url-pattern>/QuizHistoryDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuizServlet</servlet-name>
+        <url-pattern>/quiz</url-pattern>
     </servlet-mapping>
 </web-app>

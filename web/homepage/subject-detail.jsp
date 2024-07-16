@@ -86,18 +86,18 @@
                             <div class="d-flex justify-content-center mt-3">
                                 <div>
                                     <c:choose>
-                                        <c:when test="${sessionScope.users != null}">
+                                        <c:when test="${sessionScope.user != null}">
                                             <c:choose>
                                                 <c:when test="${empty res}">
                                                     <button name="button-enroll" id="button-enroll" onclick="enrollSubject('${subject.id}', '${subject.packageId}')" type="button" class="btn btn-primary btn-lg">Enroll Now</button>
                                                 </c:when>
-                                                <c:when test="${res != null && res.status == 1 && sessionScope.users.id == res.userID}">
+                                                <c:when test="${res != null && res.status == 1 && sessionScope.user.id == res.userID}">
                                                     <button type="submit" class="btn btn-primary btn-lg">Enroll Now</button>
                                                 </c:when>
-                                                <c:when test="${res != null && res.status == 2 && sessionScope.users.id == res.userID}">
+                                                <c:when test="${res != null && res.status == 2 && sessionScope.user.id == res.userID}">
                                                     <button class="btn btn-secondary btn-lg"><a href="course-detail?id=${subject.id}">Go To Course</a></button>
                                                 </c:when>
-                                                <c:when test="${res != null && res.status == 3 && sessionScope.users.id == res.userID}">
+                                                <c:when test="${res != null && res.status == 3 && sessionScope.user.id == res.userID}">
                                                     <button class="btn btn-success btn-lg">Completed</button>
                                                 </c:when>
                                                 <c:otherwise>

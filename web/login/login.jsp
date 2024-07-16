@@ -206,7 +206,7 @@
             <div class="links">
                 
                 <div class="google">
-                    <a class="fab fa-google-plus-square" href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/Quizz/login-google&response_type=code&client_id=237610735806-huhmj63f517dinbonapn00fnna7e4o1b.apps.googleusercontent.com&approval_prompt=force"><span>Google</span></a>
+                    <a class="fab fa-google-plus-square" href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:9999/Quizz/login-google&response_type=code&client_id=237610735806-huhmj63f517dinbonapn00fnna7e4o1b.apps.googleusercontent.com&approval_prompt=force"><span>Google</span></a>
                 </div>
             </div>
             <div class="signup">
