@@ -39,6 +39,19 @@ public class LesMooc {
         this.content = content;
     }
 
+    public LesMooc(int id, String name, String videoLink, Date createdAt, int createdBy, int moocId, String status, String content, double duration, String author) {
+        this.id = id;
+        this.name = name;
+        this.videoLink = videoLink;
+        this.createdAt = createdAt;
+        this.createdBy = createdBy;
+        this.moocId = moocId;
+        this.status = status;
+        this.content = content;
+        this.duration = duration;
+        this.author = author;
+    }
+
     public LesMooc(int id, String name, String videoLink, Date createdAt, int createdBy, int moocId, String status, String content, double duration) {
         this.id = id;
         this.name = name;

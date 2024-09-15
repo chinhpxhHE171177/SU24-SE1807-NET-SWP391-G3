@@ -81,7 +81,7 @@ public class SubjectDetailServlet extends HttpServlet {
             int id = Integer.parseInt(id_raw);
 
             // Get user from session
-            User user = (User) request.getSession().getAttribute("users");
+            User user = (User) request.getSession().getAttribute("user");
             Registration res = null;
 
             // Check if user is logged in

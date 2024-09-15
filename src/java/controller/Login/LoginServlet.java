@@ -8,6 +8,7 @@ import dal.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -60,8 +61,31 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("login/login.jsp").forward(request, response);
-        doPost(request, response);
+        // check cookie
+        Cookie[] cookies = request.getCookies();
+        String username = null;
+        String password = null;
+        for (Cookie cooky : cookies) {
+            if (cooky.getName().equals("username")) {
+                username = cooky.getValue();
+            }
+            if (cooky.getName().equals("password")) {
+                password = cooky.getValue();
+            }
+            if (username != null && password != null) {
+                break;
+            }
+        }
+        if (username != null && password != null) {
+            User users = new UserDAO().checkLogin(username, password);
+            if (users != null) { // cookies hop le 
+
+                request.getSession().setAttribute("users", users);
+                response.sendRedirect("home");
+                return;
+            }
+        }
+        request.getRequestDispatcher("/login/login.jsp").forward(request, response);
     }
 
     /**
@@ -75,23 +99,38 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
+
+        String nameOrEmail = request.getParameter("username");
         String password = request.getParameter("password");
+        boolean remember = request.getParameter("remember") != null;
 
-        UserDAO ud = new UserDAO();
-        User u = ud.checkLogin(username, password);
+        UserDAO udao = new UserDAO();
+        // check username/email and password
+        User users = udao.checkLogin(nameOrEmail, password);
 
-        if (u != null) {
-
-            HttpSession session = request.getSession();
-            session.setAttribute("user", u);
-            //response.sendRedirect("homepage/home.jsp");
-            response.sendRedirect("home");
-        } else {
-            response.sendRedirect("login?error=1");
-
+        if (users != null) { // valid credentials, store in session
+            // remember 
+            String url = "home";
+            if (remember) {
+                Cookie uCookie = new Cookie("username", nameOrEmail);
+                uCookie.setMaxAge(60 * 60 * 24);
+                Cookie pCookie = new Cookie("password", password);
+                pCookie.setMaxAge(60 * 60 * 24);
+                // save on the client's machine
+                response.addCookie(uCookie);
+                response.addCookie(pCookie);
+            }
+            if (users.getRoleId() == 7) {
+               url = "admin/quiz-manage?action=view";
+            } else if(users.getRoleId() == 1) {
+                url = "admin/subject-list";
+            }
+            request.getSession().setAttribute("user", users);
+            response.sendRedirect(url);
+        } else { // invalid credentials
+            request.setAttribute("mess", "Username or password invalid");
+            request.getRequestDispatcher("login/login.jsp").forward(request, response);
         }
-
     }
 
     /**

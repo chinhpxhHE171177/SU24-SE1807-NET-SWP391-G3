@@ -1,68 +1,88 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.util.List;
 
 /**
  *
- * @author Datnt
+ * @author Admin
  */
 public class Question {
 
-    private int QuestionId;
-    private String QuestionDetail;
-    private int QuizId;
-    private List<Answer> listAnswer;
+    /**
+     * @param args the command line arguments
+     */
+    private int questionID;
+    private String questionDetail;
+    private int quizID;
+    private int type;
+    
+    private List<Answer> answers; // Add this property
 
     public Question() {
     }
 
-    public Question(int QuestionId, String QuestionDetail, int QuizId) {
-        this.QuestionId = QuestionId;
-        this.QuestionDetail = QuestionDetail;
-        this.QuizId = QuizId;
+    public Question(int questionID, String questionDetail, int quizID) {
+        this.questionID = questionID;
+        this.questionDetail = questionDetail;
+        this.quizID = quizID;
     }
 
-    public Question(int QuestionId, String QuestionDetail, int QuizId, List<Answer> listAnswer) {
-        this.QuestionId = QuestionId;
-        this.QuestionDetail = QuestionDetail;
-        this.QuizId = QuizId;
-        this.listAnswer = listAnswer;
+    public Question(int questionID, String questionDetail, int quizID, List<Answer> answers) {
+        this.questionID = questionID;
+        this.questionDetail = questionDetail;
+        this.quizID = quizID;
+        this.answers = answers;
     }
 
-    public int getQuestionId() {
-        return QuestionId;
+    public Question(int questionID, String questionDetail, int quizID, int type) {
+        this.questionID = questionID;
+        this.questionDetail = questionDetail;
+        this.quizID = quizID;
+        this.type = type;
+    }
+
+    public int getQuestionID() {
+        return questionID;
+    }
+
+    public void setQuestionID(int questionID) {
+        this.questionID = questionID;
     }
 
     public String getQuestionDetail() {
-        return QuestionDetail;
+        return questionDetail;
     }
 
-    public int getQuizId() {
-        return QuizId;
+    public void setQuestionDetail(String questionDetail) {
+        this.questionDetail = questionDetail;
     }
 
-    public List<Answer> getListAnswer() {
-        return listAnswer;
+    public int getQuizID() {
+        return quizID;
     }
 
-    public void setQuestionId(int QuestionId) {
-        this.QuestionId = QuestionId;
+    public void setQuizID(int quizID) {
+        this.quizID = quizID;
     }
 
-    public void setQuestionDetail(String QuestionDetail) {
-        this.QuestionDetail = QuestionDetail;
+    public List<Answer> getAnswers() {
+        return answers;
     }
 
-    public void setQuizId(int QuizId) {
-        this.QuizId = QuizId;
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
     }
 
-    public void setListAnswer(List<Answer> listAnswer) {
-        this.listAnswer = listAnswer;
+    public int getType() {
+        return type;
     }
 
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" + "questionID=" + questionID + ", questionDetail=" + questionDetail + ", quizID=" + quizID + ", type=" + type + ", answers=" + answers + '}';
+    }
 }

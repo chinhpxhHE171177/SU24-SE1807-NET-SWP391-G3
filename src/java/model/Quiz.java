@@ -23,6 +23,11 @@ public class Quiz {
     private int createById;
     private int duration;
     private Date createdAt;
+    private int Type;
+    private Boolean Status;
+
+    private String subjectName;
+    private String author;
 
     public Quiz() {
     }
@@ -37,6 +42,39 @@ public class Quiz {
         this.SubjectID = SubjectID;
         this.CreateAt = CreateAt;
         this.createById = createById;
+    }
+
+    public Quiz(int QuizID, String title, String image, String description, int Level, int CategoryID, int SubjectID, int createById, int duration, Date createdAt, int Type, Boolean Status, String subjectName, String author) {
+        this.QuizID = QuizID;
+        this.title = title;
+        this.image = image;
+        this.description = description;
+        this.Level = Level;
+        this.CategoryID = CategoryID;
+        this.SubjectID = SubjectID;
+        this.createById = createById;
+        this.duration = duration;
+        this.createdAt = createdAt;
+        this.Type = Type;
+        this.Status = Status;
+        this.subjectName = subjectName;
+        this.author = author;
+    }
+
+    public Quiz(int QuizID, String title, String description, int Level, int CategoryID, int SubjectID, int createById, int duration, Date createdAt, int Type, Boolean Status, String subjectName, String author) {
+        this.QuizID = QuizID;
+        this.title = title;
+        this.description = description;
+        this.Level = Level;
+        this.CategoryID = CategoryID;
+        this.SubjectID = SubjectID;
+        this.createById = createById;
+        this.duration = duration;
+        this.createdAt = createdAt;
+        this.Type = Type;
+        this.Status = Status;
+        this.subjectName = subjectName;
+        this.author = author;
     }
 
     public void setQuizID(int QuizID) {
@@ -125,6 +163,48 @@ public class Quiz {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Quiz(String subjectName, String author) {
+        this.subjectName = subjectName;
+        this.author = author;
+    }
+
+    public int getType() {
+        return Type;
+    }
+
+    public void setType(int Type) {
+        this.Type = Type;
+    }
+
+    public Boolean getStatus() {
+        return Status;
+    }
+
+    public void setStatus(Boolean Status) {
+        this.Status = Status;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    @Override
+    public String toString() {
+        return "Quiz{" + "QuizID=" + QuizID + ", title=" + title + ", image=" + image + ", description=" + description + ", Level=" + Level + ", CategoryID=" + CategoryID + ", SubjectID=" + SubjectID + ", CreateAt=" + CreateAt + ", createById=" + createById + ", duration=" + duration + ", createdAt=" + createdAt + ", Type=" + Type + ", Status=" + Status + ", subjectName=" + subjectName + ", author=" + author + '}';
     }
 
 }

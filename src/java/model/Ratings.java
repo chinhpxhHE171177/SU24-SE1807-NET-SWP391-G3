@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Ratings {
 
-    private int ratingId;
+    public int ratingId;
     private int userId;
     private int lessonId;
     private int rating;
@@ -16,12 +16,12 @@ public class Ratings {
     private boolean status;
     private String fullname;
     private String avatar;
-//    private List<Reply> replies; // Thêm danh sách các reply
+    private List<Reply> replies; // Thêm danh sách các reply
 
     public Ratings() {
     }
 
-    public Ratings(int ratingId, int userId, int lessonId, int rating, String comment, Timestamp createdAt, int like, boolean status) {
+    public Ratings(int ratingId, int userId, int lessonId, int rating, String comment, Timestamp createdAt, int like, boolean isReply, boolean status) {
         this.ratingId = ratingId;
         this.userId = userId;
         this.lessonId = lessonId;
@@ -29,22 +29,8 @@ public class Ratings {
         this.comment = comment;
         this.createdAt = createdAt;
         this.like = like;
-//        this.isReply = isReply;
+        this.isReply = isReply;
         this.status = status;
-    }
-
-    public Ratings(int ratingId, int userId, int lessonId, int rating, String comment, Timestamp createdAt, int like, boolean status, String fullname, String avatar) {
-        this.ratingId = ratingId;
-        this.userId = userId;
-        this.lessonId = lessonId;
-        this.rating = rating;
-        this.comment = comment;
-        this.createdAt = createdAt;
-        this.like = like;
-//        this.isReply = isReply;
-        this.status = status;
-        this.fullname = fullname;
-        this.avatar = avatar;
     }
 
     public Ratings(int ratingId, int userId, int lessonId, int rating, String comment, Timestamp createdAt, int like, boolean isReply, boolean status, String fullname, String avatar) {
@@ -149,15 +135,16 @@ public class Ratings {
         this.status = status;
     }
 
-//    public List<Reply> getReplies() {
-//        return replies;
-//    }
-//
-//    public void setReplies(List<Reply> replies) {
-//        this.replies = replies;
-//    }
+    public List<Reply> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<Reply> replies) {
+        this.replies = replies;
+    }
+
     @Override
     public String toString() {
-        return "Ratings{" + "ratingId=" + ratingId + ", userId=" + userId + ", lessonId=" + lessonId + ", rating=" + rating + ", comment=" + comment + ", createdAt=" + createdAt + ", like=" + like + ", status=" + status + ", fullname=" + fullname + ", avatar=" + avatar + '}';
+        return "Ratings{" + "ratingId=" + ratingId + ", userId=" + userId + ", lessonId=" + lessonId + ", rating=" + rating + ", comment=" + comment + ", createdAt=" + createdAt + ", like=" + like + ", isReply=" + isReply + ", status=" + status + ", fullname=" + fullname + ", avatar=" + avatar + ", replies=" + replies + '}';
     }
 }

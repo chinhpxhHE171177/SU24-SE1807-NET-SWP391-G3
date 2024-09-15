@@ -1,6 +1,13 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%-- 
+    Document   : home
+    Created on : Jun 18, 2024, 7:25:39 AM
+    Author     : Admin
+--%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<html>
+<!DOCTYPE html>
+<html lang="zxx">
+
     <head>
         <title>Quizz. - Quiz Practice website</title>
         <meta charset="UTF-8">
@@ -8,7 +15,7 @@
         <meta name="keywords" content="endGam,gGaming, magazine, html">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Favicon -->
-        <link href="img/favicon.ico" rel="shortcut icon" />
+        <link href="../img/favicon.ico" rel="shortcut icon" />
 
         <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
@@ -24,6 +31,8 @@
         crossorigin="anonymous"></script>
 
         <!-- Stylesheets -->
+        <link rel="stylesheet" href="../css/bootstrap.min.css" />
+        <!-- Stylesheets -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/font-awesome.min.css" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/slicknav.min.css" />
@@ -35,7 +44,7 @@
               crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         <!-- Main Stylesheets -->
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" />
 
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -49,63 +58,7 @@
         </div>
 
         <!-- Header section -->
-        <header class="header-section">
-            <div class="header-warp">
-                <div class="header-bar-warp d-flex">
-                    <!-- site logo -->
-                    <a href="home.html" class="site-logo">
-                        <!-- <img src="./img/QuizLogo.png" alt=""> -->
-                        Quizz.
-                    </a>
-                    <nav class="top-nav-area w-100">
-                        <c:if test="${user == null}">
-                            <div class="user-panel">
-                                <a href="login">Login</a> / <a href="login">Register</a>
-                            </div>
-                        </c:if>
-                        <c:if test="${user != null}">
-                            <div class="user-panel">
-                                <a href="login">Welcome</a>  ${user.fullname}/ <a href="logout">Logout</a>
-                            </div>
-                        </c:if>
-
-                        <c:choose>
-                            <c:when test="${user.roleId == 1}">
-                                <div class="user-panel" style="margin-right: 15px;">
-                                    <a href="admin/quiz-manage?action=view">Manage</a>
-                                </div>
-                            </c:when>
-                            <c:otherwise>
-                                <div class="user-panel" style="margin-right: 15px;">
-                                    <a href="quiz-history">Quiz-history</a>
-                                </div>
-                            </c:otherwise>
-                        </c:choose>
-
-                        <!-- Menu -->
-                        <ul class="main-menu primary-menu">
-                            <li><a href="home.html" class="active">Home</a></li>
-                            <li><a href="games.html">Quiz</a>
-                                <ul class="sub-menu">
-                                    <li><a href="game-single.html">Game Singel</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="review.html">Subject</a></li>
-                            <li><a href="review.html">Package</a></li>
-                            <li><a href="About.html">About</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                            <li>
-                                <!-- Search bar -->
-                                <div class="search-box">
-                                    <button class="btn-search"><i class="fas fa-search"></i></button>
-                                    <input type="text" class="input-search" placeholder="Type to Search...">
-                                </div>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </header>
+        <%@include file="../components/navigation.jsp" %>
         <!-- Header section end -->
 
 
@@ -117,7 +70,7 @@
                     <div class="container">
                         <h2>Quiz Website</h2>
                         <p>Quiz is a free, gamebased learning platform<br>Let's experience and learn together</p>
-                        <a href="About.html" class="site-btn">Read More <img src="img/icons/double-arrow.png" alt="#" /></a>
+                        <a href="about" class="site-btn">Read More <img src="img/icons/double-arrow.png" alt="#" /></a>
                     </div>
                 </div>
                 <div class="hero-item set-bg d-flex align-items-center justify-content-center text-center"
@@ -125,7 +78,7 @@
                     <div class="container">
                         <h2>Quiz Website</h2>
                         <p>Quiz is a free, gamebased learning platform<br>Let's experience and learn together</p>
-                        <a href="About.html" class="site-btn">Read More <img src="img/icons/double-arrow.png" alt="#" /></a>
+                        <a href="about" class="site-btn">Read More <img src="img/icons/double-arrow.png" alt="#" /></a>
                     </div>
                 </div>
             </div>
@@ -189,7 +142,7 @@
 
 
         <!-- Blog section -->
-        <section class="blog-section spad">
+          <section class="blog-section spad">
             <div class="container">
                 <div class="row">
                     <form class="d-flex" style="width: 50%" action="home" style="display: flex">
@@ -220,8 +173,7 @@
                                              data-bs-target="#quizModal-${quiz.quizID}">
                                             <div class="featured-section-list">
                                                 <div class="content-container" style="height: 200px; overflow: hidden;  background: white;">
-                                                    <!--<img style="width: 100%" src="data:image/png;base64,${quiz.image}" alt="">-->
-                                                    <img style="width: 100%" src="img/quiz-image/quiz-cover1.jpg" alt="">
+                                                    <img style="width: 100%" src="data:image/jpeg;charset=utf-8;base64,${quiz.image}" alt="">
                                                 </div>
                                                 <div class="content-quiz-info">
                                                     <div class="quiz-info">
@@ -263,7 +215,7 @@
                                                     <p class="sample-questions-text px-3">Sample Questions: </p>
                                                     <div class="modal-footer">
                                                         <button class="info-btn exit-btn">Exit Quiz</button>
-                                                        <a href="play-quiz.html" class="info-btn continue-btn">Continue</a>
+                                                        <a href="quiz?id=${quiz.quizID}" class="info-btn continue-btn">Continue</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -351,30 +303,11 @@
 
 
         <!-- Footer section -->
-        <footer class="footer-section">
-            <div class="container">
-                <a href="#" class="footer-logo">
-                    Quizz.
-                </a>
-                <ul class="main-menu footer-menu">
-                    <li><a href="">About</a></li>
-                    <li><a href="">Services</a></li>
-                    <li><a href="">Reviews</a></li>
-                    <li><a href="">News</a></li>
-                    <li><a href="">Contact</a></li>
-                </ul>
-                <div class="footer-social d-flex justify-content-center">
-                    <a href="#"><i class="fab fa-pinterest fa-lg"></i></a>
-                    <a href="#"><i class="fab fa-facebook fa-lg"></i></a>
-                    <a href="#"><i class="fab fa-twitter fa-lg"></i></a>
-                    <a href="#"><i class="fab fa-dribbble fa-lg"></i></a>
-                    <a href="#"><i class="fab fa-behance fa-lg"></i></a>
-                </div>
-            </div>
-        </footer>
+        <%@include file="../components/footer.jsp" %>
         <!-- Footer section end -->
 
 
+        <!--====== Javascripts & Jquery ======-->
         <!--====== Javascripts & Jquery ======-->
         <script src="${pageContext.request.contextPath}/js/jquery-3.2.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
@@ -383,7 +316,6 @@
         <script src="${pageContext.request.contextPath}/js/jquery.sticky-sidebar.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/jquery.magnific-popup.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/main.js"></script>
-
     </body>
 
 </html>

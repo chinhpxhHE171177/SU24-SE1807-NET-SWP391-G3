@@ -277,13 +277,13 @@
                     </div>
                     <form action="AnswerQuizServlet" method="POST">
                         <input type="hidden" name="quizId" value="${QUESTIONS.quizId}"/>
-                        
+
                         <c:forEach items="${QUESTIONS.listQuestion}" var="q"  varStatus="question">
                             <h2 class="question-text">${q.questionDetail}</h2>
                             <div class="option-list">
                                 <c:forEach items="${q.listAnswer}" var="a" varStatus="status">
                                     <label class="option" style="display: block; ${userAnswers[q.questionId] == String.valueOf(a.answerID) ? 'background : #09001d; color: #00a63d; border-color: #00a63d;' : ''}">
-                                        <input type="radio" name="answer-${question.count}" value="${a.answerID}" ${userAnswers[q.questionId] == String.valueOf(a.answerID) ? 'checked' : ''} />
+                                        <input type="radio"  required class="answers" name="answer-${question.count}" value="${a.answerID}" ${userAnswers[q.questionId] == String.valueOf(a.answerID) ? 'checked' : '' } />
                                         <span>${status.count}. ${a.answerContent}</span>
                                     </label>
                                     <c:if test="${a.isCorrect && isAnswer}">
@@ -304,7 +304,7 @@
                                         color: white;
                                         ">Submit</button>
                             </c:if>
-                             <c:if test="${isAnswer == null}">
+                            <c:if test="${isAnswer == null}">
                                 <button type="submit" style="background: #c40094;
                                         border-radius: 3px;
                                         padding: 15px;

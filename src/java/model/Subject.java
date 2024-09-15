@@ -37,6 +37,8 @@ public class Subject {
     private int numberOfLessons;
     private int totalEnroll; // tong so nguoi dk vao mon hoc 
 
+    private int state;
+
     public Subject() {
     }
 
@@ -229,6 +231,14 @@ public class Subject {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 
     @Override

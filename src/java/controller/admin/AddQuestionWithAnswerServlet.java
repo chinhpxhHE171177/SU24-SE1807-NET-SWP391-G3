@@ -17,8 +17,8 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import model.Answer;
-import model.Question;
+import model.AnswerQuestion;
+import model.QuestionQuiz;
 import model.Quiz;
 import model.User;
 
@@ -100,7 +100,7 @@ public class AddQuestionWithAnswerServlet extends HttpServlet {
             String quizIds = request.getParameter("quizId");
             String content = request.getParameter("content");
             QuizDAO quizDAO = new QuizDAO();
-            Question q = new Question();
+            QuestionQuiz q = new QuestionQuiz();
             int quizId = Integer.parseInt(quizIds);
 
             boolean result = questionDAO.insertQuestion(content, quizId);
@@ -108,8 +108,8 @@ public class AddQuestionWithAnswerServlet extends HttpServlet {
             request.setAttribute("QUIZZES", getListQuizz);
             if (result) {
                 int questionId = questionDAO.getIdQuestionWasAdded();
-                // Answer
-                List<Question> listAnswer = new ArrayList();
+                // AnswerQuestion
+                List<QuestionQuiz> listAnswer = new ArrayList();
                 AnswerDAO answerDAO = new AnswerDAO();
                 for (int i = 1; i <= 4; i++) {
                     String answerParamater = "answer-" + i;
@@ -119,7 +119,7 @@ public class AddQuestionWithAnswerServlet extends HttpServlet {
                     if (correct != null) {
                         correctIndex = Integer.parseInt(correct);
                     }
-                    Answer answer = new Answer();
+                    AnswerQuestion answer = new AnswerQuestion();
                     answer.setAnswerContent(answerInput);
                     answer.setQuestionID(questionId);
                     answer.setIsCorrect(false);

@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import model.Category;
 import model.Packages;
@@ -40,6 +41,7 @@ public class AddSubjectServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -105,7 +107,9 @@ public class AddSubjectServlet extends HttpServlet {
             int categoryId = Integer.parseInt(request.getParameter("categoryId"));
             boolean statusValue = Boolean.parseBoolean(request.getParameter("status"));
             int created_by = Integer.parseInt(request.getParameter("userId"));
-            Date created_at = Date.valueOf(request.getParameter("created_at"));
+//            Date created_at = Date.valueOf(request.getParameter("created_at"));
+            LocalDate currentDate = LocalDate.now();
+            Date created_at = Date.valueOf(currentDate);
 
             Subject subject = new Subject(subjectName, description, fileName, statusValue, packageId, categoryId, created_by, created_at);
             SubjectDAO subjectDAO = new SubjectDAO();

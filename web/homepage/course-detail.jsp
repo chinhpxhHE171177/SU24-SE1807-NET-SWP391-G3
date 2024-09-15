@@ -17,7 +17,7 @@
         <title>Course Details</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        <link rel="stylesheet" href="../homepage/css/style.css"/>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/homepage/css/style.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
               integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="nav-right">
-                <p style="font-size: 16px">${sessionScope.users.fullname}</p>
+                <p style="font-size: 16px">${sessionScope.user.fullname}</p>
                 <c:choose>
                     <c:when test="${subjectStart.state == 2}">
                         <p style="color: #00C853; font-size: 16px"><i class="fa-solid fa-circle-check"></i> Completed</p>
@@ -137,7 +137,7 @@
                             <h3 id="lesson-name">${firstLesson.name}</h3>
                             <p id="createdAt" style="margin-bottom: 0px">Published: <fmt:formatDate value="${firstLesson.createdAt}" pattern="dd/MM/yyyy" /></p>
                             <br />
-                            <p>Teacher: <span style="font-weight: 600;">${firstLesson.author}</span></p>
+                            <p>Teacher: <span style="font-weight: 600;"><a href="${pageContext.request.contextPath}/profileTeacher?id=${firstLesson.createdBy}">${firstLesson.author}</a></span></p>
                             <div>
                                 <p id="contents">Description: ${firstLesson.content}</p>
                             </div>
@@ -173,7 +173,7 @@
                                 </div>
                                 <div class="form-info" style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
                                     <div style="display: flex; align-items: center;">
-                                        <img src="../images/users/${sessionScope.users.avatar}" alt="avatar" class="avatar" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
+                                        <img src="${pageContext.request.contextPath}/images/users/${sessionScope.user.avatar}" alt="avatar" class="avatar" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
                                         <div class="stars" id="stars" style="margin: 0;">
                                             <div class="rates">
                                                 <input type="radio" id="star5" name="rate" value="5" />
@@ -191,7 +191,7 @@
                                     </div>
                                 </div>
                                 <textarea name="comment" id="comment" placeholder="Write a message..."></textarea>
-                                <input type="hidden" name="userId" id="userId" value="${sessionScope.users.id}" />
+                                <input type="hidden" name="userId" id="userId" value="${sessionScope.user.id}" />
                                 <input type="hidden" name="lessonId" id="lessonId" value="" />
                                 <button type="button" id="submitRating">Send</button>
 
@@ -199,13 +199,13 @@
                                     <c:forEach var="rating" items="${listr}">
                                         <div class="reviews" id="review${rating.ratingId}" style="background:#eee;padding: 1rem;animation: fadeIn 1.5s;border-radius: 5px;font-size: 14px;color: #737373;margin-top: 15px;">
                                             <div class="reviews-header">
-                                                <img id="avatar" src="../images/users/${rating.avatar}" alt="avatar" class="avatar">
+                                                <img id="avatar" src="${pageContext.request.contextPath}/images/users/${rating.avatar}" alt="avatar" class="avatar">
                                                 <div class="nav-item dropdown">
                                                     <a class="nav-link p-0 text-black" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <span class="three-dots"><i class="fa-solid fa-ellipsis-vertical"></i></span>
                                                     </a>
                                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                        <c:if test="${sessionScope.users.id == rating.userId}">
+                                                        <c:if test="${sessionScope.user.id == rating.userId}">
                                                             <li><a class="dropdown-item editComment" href="#" data-id="${rating.ratingId}" data-comment="${rating.comment}"><i class="fa-solid fa-pen"></i> Edit Comment</a></li>
                                                             <li><a class="dropdown-item deleteComment" href="#" data-id="${rating.ratingId}"><i class="fa-solid fa-trash"></i> Delete Comment</a></li>
                                                             </c:if>
@@ -234,15 +234,15 @@
                                                 <button class="saveEditComment" data-id="${rating.ratingId}" style="display: none;margin-top: 0px">Save changes</button>
                                             </div>
                                             <ul style="border-top: 1px solid #737373; padding-top: 15px; margin-top: 45px; margin-bottom: 1rem; padding-left: 0px">
-                                                <input type="text" name="lesMoocId" value="${lesson.id}">
+                                                <input type="hidden" name="lesMoocId" value="${lesson.id}">
                                                 <li style="list-style-type: none; display: inline-block; cursor: pointer; color: #3D4399" class="likes likeClicked" data-id="${rating.ratingId}" data-liked="${rating.status ? 'true' : 'false'}">
                                                     ${ratingStatusMap[rating.ratingId] ? "Unlike" : "Like"} <i class="fa-solid fa-thumbs-up"></i> <span class="like-count">(${rating.like})</span>
                                                 </li>
                                                 <li style="list-style-type: none; display: inline-block; padding-left: 25px; padding-right: 25px; cursor: pointer; color: #3D4399" class="reply" data-id="${rating.ratingId}">Reply <i class="fa-solid fa-reply"></i></li>
                                                 <div class="reply-form" id="replyForm${rating.ratingId}" style="margin-top: 1.5rem; display: none;">
                                                     <textarea style="margin-left:0px;height: 64px;margin-top: 0px; border-bottom-right-radius:0px; border-top-right-radius:0px;" name="comment" id="comment${rating.ratingId}" placeholder="Write a message..."></textarea>
-                                                    <input type="number" name="userId" id="userId" value="${sessionScope.users.id}" />
-                                                    <input type="number" name="parentId" id="parentId${rating.ratingId}" value="${rating.ratingId}" />
+                                                    <input type="hidden" name="userId" id="userId" value="${sessionScope.user.id}" />
+                                                    <input type="hidden" name="parentId" id="parentId${rating.ratingId}" value="${rating.ratingId}" />
                                                     <button style="margin-top: 0px; height: 64px; border-bottom-left-radius: 0px; border-top-left-radius: 0px;" type="button" class="submitReply"><i class="fa-solid fa-paper-plane"></i></button>
                                                 </div>
                                             </ul>
@@ -253,13 +253,13 @@
                                                 <c:forEach var="r" items="${rating.replies}">
                                                     <div class="repply" style="margin-left: 30px; margin-bottom: 1rem; padding: 10px; background: #f1f1f1; border-radius: 5px;">
                                                         <div class="reviews-header">
-                                                            <img id="avatar" src="../images/users/${r.avatar}" alt="avatar" class="avatar">
+                                                            <img id="avatar" src="${pageContext.request.contextPath}/images/users/${r.avatar}" alt="avatar" class="avatar">
                                                             <div class="nav-item dropdown">
                                                                 <a class="nav-link p-0 text-black" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                                     <span class="three-dots"><i class="fa-solid fa-ellipsis-vertical"></i></span>
                                                                 </a>
                                                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                                    <c:if test="${sessionScope.users.id == r.userId}">
+                                                                    <c:if test="${sessionScope.user.id == r.userId}">
                                                                         <li><a class="dropdown-item editReplyComment" href="#" data-id="${r.id}" data-comment="${r.comment}"><i class="fa-solid fa-pen"></i> Edit Comment</a></li>
                                                                         <li><a class="dropdown-item deleteReplyComment" href="#" data-id="${r.id}"><i class="fa-solid fa-trash"></i> Delete Comment</a></li>
                                                                         </c:if>
@@ -305,7 +305,7 @@
                                                         $('#lessonId').val(lessonId);
                                                         $.ajax({
                                                             type: "POST",
-                                                            url: "/Quizz/homepage/course-detail",
+                                                            url: "/Quizz/course-detail",
                                                             data: {dataValue: dataValue},
                                                             success: function (response) {
                                                                 console.log("Response received:", response);
@@ -353,24 +353,6 @@
                                                     });
                                                 }
 
-//                                                // Sự kiện click cho việc sắp xếp bình luận
-//                                                $(".dropdown-item").click(function (e) {
-//                                                    e.preventDefault();
-//                                                    var sortOrder = $(this).text();
-//                                                    var lessonId = $("#lessonId").val();
-//                                                    $.ajax({
-//                                                        type: "GET",
-//                                                        url: "/Quizz/homepage/sort-comments",
-//                                                        data: {lessonId: lessonId, sortOrder: sortOrder},
-//                                                        success: function (response) {
-//                                                            // Cập nhật phần ratings với các bình luận đã sắp xếp
-//                                                            $("#ratings").html(response);
-//                                                        },
-//                                                        error: function (xhr, status, error) {
-//                                                            console.error("Error:", error);
-//                                                        }
-//                                                    });
-//                                                });
             </script>
             <script>
                 $(document).ready(function () {
@@ -498,7 +480,7 @@
                 function fetchLessonAndUpdate(lessonId) {
                     $.ajax({
                         type: "POST",
-                        url: "/Quizz/homepage/course-detail",
+                        url: "/Quizz/course-detail",
                         data: {dataValue: lessonId},
                         success: function (response) {
                             console.log("Response received:", response);
@@ -720,48 +702,3 @@
             </script>
     </body>
 </html>
-
-
-
-
-
-
-
-
-
-<!--$(document).ready(function () {
-                    // Event delegation for like/unlike functionality
-                    $(document).on('click', '.likes', function () {
-                        var likeButton = $(this);
-                        var ratingId = likeButton.data("id");
-                        var isLiked = likeButton.data("liked") === "true"; // Check if initially liked
-
-                        $.ajax({
-                            type: "POST",
-                            url: "/Quizz/homepage/reaction",
-                            data: {
-                                ratingId: ratingId,
-                                action: isLiked ? "unlike" : "like" // Toggle action based on current state
-                            },
-                            success: function (response) {
-                                if (response.status === "success") {
-                                    var newLikeCount = response.likeCount;
-                                    isLiked = !isLiked; // Toggle state
-                                    likeButton.data("liked", isLiked.toString()); // Update data attribute
-
-                                    // Update button text and style based on new state
-                                    likeButton.html((isLiked ? "Unlike" : "Like") + ' <i class="fa-solid fa-thumbs-up"></i> (' + newLikeCount + ')');
-                                    likeButton.toggleClass("likeClicked", isLiked); // Optionally toggle class for styling
-                                    likeButton.next('.like-count').text('(' + newLikeCount + ')');
-                                } else {
-                                    alert("Failed to update like status!");
-                                }
-                            },
-                            error: function (xhr, status, error) {
-                                console.error("Error:", error);
-                            }
-                        });
-                    });
-
-                    // Other existing code for edit, delete, etc., can remain as is, or ensure they use event delegation similarly.
-                });-->

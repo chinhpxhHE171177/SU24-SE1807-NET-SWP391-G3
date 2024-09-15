@@ -33,50 +33,7 @@
             <div class="loader"></div>
         </div>
 
-        <!-- Header section -->
-        <header class="header-section">
-            <div class="header-warp">
-                <div class="header-social d-flex justify-content-end">
-                    <p>Follow us:</p>
-                    <a href="#"><i class="fa fa-pinterest"></i></a>
-                    <a href="#"><i class="fa fa-facebook"></i></a>
-                    <a href="#"><i class="fa fa-twitter"></i></a>
-                    <a href="#"><i class="fa fa-dribbble"></i></a>
-                    <a href="#"><i class="fa fa-behance"></i></a>
-                </div>
-                <div class="header-bar-warp d-flex">
-                    <!-- site logo -->
-                    <a href="home" class="site-logo">
-                        QUIZZ
-                    </a>
-                    <nav class="top-nav-area w-100">
-                        <c:if test="${user == null}">
-                            <div class="user-panel">
-                                <a href="login">Login</a> / <a href="login">Register</a>
-                            </div>
-                        </c:if>
-                        <c:if test="${user != null}">
-                            <div class="user-panel">
-                                <a href="login">Welcome</a>  ${user.fullname}/ <a href="logout">Logout</a>
-                            </div>
-                        </c:if>
-                        <!-- Menu -->
-                        <ul class="main-menu primary-menu">
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="games.html">Games</a>
-                                <ul class="sub-menu">
-                                    <li><a href="game-single.html">Game Singel</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="review.html">Reviews</a></li>
-                            <li><a href="blog.html">News</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </header>
-        <!-- Header section end -->
+                 <%@include file="../components/navigation.jsp" %>
 
 
         <!-- Page top section -->
@@ -97,13 +54,13 @@
         <!-- Games section -->
         <section class="games-section">
             <div class="container">
-                <ul class="game-filter" style="display: flex; justify-content: space-between">
-                    <div style="display: flex;">
-                        <form class="d-flex" action="quizzes" style="display: flex">
+                <ul class="game-filter" style="display: flex; justify-content: space-between;">
+                    <div style="display: flex; justify-content: space-between; width:700px">
+                        <form class="d-flex" action="quizzes" style="display: flex; align-items: center">
                             <input type="hidden" name="action" value="search"/>
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" value="${search}">
                             <input type="hidden" name="id" value="${id}"/>
-                            <button class="btn btn-success" type="submit">Search</button>
+                            <button style="margin-left: 10px; margin-top: 5px;" class="btn btn-success" type="submit">Search</button>
                         </form>
 
                         <form class="d-flex" action="quizzes" style="display: flex; justify-content: left; align-items: center; margin-top: 10px; margin-left: 15px;">
@@ -118,10 +75,10 @@
                             <button style="margin-left: 10px; margin-top: 5px;" class="btn btn-success" type="submit">Filter</button>
                         </form>
                     </div>
-                    <c:if test="${user.roleId == 3}">
+                    <c:if test="${user.roleId == 7}">
                         <a href="admin/quiz-manage?action=view" class="btn btn-success" style="margin-top: 15px">Add new quiz</a>
                     </c:if>    
-                    <c:if test="${user.roleId == 2}">
+                    <c:if test="${user.roleId == 1}">
                         <a href="quiz-history" class="btn btn-success" style="margin-top: 15px">Quiz history</a>
                     </c:if>   
                 </ul>
@@ -143,7 +100,7 @@
                                            font-size: 16px;
                                            border-radius: 5px;
                                            cursor: pointer;
-                                           transition: .3s ease;">Read More</a>
+                                           transition: .3s ease;">Start</a>
                                     </div>
                                 </div>
                             </c:forEach>
@@ -180,40 +137,11 @@
                         <div id="stickySidebar">
                             <div class="widget-item">
                                 <div class="categories-widget">
-                                    <h4 class="widget-title">categories</h4>
+                                    <h4 class="widget-title">Other subject</h4>
                                     <ul>
-                                        <li><a href="">Games</a></li>
-                                        <li><a href="">Gaming Tips & Tricks</a></li>
-                                        <li><a href="">Online Games</a></li>
-                                        <li><a href="">Team Games</a></li>
-                                        <li><a href="">Community</a></li>
-                                        <li><a href="">Uncategorized</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="widget-item">
-                                <div class="categories-widget">
-                                    <h4 class="widget-title">platform</h4>
-                                    <ul>
-                                        <li><a href="">Xbox</a></li>
-                                        <li><a href="">X box 360</a></li>
-                                        <li><a href="">Play Station</a></li>
-                                        <li><a href="">Play Station VR</a></li>
-                                        <li><a href="">Nintendo Wii</a></li>
-                                        <li><a href="">Nintendo Wii U</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="widget-item">
-                                <div class="categories-widget">
-                                    <h4 class="widget-title">Genre</h4>
-                                    <ul>
-                                        <li><a href="">Online</a></li>
-                                        <li><a href="">Adventure</a></li>
-                                        <li><a href="">S.F.</a></li>
-                                        <li><a href="">Strategy</a></li>
-                                        <li><a href="">Racing</a></li>
-                                        <li><a href="">Shooter</a></li>
+                                        <c:forEach items="${SUBJECTS}" var="sub">
+                                            <li><a href="quizzes?action=view&id=${sub.id}">${sub.name}</a></li>
+                                            </c:forEach>
                                     </ul>
                                 </div>
                             </div>

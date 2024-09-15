@@ -100,7 +100,7 @@ public class ListSubjectServlet extends HttpServlet {
             numberSearch = lists.size();
         } else {
             // Get all subjects
-            lists = sdao.getAllSubjects();
+            lists = sdao.getAllListSubjects();
             numberSearch = sdao.getTotalSubject();
         }
 

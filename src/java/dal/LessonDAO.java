@@ -588,7 +588,7 @@ public class LessonDAO extends DBContext {
                     + "LEFT JOIN Users u ON u.UserID = l.created_by\n"
                     + "LEFT JOIN Categories c ON c.CategoryID = s.\n"
                     + "CategoryId\n"
-                    + "WHERE m.MoocID = ?";
+                    + "WHERE m.MoocID = ? AND l.status = 'Active'";
             PreparedStatement pst = connection.prepareStatement(sql);
             pst.setInt(1, id);
             ResultSet rs = pst.executeQuery();
@@ -737,7 +737,7 @@ public class LessonDAO extends DBContext {
 
     public LesMooc getLessonFirstBySid(int id) {
         try {
-            String sql = "SELECT TOP 1 l.*, s.Subject_Name, u.UserName, m.MoocName, s.Image, c.category_name FROM LesMooc L\n"
+            String sql = "SELECT TOP 1 l.*,m.MoocName, s.Subject_Name, u.FullName,  s.Image, c.category_name FROM LesMooc L\n"
                     + "LEFT JOIN Mooc m ON m.MoocID = l.MoocID\n"
                     + "LEFT JOIN Subjects s ON s.SubjectID = m.MoocID\n"
                     + "LEFT JOIN Users u ON u.UserID = l.created_by\n"

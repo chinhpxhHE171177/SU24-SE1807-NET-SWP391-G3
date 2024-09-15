@@ -10,12 +10,12 @@ import java.util.List;
 public class QuizDetailVM {
     private int QuizId;
     private String Title;
-    private List<Question> listQuestion;
+    private List<QuestionQuiz> listQuestion;
 
     public QuizDetailVM() {
     }
 
-    public QuizDetailVM(int QuizId, String Title, List<Question> listQuestion) {
+    public QuizDetailVM(int QuizId, String Title, List<QuestionQuiz> listQuestion) {
         this.QuizId = QuizId;
         this.Title = Title;
         this.listQuestion = listQuestion;
@@ -34,7 +34,7 @@ public class QuizDetailVM {
         return QuizId;
     }
 
-    public List<Question> getListQuestion() {
+    public List<QuestionQuiz> getListQuestion() {
         return listQuestion;
     }
 
@@ -42,7 +42,7 @@ public class QuizDetailVM {
         this.QuizId = QuizId;
     }
 
-    public void setListQuestion(List<Question> listQuestion) {
+    public void setListQuestion(List<QuestionQuiz> listQuestion) {
         this.listQuestion = listQuestion;
     }
     

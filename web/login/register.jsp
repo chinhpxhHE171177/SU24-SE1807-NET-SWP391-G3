@@ -11,247 +11,382 @@
     <head>
         <meta charset="UTF-8">
         <title> Quizz - Register </title>
-
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link href="style.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <!-- Boxicons CSS -->
+        <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
     </head>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
-        *{
+        @import url('https://fonts.googleapis.com/css?family=Montserrat:600|Noto+Sans|Open+Sans:400,700&display=swap');
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins',sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
-        body{
+
+        .container-fluid {
+            background-color: black;
+        }
+
+        .infinity-image-container {
+            background-image: url('${pageContext.request.contextPath}/images/page-top-bg/bg.jpg');
             height: 100vh;
+            opacity: 0.8;
+            filter: brightness(1.1);
+        }
+
+        .infinity-form-container {
+            background: #31335d;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            padding: 10px;
-            background: linear-gradient(135deg, #71b7e6, #9b59b6);
+            justify-content: center;
         }
-        .container{
-            max-width: 700px;
-            width: 100%;
-            background-color: #fff;
-            padding: 25px 30px;
-            border-radius: 5px;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+
+        .infinity-form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100vh;
         }
-        .container .title{
-            font-size: 25px;
-            font-weight: 500;
+
+        .infinity-form h4 {
+            font-weight: bold;
+            color: white;
+        }
+
+        .infinity-form .form-input {
             position: relative;
         }
-        .container .title::before{
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            height: 3px;
-            width: 30px;
-            border-radius: 5px;
-            background: linear-gradient(135deg, #71b7e6, #9b59b6);
-        }
-        .content form .user-details{
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            margin: 20px 0 12px 0;
-        }
-        form .user-details .input-box{
-            margin-bottom: 15px;
-            width: calc(100% / 2 - 20px);
-        }
-        form .input-box span.details{
-            display: block;
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-        .user-details .input-box input{
-            height: 45px;
+
+        .infinity-form .form-input input {
             width: 100%;
-            outline: none;
-            font-size: 16px;
+            margin-bottom: 20px;
+            height: 100%;
+            border: none;
             border-radius: 5px;
-            padding-left: 15px;
-            border: 1px solid #ccc;
-            border-bottom-width: 2px;
-            transition: all 0.3s ease;
+            outline: none;
+            background: white;
+            padding-left: 45px;
         }
-        .user-details .input-box input:focus,
-        .user-details .input-box input:valid{
-            border-color: #9b59b6;
+
+        .infinity-form .form-input {
+            position: relative;
+            height: 50px;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 6px;
         }
-        form .gender-details .gender-title{
+
+        .eye-icon {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #8b8b8b;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .infinity-form .form-input span {
+            position: absolute;
+            top: 8px;
+            padding-left: 20px;
+            color: #777;
+        }
+
+        .infinity-form .form-input input:focus,
+        .infinity-form .form-input input:valid {
+            border: 2px solid #4285f4;
+        }
+
+        .infinity-form input[type="checkbox"]:not(:checked)+label:before {
+            background: transparent;
+            border: 2px solid white;
+            width: 15px;
+            height: 15px;
+        }
+
+        .infinity-form .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
+            background-color: #4285f4 !important;
+            border: 0px;
+        }
+
+        .infinity-form button[type="submit"] {
+            height: 48px;
+            width: 100%;
+            border: none;
+            font-size: 16px;
+            font-weight: 400;
+            border-radius: 6px;
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(45deg, #4285f4, #709de8);
+            /*Button Color*/
+            color: #fff;
+            font-weight: bold;
+            transition: 0.5s;
+        }
+
+        .infinity-form button[type="submit"]:hover {
+            background: linear-gradient(45deg, #709de8, #4285f4);
+            /*Button color when hover*/
+        }
+
+        .forget-link,
+        .login-link,
+        .register-link {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .forget-link:hover,
+        .login-link:hover,
+        .register-link:hover {
+            color: #4285f4;
+            text-decoration: none;
+        }
+
+        .infinity-form .btn-social {
+            color: white;
+            border: 0;
+            display: inline-block;
+            margin: 0px;
+            margin-right: 10px;
+            font-weight: bold;
+            padding: 0px;
+            margin-bottom: 10px;
+        }
+
+        .media-options .field {
+            position: relative;
+            height: 50px;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 6px;
+        }
+
+        .field span {
+            font-weight: 500;
+            opacity: 0.6;
+            color: white;
+        }
+
+        a.google {
+            border: 1px solid #CACACA;
+        }
+
+        .form a {
+            text-decoration: none;
+        }
+
+
+        .line {
+            position: relative;
+            height: 1px;
+            width: 100%;
+            margin: 36px 0;
+            background-color: #d4d4d4;
+        }
+
+        .line::before {
+            content: 'Or';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #31335D;
+            color: #8b8b8b;
+            padding: 0 15px;
+        }
+
+
+        .media-options a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .facebook-icon,
+        img.google-img {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+        }
+
+        img.google-img {
+            height: 20px;
+            width: 20px;
+            object-fit: cover;
+        }
+
+        .infinity-form .btn-social:hover {
+            text-decoration: underline;
+        }
+
+        .infinity-form .btn-facebook:hover {
+            color: hsla(221, 40%, 40%, 1);
+        }
+
+        .infinity-form .btn-google:hover {
+            color: hsla(4, 59%, 47%, 1);
+        }
+
+        .infinity-form .btn-twitter:hover {
+            color: hsla(195, 78%, 54%, 1);
+        }
+
+        form .gender-details {
+            margin-top: 20px;
+        }
+        form .gender-details .gender-title {
             font-size: 20px;
             font-weight: 500;
+            color: white;
+            display: block;
+            margin-bottom: 10px;
         }
-        form .category{
+        form .gender-details .category {
             display: flex;
-            width: 50%;
-            margin: 14px 0 ;
+            width: 60%;
             justify-content: space-between;
         }
-        form .category label{
+        form .gender-details .category label {
             display: flex;
+            color: white;
             align-items: center;
             cursor: pointer;
         }
-        form .category label .dot{
+        form .gender-details .category .dot {
             height: 18px;
             width: 18px;
             border-radius: 50%;
             margin-right: 10px;
-            background: #d9d9d9;
+            background: white;
             border: 5px solid transparent;
             transition: all 0.3s ease;
         }
         #dot-1:checked ~ .category label .one,
         #dot-2:checked ~ .category label .two,
         #dot-3:checked ~ .category label .three{
-            background: #9b59b6;
+            background: #31335d;
             border-color: #d9d9d9;
         }
         form input[type="radio"]{
             display: none;
         }
-        form .button{
-            height: 45px;
-            margin: 35px 0
-        }
-        form .button input{
-            height: 100%;
-            width: 100%;
-            border-radius: 5px;
-            border: none;
-            color: #fff;
-            font-size: 18px;
-            font-weight: 500;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: linear-gradient(135deg, #71b7e6, #9b59b6);
-        }
-        form .button input:hover{
-            /* transform: scale(0.99); */
-            background: linear-gradient(-135deg, #71b7e6, #9b59b6);
-        }
 
-        
-        
-        @media(max-width: 584px){
-            .container{
-                max-width: 100%;
-            }
-            form .user-details .input-box{
-                margin-bottom: 15px;
-                width: 100%;
-            }
-            form .category{
-                width: 100%;
-            }
-            .content form .user-details{
-                max-height: 300px;
-                overflow-y: scroll;
-            }
-            .user-details::-webkit-scrollbar{
-                width: 5px;
-            }
-
-        }
-        @media(max-width: 459px){
-            .container .content .category{
-                flex-direction: column;
-            }
-        }
     </style>
     <body>
-        <div class="container">
-            <div class="title">Registration</div>
-            <%
-            String error = request.getParameter("error");
-            if ("1".equals(error)) {
-                out.println("<p style='color:red; margin:20px;'>Error occurred while registering. Please try again.</p>");
-            } 
-            
-            %>
-            <div class="content">
-                <form action="register" method="post">
-                    <div class="user-details">
-                        <div class="input-box">
-                            <span class="details">Full Name</span>
-                            <input type="text" placeholder="Enter your name" name="fullname" required>
+        <div class="container-fluid">
+            <div class="row">
+                <!-- IMAGE CONTAINER BEGIN -->
+                <div class="col-lg-6 col-md-6 d-none d-md-block infinity-image-container"></div>
+                <!-- IMAGE CONTAINER END -->
+
+                <!-- FORM CONTAINER BEGIN -->
+                <div class="col-lg-6 col-md-6 infinity-form-container">
+                    <div class="col-lg-9 col-md-12 col-sm-8 col-xs-12 infinity-form">
+                        <!-- Company Logo -->
+                        <div class="text-center mb-3 mt-5">
+                            <!-- <img src="logo.png" width="150px"> -->
                         </div>
-                        <div class="input-box">
-                            <span class="details">Username</span>
-                            <input type="text" placeholder="Enter your username" name="username"required>
-                            <%
-                            if ("3".equals(error)) {
-                out.println("<p style='color:red; margin:0px;'>Username already exits</p>");
-            }
-                            %>
-                        </div>
-                        <div class="input-box">
-                            <span class="details">Email</span>
-                            <input type="text" placeholder="Enter your email" name="email" required>
-                            <%
-                            if ("5".equals(error)) {
-                out.println("<p style='color:red; margin:0px;'>Email already exits</p>");
-            }
-                            %>
-                        </div>
-                        <div class="input-box">
-                            <span class="details">Date Of Birth</span>
-                            <input type="date"  name="dob"  required>
-                        </div>
-                        <div class="input-box">
-                            <span class="details">Password</span>
-                            <input type="password" placeholder="Enter your password" name="password"  required>
-                        </div>
-                        <div class="input-box">
-                            <span class="details">Confirm Password</span>
-                            <input type="password" placeholder="Confirm your password"  name="confirmpass" required>
+                        <div class="text-center mb-4">
+                            <h4>Create an account</h4>
                         </div>
                         <%
-                        if ("2".equals(error)) {
-                        out.println("<p style='color:red; margin:0px;'>Confirm Password Not Match Password</p>");
-                            }
+                        String error = request.getParameter("error");
+                        if ("1".equals(error)) {
+                            out.println("<p style='color:red; margin:20px;'>Error occurred while registering. Please try again.</p>");
+                        } 
                         %>
-                    </div>
-                    <div class="gender-details">
-                        <input type="radio" name="gender" id="dot-1" value="M">
-                        <input type="radio" name="gender" id="dot-2" value="F">
+                        <form class="px-3" action="register" method="post">
+                            <div class="form-input">
+                                <span><i class="fa fa-user"></i></span>
+                                <input type="text" name="fullname" placeholder="Enter your name" tabindex="10" required>
+                            </div>
+                            <div class="form-input">
+                                <span><i class="fa fa-user-o"></i></span>
+                                <input type="text" placeholder="Enter your username" name="username" tabindex="10" required>
+                            </div>
+                            <%
+                                if ("3".equals(error)) {
+                                    out.println("<p style='color:red; margin:0px;'>Username already exits</p>");
+                                }
+                            %>
+                            <div class="form-input">
+                                <span><i class="fa fa-envelope-o"></i></span>
+                                <input type="text" placeholder="Enter your email" name="email" tabindex="10" required>
+                            </div>
+                            <%
+                                if ("5".equals(error)) {
+                                    out.println("<p style='color:red; margin:0px;'>Email already exits</p>");
+                                }
+                            %>
+                            <div class="form-input">
+                                <span><i class="fa fa-calendar"></i></span>
+                                <input type="date" name="dob" tabindex="10" required>
+                            </div>
+                            <div class="form-input">
+                                <span><i class="fa fa-lock"></i></span>
+                                <input type="password" placeholder="Enter your password" name="password" required>
+                            </div>
+                            <div class="form-input">
+                                <span><i class="fa fa-lock"></i></span>
+                                <input type="password" placeholder="Confirm your password" name="confirmpass" required>
+                            </div>
+                            <%
+                            if ("2".equals(error)) {
+                                out.println("<p style='color:red; margin:0px;'>Confirm Password Not Match Password</p>");
+                            }
+                            %>
+                            <div class="gender-details">
+                                <input type="radio" name="gender" id="dot-1" value="M">
+                                <input type="radio" name="gender" id="dot-2" value="F">
 
-                        <div class="category">
-                            <span class="gender-title">Gender</span>
+                                <div class="category">
+                                    <span class="gender-title">Gender</span>
 
-                            <label for="dot-1">
-                                <span class="dot one"></span>
-                                <span class="gender">Male</span>
-                            </label>
-                            <label for="dot-2">
-                                <span class="dot two"></span>
-                                <span class="gender">Female</span>
-                            </label>
+                                    <label for="dot-1">
+                                        <span class="dot one"></span>
+                                        <span class="gender">Male</span>
+                                    </label>
+                                    <label for="dot-2">
+                                        <span class="dot two"></span>
+                                        <span class="gender">Female</span>
+                                    </label>
 
+                                </div>
+
+                            </div>
+                            <%
+                                if ("4".equals(error)) {
+                                    out.println("<p style='color:red; margin:0px;'>Choose Gender!!!</p>");
+                                }
+                            %>
+                            <!-- Register Button -->
+                            <div class="mb-3" style="margin-top: 25px;">
+                                <button type="submit" class="btn btn-block">Register</button>
+                            </div>
+                        </form>
+                        <div class="text-center mb-2">
+                            <!--  -->
+                            <div class="text-center mb-5 text-white">Already have an account?
+                                <a class="login-link" href="login">Login here</a>
+                            </div>
                         </div>
-                        <%if ("4".equals(error)) {
-                out.println("<p style='color:red; margin:0px;'>Choose Gender!!!</p>");
-            }%>
-
                     </div>
-                    <div class="button">
-                        <input type="submit" value="Register">
-                    </div>
-                </form>
-                <div class="login" style="text-align:center;">
-                    Already Account? <a href="login">Login now</a>
+                    <!-- FORM CONTAINER END -->
                 </div>
             </div>
-        </div>
-
-
-
     </body>
 </html>

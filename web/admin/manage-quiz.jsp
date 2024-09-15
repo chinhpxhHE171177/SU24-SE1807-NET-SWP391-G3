@@ -29,114 +29,333 @@
                     font-size: 3.5rem;
                 }
             }
+
+            .sidebar {
+                width: 150px;
+                background-color: #004d99;
+                color: white;
+                padding-top: 20px;
+            }
+
+            .sidebar a {
+                color: white;
+                display: block;
+                padding: 10px 20px;
+                text-decoration: none;
+            }
+
+            .sidebar a:hover {
+                background-color: #003366;
+            }
+
+            .sidebar .nav-link.active {
+                background-color: #003366;
+            }
+
+            .content {
+                padding: 2rem;
+                background-color: #f1f2f7;
+            }
+            .content h2 {
+                padding: 0px 20px 20px 20px;
+                border-bottom: 2px solid #f1efef;
+            }
+            .header {
+                background-color: #D9EDF4;
+                /*color: #333;*/
+                padding: 1rem;
+                border-radius: 5px;
+                margin-bottom: 1rem;
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
+            .btn-primary {
+                background-color: #007bff;
+                border-color: #007bff;
+            }
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #004085;
+            }
+            .table-responsive {
+                background-color: #ffffff;
+                padding: 1rem;
+                border-radius: 5px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            .table th, .table td {
+                vertical-align: middle;
+            }
+            .table thead th {
+                background-color: #e9ecef;
+                font-size: 14px;
+            }
+            .table tbody td {
+                font-size: 12px;
+            }
+
+            .table td a {
+                color: #004d99;
+            }
+            .btn-toolbar {
+                /* margin-bottom: 10px;
+                padding-bottom: 30px; */
+                display: flex;
+                justify-content: flex-end;
+                width: 100%;
+            }
+
+            .btn-toolbar button {
+                margin: 4px 2px;
+            }
+
+            .form-inline {
+                padding: 10px 20px 0px 20px;
+            }
+
+            .form-inline input,
+            .form-inline select {
+                margin-right: 10px;
+            }
+
+            @media (min-width: 576px) {
+                .form-inline .form-control {
+                    display: inline-block;
+                    width: 275px;
+                    vertical-align: middle;
+                }
+            }
+
+            .form-inline button {
+                width: 100px;
+                padding: 6.7px 20px;
+                margin-right: 55px;
+                border: none;
+                border-radius: 3px;
+                background-color: #3698D8;
+                color: white;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            .btn-pub,
+            .btn-unp,
+            .btn-edit,
+            .btn-dele {
+                background-color: #ECE9E8;
+            }
+
+            .btn-prary,
+            .btn-secondary {
+                width: 200px;
+                padding: 10px 20px;
+                border: none;
+                color: white;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 4px;
+            }
+            .status.active {
+                color: green;
+                font-weight: bold;
+            }
+            .status.inactive {
+                color: red;
+                font-weight: bold;
+            }
+            .status-approved {
+                color: green;
+                font-weight: bold;
+            }
+            .status-pending {
+                color: red;
+                font-weight: bold;
+            }
+            .fa-check-circle {
+                color: green;
+            }
+
+            .fa-times-circle {
+                color: red;
+            }
+            .btn-prary {
+                background-color: #87B880;
+                /* Bootstrap Primary Blue */
+            }
+
+            .btn-prary:hover {
+                background-color: #6b9d64;
+            }
+
+            /*            .content .btn-pray {
+                            margin-left: 200px;
+                        }*/
+            .filters {
+                background-color: #ffffff;
+                padding: 1rem;
+                border-radius: 5px;
+                margin-bottom: 1rem;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .filters .search {
+                display: flex;
+                align-items: center;
+            }
+
+            .filters .search label {
+                margin-right: 0.5rem;
+            }
+
+            .filters .search .form-control {
+                max-width: 280px;
+            }
+
+            .filters form {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                margin-bottom: 0; /* Ensure forms align properly */
+            }
+
+            .filters form .form-control,
+            .filters form .form-select {
+                display: inline-block;
+                width: 180px;
+                vertical-align: middle;
+            }
+
+            .filters form button {
+                margin-left: auto;
+            }
+            .filters button {
+                width: 100px;
+                padding: 6.7px 20px;
+                margin-right: 55px;
+                border: none;
+                border-radius: 3px;
+                background-color: #3698D8;
+                color: white;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+            .search,
+            .form-select {
+                width: 350px;
+                padding: 8px 20px;
+                /*border: none;*/
+                /*color: white;*/
+                /*text-align: center;*/
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 4px;
+            }
         </style>
 
 
     </head>
     <body>
+        <div style="display: flex">
+            <%@include file="../components/sidebar_gv.jsp" %>
+            <main style="width: 100%">
+                <section class="py-5 text-center container">
+                    <div class="row py-lg-5">
+                        <div class="col-lg-6 col-md-8 mx-auto">
+                            <h1 class="fw-light">Quiz Management</h1>
+                            <form class="d-flex" action="quiz-manage">
+                                <input type="hidden" name="action" value="search"/>
+                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" value="${search}">
+                                <button class="btn btn-outline-success" type="submit">Search</button>
+                            </form>
+                            <p>
+                                <a href="quiz-manage?action=add" class="btn btn-primary my-2">Create new quiz</a>
+                                <a href="addquestion?action=view" class="btn btn-success my-2" >Add question</a>
+                            </p>
 
-        <header>
-            <div class="collapse bg-dark" id="navbarHeader">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-8 col-md-7 py-4">
-                            <h4 class="text-white">About</h4>
-                        </div>
-                        <div class="col-sm-4 offset-md-1 py-4">
-                            <h4 class="text-white">Contact</h4>
-                            <ul class="list-unstyled">
-                                <li><a href="addquestion?action=view" class="text-white">Add question</a></li>
-                            </ul>
                         </div>
                     </div>
+                </section>
+                <% 
+String errorMessage = request.getParameter("error");
+if (errorMessage != null) {
+                %>
+                <div class="alert alert-danger">
+                    <%= errorMessage %>
                 </div>
-            </div>
-            <div class="navbar navbar-dark bg-dark shadow-sm">
-                <div class="container">
-                    <a href="#" class="navbar-brand d-flex align-items-center">
-                        <strong>Quiz management</strong>
-                    </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                </div>
-            </div>
-        </header>
+                <%
+                    }
+                %>
 
-        <main>
-            <section class="py-5 text-center container">
-                <div class="row py-lg-5">
-                    <div class="col-lg-6 col-md-8 mx-auto">
-                        <h1 class="fw-light">Quiz Management</h1>
-                        <form class="d-flex" action="quiz-manage">
-                            <input type="hidden" name="action" value="search"/>
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" value="${search}">
-                            <button class="btn btn-outline-success" type="submit">Search</button>
-                        </form>
-                        <!--<p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>-->
-                        <p>
-                            <a href="quiz-manage?action=add" class="btn btn-primary my-2">Create new quiz</a>
-                        </p>
+                <div class="album py-5 bg-light">
+                    <div class="container">
+                        <a href="${pageContext.request.contextPath}/home" class="btn btn-success" style="float: right">Back to home</a>
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" style="clear: both;">
 
-                    </div>
-                </div>
-            </section>
-
-            <div class="album py-5 bg-light">
-                <div class="container">
-
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
-                        <c:forEach items="${QUIZS}" var="quiz">
-                            <div class="col">
-                                <div class="card shadow-sm">
-                                    <img src="data:image/png;base64,${quiz.image}" alt="Profile picture"  style="width: 100%; height: 250px; cursor: pointer; margin: 10px auto;border: 2px solid #1b730d">
-                                    <div class="card-body">
-                                        <p class="card-text">Title: ${quiz.title}</p>      
-                                        <p class="card-text">Level: ${quiz.level}</p>
-
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                                <a  class="btn btn-sm btn-outline-secondary" href="quiz-manage?action=update&id=${quiz.quizID}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                            <c:forEach items="${QUIZS}" var="quiz">
+                                <div class="col">
+                                    <div class="card shadow-sm">
+                                        <img src="data:image/png;base64,${quiz.image}" alt="Profile picture" style="width: 100%; height: 250px; cursor: pointer; margin: 10px auto;border: 2px solid #1b730d">
+                                        <div class="card-body">
+                                            <p class="card-text">Title: ${quiz.title}</p>      
+                                            <p class="card-text">Level: ${quiz.level}</p>
+                                            <p class="card-text ${quiz.status ? 'status-approved' : 'status-pending'}">
+                                                Status: ${quiz.status ? 'Approved' : 'Pending'}
+                                            </p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="btn-group">
+                                                    <a href="QuizQuesstionListServlet?quizId=${quiz.quizID}" class="btn btn-success">View</a>
+                                                    <a class="btn btn-sm btn-outline-secondary" href="quiz-manage?action=update&id=${quiz.quizID}" >Edit</a>
+                                                    <a class="btn btn-sm btn-outline-danger" href="quiz-manage?action=deleteQuiz&id=${quiz.quizID}" >Delete</a>
+                                                </div>
+                                                <small class="text-muted">${quiz.quizID}</small>
                                             </div>
-                                            <small class="text-muted">${quiz.quizID}</small>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </c:forEach>
+                            </c:forEach>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <nav aria-label="Page navigation example" style="display: flex; justify-content:center;">
-                <ul class="pagination">
-                    <c:choose>
-                        <c:when test ="${selectedPage - 1 < 1}">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#">«</a>
-                            </li>
-                        </c:when>
-                        <c:otherwise>
-                            <li class="page-item"><a class="page-link" href="quiz-manage?action=view&search=${search}&index=${selectedPage-1}">«</a></li>
-                            </c:otherwise>
-                        </c:choose>
-                        <c:forEach var="i" begin="1" end="${endP}">
-                        <li class="page-item ${i == selectedPage ? "active" : "" }"> <a class="page-link" href="quiz-manage?action=view&search=${search}&index=${i}">${i}</a> <li>
-                        </c:forEach>
+                <nav aria-label="Page navigation example" style="display: flex; justify-content:center;">
+                    <ul class="pagination">
                         <c:choose>
-                            <c:when test ="${selectedPage >= endP}">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#">»</a>
-                            </li>
-                        </c:when>
-                        <c:otherwise>
-                            <li class="page-item"><a class="page-link" href="quiz-manage?action=view&search=${search}&index=${selectedPage+1}">»</a></li>
-                            </c:otherwise>
-                        </c:choose>
-                </ul>
-            </nav>
-        </main>
+                            <c:when test ="${selectedPage - 1 < 1}">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#">«</a>
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <li class="page-item"><a class="page-link" href="quiz-manage?action=view&search=${search}&index=${selectedPage-1}">«</a></li>
+                                </c:otherwise>
+                            </c:choose>
+                            <c:forEach var="i" begin="1" end="${endP}">
+                            <li class="page-item ${i == selectedPage ? "active" : "" }"> <a class="page-link" href="quiz-manage?action=view&search=${search}&index=${i}">${i}</a> <li>
+                            </c:forEach>
+                            <c:choose>
+                                <c:when test ="${selectedPage >= endP}">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#">»</a>
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <li class="page-item"><a class="page-link" href="quiz-manage?action=view&search=${search}&index=${selectedPage+1}">»</a></li>
+                                </c:otherwise>
+                            </c:choose>
+                    </ul>
+                </nav>
+            </main>
+
+        </div>
 
         <footer class="text-muted py-5">
             <div class="container">

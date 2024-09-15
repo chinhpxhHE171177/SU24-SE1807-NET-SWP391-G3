@@ -59,9 +59,6 @@ public class User {
         this.Role = Role;
     }
 
-    
-
-    
     public User(String username, String email, String password, boolean gender, int roleId) {
         this.username = username;
         this.email = email;
@@ -99,6 +96,19 @@ public class User {
         this.roleId = roleId;
         this.avatar = avatar;
         this.createAt = createAt;
+    }
+
+    public User(int id, String fullname, String username, Date dob, String email, String phone, String address, boolean gender, int roleId, String avatar) {
+        this.id = id;
+        this.fullname = fullname;
+        this.username = username;
+        this.dob = dob;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.gender = gender;
+        this.roleId = roleId;
+        this.avatar = avatar;
     }
 
     public String getDescription() {

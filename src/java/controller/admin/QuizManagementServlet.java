@@ -42,11 +42,26 @@ public class QuizManagementServlet extends HttpServlet {
                 case "view":
                     viewQuizList(request, response);
                     break;
+                case "viewExam":
+                    viewExamList(request, response);
+                    break;
                 case "add":
                     createQuizPage(request, response);
                     break;
+                case "addExam":
+                    createExamPage(request, response);
+                    break;
                 case "update":
                     updateQuizView(request, response);
+                    break;
+                case "updateExam":
+                    updateExamView(request, response);
+                    break;
+                case "deleteQuiz":
+                    deleteQuiz(request, response);
+                    break;
+                case "deleteExam":
+                    deleteExam(request, response);
                     break;
                 case "search":
                     searchQuiz(request, response);
@@ -80,8 +95,14 @@ public class QuizManagementServlet extends HttpServlet {
                 case "add":
                     addQuiz(request, response);
                     break;
+                case "addExam":
+                    addExam(request, response);
+                    break;
                 case "update":
                     updateQuiz(request, response);
+                    break;
+                case "updateExam":
+                    updateExam(request, response);
                     break;
                 case "remove":
                     removeQuiz(request, response);
@@ -115,6 +136,7 @@ public class QuizManagementServlet extends HttpServlet {
             CategoryDAO cateDAO = new CategoryDAO();
             List<Category> listCate = cateDAO.getAllCategory();
             List<Quiz> listQuiz = quizDAO.getListQuizPage(index);
+            List<Quiz> listExam = quizDAO.getListExamPage(index);
             int total = quizDAO.getTotalList();
             int lastPage = total / 6;
             if (total % 6 != 0) {
@@ -122,6 +144,36 @@ public class QuizManagementServlet extends HttpServlet {
             }
             if (listQuiz != null) {
                 request.setAttribute("QUIZS", listQuiz);
+                request.setAttribute("EXAMS", listExam);
+                request.setAttribute("CATEGORIES", listCate);
+                request.setAttribute("endP", lastPage);
+                request.setAttribute("selectedPage", index);
+            }
+            request.getRequestDispatcher(url).forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void viewExamList(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String url = "manage-exam.jsp";
+            String indexS = request.getParameter("index");
+            if (indexS == null) {
+                indexS = "1";
+            }
+            int index = Integer.parseInt(indexS);
+            QuizDAO quizDAO = new QuizDAO();
+            CategoryDAO cateDAO = new CategoryDAO();
+            List<Category> listCate = cateDAO.getAllCategory();
+            List<Quiz> listExam = quizDAO.getListExamPage(index);
+            int total = quizDAO.getTotalList();
+            int lastPage = total / 6;
+            if (total % 6 != 0) {
+                lastPage++;
+            }
+            if (listExam != null) {
+                request.setAttribute("EXAMS", listExam);
                 request.setAttribute("CATEGORIES", listCate);
                 request.setAttribute("endP", lastPage);
                 request.setAttribute("selectedPage", index);
@@ -170,6 +222,44 @@ public class QuizManagementServlet extends HttpServlet {
         }
     }
 
+    private void addExam(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            HttpSession session = request.getSession();
+            String url = "create-exam.jsp";
+            User user = (User) session.getAttribute("user");
+            String title = request.getParameter("title");
+            String description = request.getParameter("desc");
+            Part image = request.getPart("image");
+//            String levelS = request.getParameter("level");
+            String categoryIdS = request.getParameter("categoryId");
+            String subjectIdS = request.getParameter("subjectId");
+
+//            int level = Integer.parseInt(levelS);
+            int categoryId = Integer.parseInt(categoryIdS);
+            int subject = Integer.parseInt(subjectIdS);
+            Quiz quiz = new Quiz();
+
+            QuizDAO quizDAO = new QuizDAO();
+            quiz.setTitle(title);
+            quiz.setDescription(description);
+//            quiz.setLevel(level);
+            quiz.setCategoryID(categoryId);
+            quiz.setSubjectID(subject);
+            quiz.setCreateById(user.getId());
+            boolean result = quizDAO.addNewExam(quiz, image);
+            if (result) {
+                url = "manage-exam.jsp";
+                List<Quiz> listExam = quizDAO.getListExamPage(1);
+                request.setAttribute("EXAMS", listExam);
+            } else {
+                request.setAttribute("ERROR", "Create quiz failed");
+            }
+            request.getRequestDispatcher(url).forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void createQuizPage(HttpServletRequest request, HttpServletResponse response) {
         try {
             String url = "create-quiz.jsp";;
@@ -186,7 +276,73 @@ public class QuizManagementServlet extends HttpServlet {
         }
     }
 
+    private void createExamPage(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String url = "create-exam.jsp";;
+            CategoryDAO categoryDAO = new CategoryDAO();
+            SubjectDAO subjectDAO = new SubjectDAO();
+
+            List<Category> listCategory = categoryDAO.getAllCategory();
+            List<Subject> listSubject = subjectDAO.getAllSubjects();
+            request.setAttribute("CATEGORY", listCategory);
+            request.setAttribute("SUBJECT", listSubject);
+            request.getRequestDispatcher(url).forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void removeQuiz(HttpServletRequest request, HttpServletResponse response) {
+    }
+
+    private void deleteExam(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            HttpSession session = request.getSession();
+            String quizIdStr = request.getParameter("id");
+            int quizId = Integer.parseInt(quizIdStr);
+            QuizDAO quizDAO = new QuizDAO();
+
+            boolean result = quizDAO.deleteExam(quizId);
+
+            // URL to redirect after deleting the exam
+            String url = request.getContextPath() + "/admin/quiz-manage?action=viewExam";
+
+            if (result) {
+                // Redirect to the exam list page with success message
+                response.sendRedirect(url);
+            } else {
+                url += "&error=Failed to delete exam";
+                response.sendRedirect(url);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Handle the exception (e.g., log it or notify the user)
+        }
+    }
+
+    private void deleteQuiz(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            HttpSession session = request.getSession();
+            String quizIdStr = request.getParameter("id");
+            int quizId = Integer.parseInt(quizIdStr);
+            QuizDAO quizDAO = new QuizDAO();
+
+            boolean result = quizDAO.deleteExam(quizId);
+
+            // URL to redirect after deleting the exam
+            String url = request.getContextPath() + "/admin/quiz-manage?action=view";
+
+            if (result) {
+                // Redirect to the exam list page with success message
+                response.sendRedirect(url);
+            } else {
+                url += "&error=Failed to delete quiz";
+                response.sendRedirect(url);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Handle the exception (e.g., log it or notify the user)
+        }
     }
 
     private void updateQuizView(HttpServletRequest request, HttpServletResponse response) {
@@ -194,6 +350,28 @@ public class QuizManagementServlet extends HttpServlet {
             String quizIds = request.getParameter("id");
             int quizId = Integer.parseInt(quizIds);
             String url = "update-quiz.jsp";;
+            CategoryDAO categoryDAO = new CategoryDAO();
+            SubjectDAO subjectDAO = new SubjectDAO();
+            QuizDAO quizDAO = new QuizDAO();
+
+            Quiz quiz = quizDAO.getQuizById(quizId);
+
+            List<Category> listCategory = categoryDAO.getAllCategory();
+            List<Subject> listSubject = subjectDAO.getAllSubjects();
+            request.setAttribute("CATEGORY", listCategory);
+            request.setAttribute("SUBJECT", listSubject);
+            request.setAttribute("QUIZ", quiz);
+            request.getRequestDispatcher(url).forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateExamView(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String quizIds = request.getParameter("id");
+            int quizId = Integer.parseInt(quizIds);
+            String url = "update-exam.jsp";;
             CategoryDAO categoryDAO = new CategoryDAO();
             SubjectDAO subjectDAO = new SubjectDAO();
             QuizDAO quizDAO = new QuizDAO();
@@ -254,6 +432,50 @@ public class QuizManagementServlet extends HttpServlet {
         }
     }
 
+    private void updateExam(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute("user");
+            String url = "create-exam.jsp";
+            String title = request.getParameter("title");
+            String idS = request.getParameter("id");
+            String description = request.getParameter("desc");
+            Part image = request.getPart("image");
+            String levelS = request.getParameter("level");
+            String categoryIdS = request.getParameter("categoryId");
+            String subjectIdS = request.getParameter("subjectId");
+
+            int level = Integer.parseInt(levelS);
+            int categoryId = Integer.parseInt(categoryIdS);
+            int subject = Integer.parseInt(subjectIdS);
+            int id = Integer.parseInt(idS);
+
+            Quiz quiz = new Quiz();
+
+            QuizDAO quizDAO = new QuizDAO();
+            quiz.setTitle(title);
+            quiz.setDescription(description);
+
+            quiz.setLevel(level);
+            quiz.setCategoryID(categoryId);
+            quiz.setSubjectID(subject);
+            quiz.setQuizID(id);
+            quiz.setCreateById(user.getId());
+            boolean result = quizDAO.updateExam(quiz, image);
+            if (result) {
+                url = request.getContextPath() + "/admin/quiz-manage?action=viewExam";
+                List<Quiz> listExam = quizDAO.getListExamPage(1);
+                request.setAttribute("EXAMS", listExam);
+                response.sendRedirect(url);
+            } else {
+                request.setAttribute("ERROR", "Create quiz failed");
+            }
+            request.getRequestDispatcher(url).forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void searchQuiz(HttpServletRequest request, HttpServletResponse response) {
         try {
             HttpSession session = request.getSession();
@@ -267,7 +489,7 @@ public class QuizManagementServlet extends HttpServlet {
             int index = Integer.parseInt(indexS);
             int categoryId = 0;
             String searchS = "";
-            if(search != null) {
+            if (search != null) {
                 searchS = search;
             }
             if (filter == null) {
@@ -284,6 +506,7 @@ public class QuizManagementServlet extends HttpServlet {
             }
             if (listQuiz != null) {
                 request.setAttribute("QUIZS", listQuiz);
+                request.setAttribute("EXAMS", listQuiz);
                 request.setAttribute("endP", lastPage);
                 request.setAttribute("selectedPage", index);
             }
@@ -320,6 +543,7 @@ public class QuizManagementServlet extends HttpServlet {
                 }
                 if (listQuiz != null) {
                     request.setAttribute("QUIZS", listQuiz);
+                    request.setAttribute("EXAMS", listQuiz);
                     request.setAttribute("endP", lastPage);
                     request.setAttribute("selectedPage", index);
                 }

@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 import model.Quiz;
+import model.Subject;
 
 /**
  *
@@ -66,7 +67,9 @@ public class ListQuizServlet extends HttpServlet {
                 SubjectDAO subjectDAO = new SubjectDAO();
                 String subject = subjectDAO.GetById(id);
                 List<Quiz> listQuiz = quizDAO.getListQuizBySubjectId(id, index);
+
                 request.setAttribute(ids, id);
+                List<Subject> listSubject = subjectDAO.getAllSubjectsInQuizDetail();
                 int total = quizDAO.getTotalQuizBySubjectId(id);
                 int lastPage = total / 9;
                 if (total % 9 != 0) {
@@ -74,6 +77,8 @@ public class ListQuizServlet extends HttpServlet {
                 }
                 if (listQuiz != null) {
                     request.setAttribute("QUIZS", listQuiz);
+                    request.setAttribute("SUBJECTS", listSubject);
+
                     request.setAttribute("endP", lastPage);
                     request.setAttribute("id", ids);
                     request.setAttribute("subjectName", subject);
@@ -106,6 +111,9 @@ public class ListQuizServlet extends HttpServlet {
                     lastPage++;
                 }
                 if (listQuiz != null) {
+                    SubjectDAO subjectDAO = new SubjectDAO();
+                    List<Subject> listSubject = subjectDAO.getAllSubjectsInQuizDetail();
+                    request.setAttribute("SUBJECTS", listSubject);
                     request.setAttribute("QUIZS", listQuiz);
                     request.setAttribute("endP", lastPage);
                     request.setAttribute("selectedPage", index);
@@ -138,6 +146,9 @@ public class ListQuizServlet extends HttpServlet {
                     lastPage++;
                 }
                 if (listQuiz != null) {
+                    SubjectDAO subjectDAO = new SubjectDAO();
+                    List<Subject> listSubject = subjectDAO.getAllSubjectsInQuizDetail();
+                    request.setAttribute("SUBJECTS", listSubject);
                     request.setAttribute("QUIZS", listQuiz);
                     request.setAttribute("endP", lastPage);
                     request.setAttribute("selectedPage", index);

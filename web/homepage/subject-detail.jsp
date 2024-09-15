@@ -13,7 +13,7 @@
 <!DOCTYPE html>
 <html lang="zxx">
     <head>
-        <title>Quiz - Subject Details</title>
+        <title>Quiz - Courses</title>
         <meta charset="UTF-8">
         <meta name="description" content="EndGam Gaming Magazine Template">
         <meta name="keywords" content="endGam,gGaming, magazine, html">
@@ -44,11 +44,100 @@
         <link rel="stylesheet" href="../homepage/css/detailStyle.css"/>
 
     </head>
+    <style>
+        .comment-button {
+            background-color: transparent; /* Màu nền mặc định */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-family: monospace;
+        }
+
+        .comment-button:hover {
+            background-color: #ffffff; /* Màu nền khi hover */
+            color: #000;
+        }
+
+        .btn-animation {
+            animation: pulse 1s infinite alternate; /* Hiệu ứng pulse */
+        }
+
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+            }
+            to {
+                transform: scale(1.05);
+            }
+        }
+        .reviews {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            transition: transform 0.3s ease; /* Hiệu ứng transition */
+        }
+        .reviews:hover {
+            transform: translateY(-5px); /* Hiệu ứng khi hover */
+        }
+
+        .reviews-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .avatar img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .reviews-author {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .reviews-time {
+            color: #888;
+        }
+
+        .stars {
+            margin-left: auto;
+            color: #FFD700; /* Màu vàng cho sao đầy */
+        }
+
+        .stars span {
+            font-size: 18px;
+        }
+        .stars span {
+            transition: transform 0.2s ease; /* Hiệu ứng transition cho sao */
+        }
+
+        .stars span:hover {
+            transform: scale(1.2); /* Hiệu ứng scale khi hover */
+        }
+        .reviews-body {
+            color: #333;
+            line-height: 1.6;
+        }
+    </style>
     <body>
         <!--Page Preloder--> 
-        <div id="preloder">
+<!--        <div id="preloder">
             <div class="loader"></div>
-        </div>
+        </div>-->
         <!--Header section--> 
         <%@include file="../components/navigation.jsp" %>
         <!-- Header section end -->
@@ -95,7 +184,7 @@
                                                     <button type="submit" class="btn btn-primary btn-lg">Enroll Now</button>
                                                 </c:when>
                                                 <c:when test="${res != null && res.status == 2 && sessionScope.user.id == res.userID}">
-                                                    <button class="btn btn-secondary btn-lg"><a href="course-detail?id=${subject.id}">Go To Course</a></button>
+                                                    <button class="btn btn-secondary btn-lg"><a href="${pageContext.request.contextPath}/course-detail?id=${subject.id}">Go To Course</a></button>
                                                 </c:when>
                                                 <c:when test="${res != null && res.status == 3 && sessionScope.user.id == res.userID}">
                                                     <button class="btn btn-success btn-lg">Completed</button>
@@ -135,7 +224,7 @@
                 <div class="row content-description">
                     <div class="col-xl-9 col-lg-8 col-md-7 game-single-content">
                         <span class="flex-fill py-2"><i class="fa-solid fa-graduation-cap">Teacher: </i></span>
-                        <span class="text-name"><a style="font-size: 30px" href="">${subject.userName}</a></span>
+                        <span class="text-name"><a style="font-size: 30px" href="${pageContext.request.contextPath}/profileTeacher?id=${lesson.createdBy}">${lesson.author}</a></span>
                         <h2 class="gs-title">${lesson.name}</h2>
                         <h4>Content</h4>
                         <p>${lesson.content}</p>
@@ -161,36 +250,65 @@
 
 
         <section class="game-author-section">
-            <div class="item-widget">
-                <div class="widget-rating">
-                    <c:forEach var="r" items="${listr}">
-                        <div class="reviews">
-                            <div class="reviews-header">
-                                <img src="../images/users/${r.avatar}" alt="avatar"
-                                     class="avatar">
-                                <div>
-                                    <span class="reviews-author">${r.fullname}</span>
-                                    <span class="reviews-time">${r.createdAt}</span>
-                                </div>
+            <div style="width: 80%; margin: 0 auto; font-family: monospace;" class="d-flex justify-content-center">
+                <button id="showCommentsBtn" class="comment-button btn-animation"><i class="fa-solid fa-comment"></i> Comments</button>
+                <button id="showContentsBtn" class="comment-button btn-animation"><i class="fas fa-book-open"></i> Content</button>
+                <button id="showInfoBtn" class="comment-button btn-animation"><i class="fas fa-info-circle"></i> Additional Information</button>
+            </div>
+            <div id="commentsContainer" style="display: none;">
+                <div class="item-widget">
+                    <div class="widget-rating">
+                        <c:forEach var="r" items="${listr}">
+                            <div class="reviews">
+                                <div class="reviews-header">
+                                    <img src="../images/users/${r.avatar}" alt="avatar"
+                                         class="avatar">
+                                    <div>
+                                        <span class="reviews-author">${r.fullname}</span>
+                                        <span class="reviews-time">${r.createdAt}</span>
+                                    </div>
 
-                                <div class="stars">
-                                    <c:forEach var="i" begin="1" end="5">
-                                        <c:choose>
-                                            <c:when test="${i <= r.rating}">
-                                                <span>&#9733;</span> <!-- Sao đầy -->
-                                            </c:when>
-                                            <c:otherwise>
-                                                <span>&#9734;</span> <!-- Sao rỗng -->
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </c:forEach>
+                                    <div class="stars">
+                                        <c:forEach var="i" begin="1" end="5">
+                                            <c:choose>
+                                                <c:when test="${i <= r.rating}">
+                                                    <span>&#9733;</span>  <!--Sao đầy -->
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span>&#9734;</span>  <!--Sao rỗng -->
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                                <div class="reviews-body">
+                                    ${r.comment}
                                 </div>
                             </div>
+                        </c:forEach>
+                    </div>
+                </div>
+            </div>
+            <div id="contentsContainer" style="display: none;">
+                <div class="item-widget">
+                    <div class="widget-rating">
+                        <div class="reviews">
                             <div class="reviews-body">
-                                ${r.comment}
+                                <p style="color: #000">${lesson.content}</p>
                             </div>
                         </div>
-                    </c:forEach>
+                    </div>
+                </div>
+            </div>
+            <div id="infoContainer" style="display: none;">
+                <div class="item-widget">
+                    <div class="widget-rating">
+                        <div class="reviews">
+                            <div class="reviews-body">
+                                <p style="color: #000">Additional information goes here.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -272,6 +390,71 @@
             function confirmEnroll() {
                 alert("You must Log In first.");
             }
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var showCommentsBtn = document.getElementById("showCommentsBtn");
+                var showContentsBtn = document.getElementById("showContentsBtn");
+                var showInfoBtn = document.getElementById("showInfoBtn");
+                var commentsContainer = document.getElementById("commentsContainer");
+                var contentsContainer = document.getElementById("contentsContainer");
+                var infoContainer = document.getElementById("infoContainer");
+
+                showCommentsBtn.addEventListener("click", function () {
+                    // Toggle commentsContainer visibility
+                    toggleVisibility(commentsContainer);
+                    // Ensure other containers are hidden
+                    hideElement(contentsContainer);
+                    hideElement(infoContainer);
+                    // Update button active state
+                    updateButtonState(showCommentsBtn);
+                });
+
+                showContentsBtn.addEventListener("click", function () {
+                    // Toggle contentsContainer visibility
+                    toggleVisibility(contentsContainer);
+                    // Ensure other containers are hidden
+                    hideElement(commentsContainer);
+                    hideElement(infoContainer);
+                    // Update button active state
+                    updateButtonState(showContentsBtn);
+                });
+
+                showInfoBtn.addEventListener("click", function () {
+                    // Toggle infoContainer visibility
+                    toggleVisibility(infoContainer);
+                    // Ensure other containers are hidden
+                    hideElement(commentsContainer);
+                    hideElement(contentsContainer);
+                    // Update button active state
+                    updateButtonState(showInfoBtn);
+                });
+
+                // Function to toggle element visibility
+                function toggleVisibility(element) {
+                    if (element.style.display === "none") {
+                        element.style.display = "block";
+                    } else {
+                        element.style.display = "none";
+                    }
+                }
+
+                // Function to hide an element
+                function hideElement(element) {
+                    element.style.display = "none";
+                }
+
+                // Function to update button active state
+                function updateButtonState(button) {
+                    // Remove active class from all buttons
+                    var buttons = [showCommentsBtn, showContentsBtn, showInfoBtn];
+                    buttons.forEach(function (btn) {
+                        btn.classList.remove("active");
+                    });
+                    // Add active class to clicked button
+                    button.classList.add("active");
+                }
+            });
         </script>
     </body>
 </html>

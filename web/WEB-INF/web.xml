@@ -82,7 +82,7 @@
     </servlet>
     <servlet>
         <servlet-name>QuizHistoryServlet</servlet-name>
-        <servlet-class>controller.sync.QuizHistoryServlet</servlet-class>
+        <servlet-class>controller.user.QuizHistoryServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
@@ -121,16 +121,8 @@
         <servlet-class>controller.admin.AboutServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>HomeServlet</servlet-name>
-        <servlet-class>controller.publics.HomeServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ListSubjectServlet</servlet-name>
         <servlet-class>controller.publics.ListSubjectServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>DeleteAccount</servlet-name>
-        <servlet-class>controller.admin.DeleteAccount</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddAccountServlet</servlet-name>
@@ -153,16 +145,20 @@
         <servlet-class>controller.publics.SubjectDetailServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AddAccount</servlet-name>
-        <servlet-class>controller.admin.AddAccount</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>FilterManaAccount</servlet-name>
-        <servlet-class>controller.admin.FilterManaAccount</servlet-class>
+        <servlet-name>HomeServlet</servlet-name>
+        <servlet-class>controller.publics.HomeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddQuestionWithAnswerServlet</servlet-name>
         <servlet-class>controller.admin.AddQuestionWithAnswerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>QuizServlet</servlet-name>
+        <servlet-class>controller.user.QuizServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListQuizServlet</servlet-name>
+        <servlet-class>controller.user.ListQuizServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AnswerQuizServlet</servlet-name>
@@ -173,8 +169,76 @@
         <servlet-class>controller.user.QuizHistoryDetailServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>QuizServlet</servlet-name>
-        <servlet-class>controller.user.QuizServlet</servlet-class>
+        <servlet-name>CourseDetailServlet</servlet-name>
+        <servlet-class>controller.publics.CourseDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RatingsServlet</servlet-name>
+        <servlet-class>controller.publics.RatingsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ActionCommentServlet</servlet-name>
+        <servlet-class>controller.publics.ActionCommentServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserReactionServlet</servlet-name>
+        <servlet-class>controller.publics.UserReactionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReplyServlet</servlet-name>
+        <servlet-class>controller.publics.ReplyServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EnrollServlet</servlet-name>
+        <servlet-class>controller.publics.EnrollServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserProfileServlet</servlet-name>
+        <servlet-class>controller.publics.UserProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProfileTeacherServlet</servlet-name>
+        <servlet-class>controller.publics.ProfileTeacherServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MoocServlet</servlet-name>
+        <servlet-class>controller.admin.MoocServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddMoocServlet</servlet-name>
+        <servlet-class>controller.admin.AddMoocServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteMoocServlet</servlet-name>
+        <servlet-class>controller.admin.DeleteMoocServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateMoocServlet</servlet-name>
+        <servlet-class>controller.admin.UpdateMoocServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StartExamServlet</servlet-name>
+        <servlet-class>controller.publics.StartExamServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TakeExamServlet</servlet-name>
+        <servlet-class>controller.publics.TakeExamServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReviewExamServlet</servlet-name>
+        <servlet-class>controller.publics.ReviewExamServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VersionCertificateServlet</servlet-name>
+        <servlet-class>controller.publics.VersionCertificateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ApproveQuizServlet</servlet-name>
+        <servlet-class>controller.admin.ApproveQuizServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ApproveExamServlet</servlet-name>
+        <servlet-class>controller.admin.ApproveExamServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SubjectListServlet</servlet-name>
@@ -297,10 +361,6 @@
         <url-pattern>/about</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>HomeServlet</servlet-name>
-        <url-pattern>/home</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ListSubjectServlet</servlet-name>
         <url-pattern>/homepage/subject-list</url-pattern>
     </servlet-mapping>
@@ -325,16 +385,20 @@
         <url-pattern>/homepage/subject-detail</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AddAccount</servlet-name>
-        <url-pattern>/AddAcc</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>FilterManaAccount</servlet-name>
-        <url-pattern>/FilAcc</url-pattern>
+        <servlet-name>HomeServlet</servlet-name>
+        <url-pattern>/home</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddQuestionWithAnswerServlet</servlet-name>
         <url-pattern>/admin/addquestion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuizServlet</servlet-name>
+        <url-pattern>/quiz</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListQuizServlet</servlet-name>
+        <url-pattern>/quizzes</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AnswerQuizServlet</servlet-name>
@@ -345,7 +409,75 @@
         <url-pattern>/QuizHistoryDetailServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>QuizServlet</servlet-name>
-        <url-pattern>/quiz</url-pattern>
+        <servlet-name>CourseDetailServlet</servlet-name>
+        <url-pattern>/course-detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RatingsServlet</servlet-name>
+        <url-pattern>/homepage/ratings</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ActionCommentServlet</servlet-name>
+        <url-pattern>/homepage/action-comment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserReactionServlet</servlet-name>
+        <url-pattern>/homepage/reaction</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReplyServlet</servlet-name>
+        <url-pattern>/homepage/reply</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EnrollServlet</servlet-name>
+        <url-pattern>/homepage/subject-enroll</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserProfileServlet</servlet-name>
+        <url-pattern>/profile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProfileTeacherServlet</servlet-name>
+        <url-pattern>/profileTeacher</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MoocServlet</servlet-name>
+        <url-pattern>/admin/mooc-management</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddMoocServlet</servlet-name>
+        <url-pattern>/admin/new-mooc</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteMoocServlet</servlet-name>
+        <url-pattern>/admin/delete-mooc</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateMoocServlet</servlet-name>
+        <url-pattern>/admin/update-mooc</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StartExamServlet</servlet-name>
+        <url-pattern>/exam/index</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TakeExamServlet</servlet-name>
+        <url-pattern>/exam/takeExam</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReviewExamServlet</servlet-name>
+        <url-pattern>/exam/reviewExam</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VersionCertificateServlet</servlet-name>
+        <url-pattern>/certificate</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ApproveQuizServlet</servlet-name>
+        <url-pattern>/admin/approveQuiz</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ApproveExamServlet</servlet-name>
+        <url-pattern>/admin/approveExam</url-pattern>
     </servlet-mapping>
 </web-app>

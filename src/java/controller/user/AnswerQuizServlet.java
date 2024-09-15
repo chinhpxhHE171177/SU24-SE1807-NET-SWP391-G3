@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import model.Answer;
-import model.Question;
+import model.AnswerQuestion;
+import model.QuestionQuiz;
 import model.QuizDetailVM;
 import model.User;
 import model.User_Answer;
@@ -44,12 +44,12 @@ public class AnswerQuizServlet extends HttpServlet {
             QuestionDAO questionDAO = new QuestionDAO();
             QuizDetailVM questionDetail = questionDAO.getAllQuestionById(quizId);
 
-            List<Question> q = questionDetail.getListQuestion();
+            List<QuestionQuiz> q = questionDetail.getListQuestion();
 
             int i = 1;
             float correct = 0;
             Map<Integer, String> userAnswers = new HashMap<>(); // Store the user's answers
-            for (Question question : q) {
+            for (QuestionQuiz question : q) {
                 String answer = request.getParameter("answer-" + i);
                 User_Answer uAnswer = new User_Answer();
                 uAnswer.setAnswerID(Integer.parseInt(answer));
@@ -60,7 +60,7 @@ public class AnswerQuizServlet extends HttpServlet {
                 request.setAttribute("answer-" + i, answer);
                 i++;
                 // Check if the user's answer is correct      
-                for (Answer a : question.getListAnswer()) {
+                for (AnswerQuestion a : question.getListAnswer()) {
                     if (a.getAnswerID() == Integer.parseInt(answer) && a.getIsCorrect()) {
                         correct++; // Increment the correct answer count            
                     }

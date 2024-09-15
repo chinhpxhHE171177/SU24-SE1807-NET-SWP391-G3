@@ -13,7 +13,24 @@
 
         <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/album/">
 
+        <!-- Stylesheets -->
+        <link rel="stylesheet" href="../css/bootstrap.min.css" />
+        <!-- Stylesheets -->
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/slicknav.min.css" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/owl.carousel.min.css" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/magnific-popup.css" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+              integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+              crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+        <!-- Main Stylesheets -->
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" />
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link href="${pageContext.request.contextPath}/assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
         <style>
@@ -36,36 +53,9 @@
     </head>
     <body>
 
-        <header>
-            <div class="collapse bg-dark" id="navbarHeader">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-4 offset-md-1 py-4">
-                            <h4 class="text-white">Contact</h4>
-                            <ul class="list-unstyled">
-                                <li><a href="#" class="text-white">Follow on Twitter</a></li>
-                                <li><a href="#" class="text-white">Like on Facebook</a></li>
-                                <li><a href="#" class="text-white">Email me</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="navbar navbar-dark bg-dark shadow-sm">
-                <div class="container">
-                    <a href="#" class="navbar-brand d-flex align-items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                        <strong>Album</strong>
-                    </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                </div>
-            </div>
-        </header>
+        <%@include file="../components/navigation.jsp" %>
 
-        <main>
-
+        <main style="margin-top: 200px">
             <section class="py-5 text-center container">
                 <div class="row py-lg-5">
                     <div class="col-lg-6 col-md-8 mx-auto">
@@ -82,7 +72,7 @@
             </section>
 
             <div class="album py-5 bg-light">
-                <a href="home" class="btn btn-success">Trở về homepage</a>
+                <a href="home" class="btn btn-success" style="float: right; margin-right: 50px">Trở về homepage</a>
                 <div class="container">
                     <c:if test="${QUIZS == null}">
                         <h4>Bạn chưa có thực hiện bài quiz nào!</h4>
@@ -160,6 +150,15 @@
 
 
 
+        <!--====== Javascripts & Jquery ======-->
+        <!--====== Javascripts & Jquery ======-->
+        <script src="${pageContext.request.contextPath}/js/jquery-3.2.1.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/jquery.slicknav.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/owl.carousel.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/jquery.sticky-sidebar.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/jquery.magnific-popup.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/main.js"></script>
         <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

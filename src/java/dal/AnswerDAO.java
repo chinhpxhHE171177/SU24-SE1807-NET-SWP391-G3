@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import model.Answer;
+import model.AnswerQuestion;
 
 public class AnswerDAO extends DBContext {
 
@@ -16,9 +16,9 @@ public class AnswerDAO extends DBContext {
     PreparedStatement ps;
     ResultSet rs;
 
-    public boolean addNew(Answer t) throws SQLException, ClassNotFoundException {
+    public boolean addNew(AnswerQuestion t) throws SQLException, ClassNotFoundException {
         try {
-            String sql = "INSERT INTO AnswersQuestion (QuestionID, AnswerContent, IsCorrect)"
+            String sql = "INSERT INTO AnswerQuestion (QuestionID, AnswerContent, IsCorrect)"
                     + " VALUES (?, ?, ?)";
             int check = 0;
             con = new DBContext().connection;

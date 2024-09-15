@@ -20,10 +20,10 @@ import model.User;
  *
  * @author Admin
  */
-@WebFilter(filterName = "AuthorizationFillter", urlPatterns = {"/dashboard", "/admin/subject-list", "/admin/price-package", "/admin/lessons"})
+@WebFilter(filterName = "AuthorizationFillter", urlPatterns = {"/dashboard", "/admin/subject-list", "/admin/price-package", "/admin/lessons", "/admin/mooc-management"})
 public class AuthorizationFillter implements Filter {
-    
-   @Override
+
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
@@ -34,19 +34,18 @@ public class AuthorizationFillter implements Filter {
         // Retrieve the logged-in account from the session
         User account = (User) session.getAttribute("user");
 
-        if (account != null && account.getRoleId()== 1) {
+        if (account != null && account.getRoleId() == 1) {
             // Allow the request to pass through the filter chain
             chain.doFilter(request, response);
             return;
         } else {
             // Redirect the user to the login page
             //res.sendRedirect("../login.jsp");
-             res.sendRedirect(req.getContextPath() + "/login");
+            res.sendRedirect(req.getContextPath() + "/login");
         }
 
     }
 
-  
     /**
      * Destroy method for this filter
      */

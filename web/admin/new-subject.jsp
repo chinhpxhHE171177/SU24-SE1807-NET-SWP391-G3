@@ -12,7 +12,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>New Subject</title>
+        <title>New Course</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
         <style>
@@ -138,11 +138,11 @@
 
     <body>
         <div class="container">
-            <h1>Add New Subject</h1>
+            <h1>Add New Course</h1>
             <div id="Overview" class="tab-content active">
                 <!-- Content tab Overview -->
                 <form action="new-subject" method="post" enctype = "multipart/form-data">
-                    <label for="subjectName">Subject Name:</label><br>
+                    <label for="subjectName">Course Name</label><br>
                     <input type="text" id="subjectName" name="subjectName" placeholder="Enter the subject name"><br><br>
 
                     <label for="category">Category</label>
@@ -172,7 +172,6 @@
                         </c:forEach>
                     </select><br><br/>
                     <label for="image">Image URL</label><br>
-                    <!--<input type="file" id="image" name="image"><br><br>-->
                     <div class="form-group">
                         <input type="file" name="image"  class="form-control" placeholder="Product image" required="" />
                     </div><br/>
@@ -180,13 +179,11 @@
                     <label for="description">Description</label><br>
                     <textarea id="description" name="description" placeholder="Enter a brief description"></textarea><br><br>
 
-                    <button type="submit">Add Subject</button>
+                    <button type="submit">Add Course</button>
                     <button type="button" onclick="history.back()">Back</button>
                 </form>
             </div>
         </div>
-
-
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 

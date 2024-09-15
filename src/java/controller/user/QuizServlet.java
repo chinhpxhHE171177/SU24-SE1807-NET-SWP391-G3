@@ -15,6 +15,8 @@ import java.util.List;
 import model.Quiz;
 import model.QuizDetailVM;
 
+
+
 public class QuizServlet extends HttpServlet {
 
     @Override
@@ -27,10 +29,10 @@ public class QuizServlet extends HttpServlet {
             QuestionDAO questionDAO = new QuestionDAO();
             QuizDAO quizDAO = new QuizDAO();
             Quiz q = quizDAO.getQuizById(Id);
-
+            
             QuizDetailVM questionDetail = questionDAO.getAllQuestionById(Id);
             questionDetail.setTitle(q.getTitle());
-            if (questionDetail != null) {
+            if(questionDetail != null) {
                 request.setAttribute("QUESTIONS", questionDetail);
                 url = "view-quiz.jsp";
             }

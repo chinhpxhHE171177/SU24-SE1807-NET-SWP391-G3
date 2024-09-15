@@ -58,10 +58,10 @@
         <section class="page-top-section set-bg" data-setbg=""
                  style="background: url('../images/page-top-bg/2.jpg');">
             <div class="page-info">
-                <h2>Subjects</h2>
+                <h2>Course</h2>
                 <div class="site-breadcrumb">
                     <a href="">Home</a> /
-                    <span>Subjects</span>
+                    <span>Courses</span>
                 </div>
             </div>
         </section>
@@ -74,7 +74,7 @@
                     <div class="mt-3">
                         <h3><b>Filter by</b> </h3>
                         <a class="filter-item">
-                            <h6>All subjects</h6>
+                            <h6>All Courses</h6>
                         </a> </br>
                     </div>
                     <form id="duration-form">

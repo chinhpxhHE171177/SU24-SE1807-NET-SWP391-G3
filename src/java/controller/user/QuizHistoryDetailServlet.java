@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import model.Question;
+import model.QuestionQuiz;
 import model.Quiz;
 import model.QuizDetailVM;
 import model.User;
@@ -38,12 +38,12 @@ public class QuizHistoryDetailServlet extends HttpServlet {
                 QuestionDAO questionDAO = new QuestionDAO();
                 QuizDetailVM questionDetail = questionDAO.getAllQuestionById(quizId);
 
-                List<Question> q = questionDetail.getListQuestion();
+                List<QuestionQuiz> q = questionDetail.getListQuestion();
 
                 int i = 1;
                 float correct = 0;
                 Map<Integer, String> userAnswers = new HashMap<>(); // Store the user's answers
-                for (Question question : q) {
+                for (QuestionQuiz question : q) {
                     User_Answer userAnswer = new User_Answer();
                     userAnswer.setUserID(user.getId());
                     userAnswer.setQuestionID(question.getQuestionId());

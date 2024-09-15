@@ -38,6 +38,9 @@
 
         <link href="../homepage/css/styles.css" rel="stylesheet">
         <style>
+            li a {
+                text-decoration: none;
+            }
             .user-panel-container {
                 float: right;
                 position: relative;
@@ -77,6 +80,16 @@
             .user-panel-container:hover .user-dropdown-content {
                 display: block;
             }
+            .main-menu li a:after {
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                right: 0;
+                top: 1px;
+                background-image: url(../img/icons/arrow-down.png);
+                background-repeat: no-repeat;
+                background-position: right center;
+            }
         </style>
     </head>
     <body>
@@ -86,17 +99,18 @@
             <div class="header-warp">
                 <div class="header-bar-warp d-flex">
                     <!-- site logo -->
-                    <a href="home.jsp" class="site-logo">
+                    <a href="${pageContext.request.contextPath}/home" class="site-logo">
                         Quizz.
                     </a>
                     <nav class="top-nav-area w-100">
                         <c:choose>
                             <c:when test="${sessionScope.user != null}">
                                 <div class="user-panel-container">
-                                    <img class="user-panel-avatar ms-lg-2" src="../images/users/${sessionScope.user.avatar}" alt="avatar"/>
+                                    <img class="user-panel-avatar ms-lg-2" src="${pageContext.request.contextPath}/images/users/${sessionScope.user.avatar}" alt="avatar"/>
                                     <div class="user-dropdown-content">
-                                        <a href="${pageContext.request.contextPath}/profile">User Profile</a>
-                                        <a href="${pageContext.request.contextPath}/logout">Logout</a>
+                                        <a href="${pageContext.request.contextPath}/profile"><i class="fa-regular fa-user"></i> User Profile</a>
+                                        <a href="${pageContext.request.contextPath}/quiz-history"><i class="fa-regular fa-user"></i> History Quiz</a>
+                                        <a href="${pageContext.request.contextPath}/logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
                                     </div>
                                 </div>
                             </c:when>
@@ -109,37 +123,31 @@
                         <!-- Menu -->
                         <ul class="main-menu primary-menu">
                             <li><a href="${pageContext.request.contextPath}/home" class="active">Home</a></li>
-                            <li><a href="games">Quiz</a>
-                                <ul class="sub-menu">
-                                    <li><a href="game-single.html">Game Singel</a></li>
-                                </ul>
+                                <c:if test="${sessionScope.user.roleId == 7}"> 
+                                <li><a href="${pageContext.request.contextPath}/admin/quiz-manage?action=view">Manage Quiz</a></li>
+                                </c:if>
+                            <li><a href="QuizPage">Quiz</a>
                             </li>
+
                             <!--<li><a href="#">Quiz</a></li>-->
                             <li><a href="${pageContext.request.contextPath}/homepage/subject-list">Course</a></li>
                                 <c:choose>
                                     <c:when test="${sessionScope.user != null && sessionScope.user.roleId == 1}">
                                     <!--<li class="nav-item "><a class="nav-link text-white" href="dashboard" class="nav-link ms-lg-2 fs-2">Dashboard</a></li>-->
-                                    <li style="list-style-type: none" class="nav-item dropdown">
-                                        <a class="nav-link text-white" id="navbarDropdown" href="#" role="button"
+<!--                                    <li style="list-style-type: none" class="nav-item dropdown">
+                                        <a class="nav-link text-white" id="navbarDropdown" href="/Quizz/admin/subject-list" role="button"
                                            data-bs-toggle="dropdown" aria-expanded="false">Dashboard</a>
-                                        <ul class="dropdown-menu text-black" aria-labelledby="navbarDropdown" style="background-color: #000">
-                                            <li style="color: black"><a class="dropdown-item text-white" href="dashboard">DashBoard</a></li>
-                                            <li style="color: black"><a class="dropdown-item text-white" href="/Quizz/admin/subject-list">Subject Management</a></li>
-                                            <li style="color: black"><a class="dropdown-item text-white" href="/Quizz/admin/lessons">Lessons Management</a></li>
-                                            <li style="color: black"><a class="dropdown-item text-white" href="/Quizz/admin/price-package">Package Management</a></li>
-                                        </ul>
-                                    </li>
+                                        <ul class="dropdown-menu text-black" aria-labelledby="navbarDropdown" style="background-color: #000">-->
+                                            <li style="color: black"><a class=" text-white" href="/Quizz/admin/subject-list">DashBoard</a></li>
+<!--                                            <li style="color: black"><a class=" text-white" href="/Quizz/admin/subject-list">Subject Management</a></li>
+                                            <li style="color: black"><a class=" text-white" href="/Quizz/admin/lessons">Lessons Management</a></li>
+                                            <li style="color: black"><a class=" text-white" href="/Quizz/admin/price-package">Package Management</a></li>-->
+                                        <!--</ul>-->
+                                    <!--</li>-->
                                 </c:when>
                             </c:choose>
-                            <li><a href="about.jsp">About</a></li>
-                            <li><a href="contact.jsp">Contact</a></li>
-                            <li>
-                                <!-- Search bar -->
-                                <div class="search-box">
-                                    <button class="btn-search"><i class="fas fa-search"></i></button>
-                                    <input type="text" class="input-search" placeholder="Type to Search...">
-                                </div>
-                            </li>
+                            <li><a href="http://localhost:9999/Quizz/homepage/about.jsp">About</a></li>
+                            <li><a href="http://localhost:9999/Quizz/homepage/contact.jsp">Contact</a></li>
                         </ul>
 
                     </nav>

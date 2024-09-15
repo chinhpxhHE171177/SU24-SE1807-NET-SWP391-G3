@@ -43,7 +43,6 @@ public class RegistrationDAO extends DBContext {
         return list;
     }
 
-
     public List<Registration> getRegistration() {
         List<Registration> list = new ArrayList<>();
         try {
@@ -209,6 +208,24 @@ public class RegistrationDAO extends DBContext {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public boolean registerUserToSubject(int userId, int subjectId, int packageId, int status) {
+        try {
+            String sql = "INSERT INTO Registrations (UserID, SubjectID, PackageID, status, created_at) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement pst = connection.prepareStatement(sql);
+            pst.setInt(1, userId);
+            pst.setInt(2, subjectId);
+            pst.setInt(3, packageId);
+            pst.setInt(4, status);
+            pst.setTimestamp(5, new java.sql.Timestamp(System.currentTimeMillis()));
+            int rowsAffected = pst.executeUpdate();
+
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public static void main(String[] args) {

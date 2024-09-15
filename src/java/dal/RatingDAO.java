@@ -26,7 +26,8 @@ public class RatingDAO extends DBContext {
                         rs.getString(5),
                         rs.getTimestamp(6),
                         rs.getInt(7),
-                        rs.getBoolean(8));
+                        rs.getBoolean(8),
+                        rs.getBoolean(9));
                 list.add(rating);
             }
         } catch (SQLException e) {
@@ -90,8 +91,9 @@ public class RatingDAO extends DBContext {
                         rs.getTimestamp(6),
                         rs.getInt(7),
                         rs.getBoolean(8),
-                        rs.getString(9),
-                        rs.getString(10));
+                        rs.getBoolean(9),
+                        rs.getString(10),
+                        rs.getString(11));
                 list.add(rating);
             }
         } catch (SQLException e) {
@@ -221,6 +223,7 @@ public class RatingDAO extends DBContext {
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         return 0.0;
     }
@@ -232,6 +235,7 @@ public class RatingDAO extends DBContext {
             pst.setInt(2, id);
             pst.executeUpdate();
         } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -608,11 +612,11 @@ public class RatingDAO extends DBContext {
 //        rdao.updateComment(5, "Good!");
 //        System.out.println("Update successful: ");
         //int num = rdao.replyToComment("2", "1", "hello");
-        int num = rdao.getLikeCountByStatusAndLesson(1, 1);
-        System.out.println(num);
+//        int num = rdao.getLikeCountByStatusAndLesson(1, 1);
+//        System.out.println(num);
         //System.out.println(numOfReviews);
         //rdao.insertRating(1, 1, 3, "Not Good But Not Bad");
-        List<Ratings> lists = rdao.getAllRatingByLID(1);
+        List<Ratings> lists = rdao.getAllRatingByLesMocID(1);
         for (Ratings list : lists) {
             System.out.println(list);
         }

@@ -18,7 +18,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Edit-Subject</title>
+        <title>Edit-Course</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;500&display=swap" rel="stylesheet" />
@@ -108,7 +108,7 @@
                     <input type="hidden" readonly name="id" value="${subject.id}">
                     <input type="hidden" id="created_by" name="created_by" value="${subject.created_by}">
 
-                    <label for="subjectName">Subject Name</label>
+                    <label for="subjectName">Course Name</label>
                     <input type="text" id="name" name="name" value="${subject.name}" required>
 
                     <label for="category">Category</label>

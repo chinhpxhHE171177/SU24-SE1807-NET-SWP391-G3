@@ -8,14 +8,19 @@ import model.QuizQuestion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.Answer;
+import model.AnswerQuestion;
 import model.Question;
+import model.QuestionQuiz;
 import model.QuizDetailVM;
 import model.User_Answer;
 import model.User_Quiz_Result;
@@ -129,15 +134,15 @@ public class QuestionDAO extends DBContext {
     }
 
     public boolean insertQuestion(String qdetail, int quizid) {
-        String query = "INSERT INTO [dbo].[Questions]\n"
-                + "           \n"
-                + "     VALUES\n"
-                + "           (?,?)";
+        String query = "INSERT INTO [dbo].[Questions] (QuestionDetail, QuizID, Type)"
+                + "     VALUES (?,?, ?)";
         try {
             conn = new DBContext().connection;
             ps = conn.prepareStatement(query);
             ps.setString(1, qdetail);
             ps.setInt(2, quizid);
+            ps.setInt(3, 1);
+
             int affectedRow = ps.executeUpdate();
             return affectedRow > 0;
         } catch (Exception e) {
@@ -163,16 +168,16 @@ public class QuestionDAO extends DBContext {
     }
 
     public QuizDetailVM getAllQuestionById(int quizId) {
-        String query = "select * from Questions WHERE QuizID = ? ";
+        String query = "select * from Questions WHERE QuizID = ? AND Type = 1 ";
         QuizDetailVM quizDetailVM = new QuizDetailVM();
         try {
             conn = new DBContext().connection;
             ps = conn.prepareStatement(query);
             ps.setInt(1, quizId);
             rs = ps.executeQuery();
-            List<Question> listQuestion = new ArrayList<>();
+            List<QuestionQuiz> listQuestion = new ArrayList<>();
             while (rs.next()) {
-                Question q = new Question();
+                QuestionQuiz q = new QuestionQuiz();
                 q.setQuestionDetail(rs.getString("QuestionDetail"));
                 q.setQuestionId(rs.getInt("QuestionID"));
                 q.setQuizId(quizId);
@@ -181,15 +186,59 @@ public class QuestionDAO extends DBContext {
             quizDetailVM.setQuizId(quizId);
             quizDetailVM.setListQuestion(listQuestion);
             if (listQuestion != null) {
-                for (Question question : listQuestion) {
-                    query = "select * from Answers WHERE QuestionID = ?";
+                for (QuestionQuiz question : listQuestion) {
+                    query = "select * from AnswerQuestion WHERE QuestionID = ?";
                     conn = new DBContext().connection;
                     ps = conn.prepareStatement(query);
                     ps.setInt(1, question.getQuestionId());
                     rs = ps.executeQuery();
-                    List<Answer> listAnswer = new ArrayList<>();
+                    List<AnswerQuestion> listAnswer = new ArrayList<>();
                     while (rs.next()) {
-                        Answer a = new Answer();
+                        AnswerQuestion a = new AnswerQuestion();
+                        a.setAnswerID(rs.getInt("AnswerID"));
+                        a.setAnswerContent(rs.getString("AnswerContent"));
+                        a.setIsCorrect(rs.getBoolean("IsCorrect"));
+                        a.setQuestionID(rs.getInt("QuestionId"));
+                        listAnswer.add(a);
+                    }
+                    question.setListAnswer(listAnswer);
+                }
+            }
+            return quizDetailVM;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return quizDetailVM;
+    }
+
+    public QuizDetailVM getAllQuestionsBYID(int quizId) {
+        String query = "select * from Questions WHERE QuizID = ? ";
+        QuizDetailVM quizDetailVM = new QuizDetailVM();
+        try {
+            conn = new DBContext().connection;
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, quizId);
+            rs = ps.executeQuery();
+            List<QuestionQuiz> listQuestion = new ArrayList<>();
+            while (rs.next()) {
+                QuestionQuiz q = new QuestionQuiz();
+                q.setQuestionDetail(rs.getString("QuestionDetail"));
+                q.setQuestionId(rs.getInt("QuestionID"));
+                q.setQuizId(quizId);
+                listQuestion.add(q);
+            }
+            quizDetailVM.setQuizId(quizId);
+            quizDetailVM.setListQuestion(listQuestion);
+            if (listQuestion != null) {
+                for (QuestionQuiz question : listQuestion) {
+                    query = "select * from AnswerQuestion WHERE QuestionID = ?";
+                    conn = new DBContext().connection;
+                    ps = conn.prepareStatement(query);
+                    ps.setInt(1, question.getQuestionId());
+                    rs = ps.executeQuery();
+                    List<AnswerQuestion> listAnswer = new ArrayList<>();
+                    while (rs.next()) {
+                        AnswerQuestion a = new AnswerQuestion();
                         a.setAnswerID(rs.getInt("AnswerID"));
                         a.setAnswerContent(rs.getString("AnswerContent"));
                         a.setIsCorrect(rs.getBoolean("IsCorrect"));
@@ -271,6 +320,113 @@ public class QuestionDAO extends DBContext {
             e.printStackTrace();
         }
         return false;
+    }
+
+    /////////////////////// Chinh /////////////////////////////////////////////
+    public List<Question> getQuestionsByQuizId(int quizID) {
+        List<Question> questions = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM Questions WHERE QuizID = ? AND Type = 2";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, quizID);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Question question = new Question();
+                question.setQuestionID(resultSet.getInt("QuestionID"));
+                question.setQuestionDetail(resultSet.getString("QuestionDetail"));
+                question.setQuizID(resultSet.getInt("QuizID"));
+
+                // Get the answers for this question
+                question.setAnswers(getAnswersByQuestionId(question.getQuestionID()));
+                questions.add(question);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return questions;
+    }
+
+    public List<Question> getQuestionsByQuizId(String quizId) {
+        List<Question> questions = new ArrayList<>();
+
+        try {
+            String query = "SELECT q.questionID, q.questionDetail, a.answerID, a.answerDetail "
+                    + "FROM Questions q "
+                    + "LEFT JOIN Answers a ON q.questionID = a.questionID "
+                    + "WHERE q.quizID = ?";
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setString(1, quizId);
+            ResultSet rs = pstmt.executeQuery();
+
+            Question currentQuestion = null;
+            while (rs.next()) {
+                int questionId = rs.getInt("questionID");
+                if (currentQuestion == null || currentQuestion.getQuestionID() != questionId) {
+                    currentQuestion = new Question();
+                    currentQuestion.setQuestionID(questionId);
+                    currentQuestion.setQuestionDetail(rs.getString("questionDetail"));
+                    currentQuestion.setAnswers(new ArrayList<>());
+                    questions.add(currentQuestion);
+                }
+
+                Answer answer = new Answer();
+                answer.setAnswerID(rs.getInt("answerID"));
+                answer.setAnswerDetail(rs.getString("answerDetail"));
+                currentQuestion.getAnswers().add(answer);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return questions;
+    }
+
+    private List<Answer> getAnswersByQuestionId(int questionID) {
+        List<Answer> answers = new ArrayList<>();
+        String sql = "SELECT * FROM Answers WHERE QuestionID = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, questionID);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Answer answer = new Answer();
+                answer.setAnswerID(resultSet.getInt("AnswerID"));
+                answer.setAnswerDetail(resultSet.getString("AnswerDetail"));
+                answer.setIsAnswer(resultSet.getInt("IsAnswer"));
+                answer.setOption1(resultSet.getString("option1"));
+                answer.setOption2(resultSet.getString("option2"));
+                answer.setOption3(resultSet.getString("option3"));
+                answer.setOption4(resultSet.getString("option4"));
+
+                answers.add(answer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return answers;
+    }
+
+    public Map<Integer, Integer> getCorrectAnswersByQuizId(int quizId) {
+        Map<Integer, Integer> correctAnswersMap = new HashMap<>();
+        try {
+            // Assuming 'connection' is your established database connection
+            String sql = "SELECT QuestionID, IsAnswer FROM Answers WHERE QuestionID IN (SELECT QuestionID FROM Questions WHERE QuizID = ?)";
+            PreparedStatement pst = connection.prepareStatement(sql);
+            pst.setInt(1, quizId);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                int questionID = rs.getInt("QuestionID");
+                int correctAnswerID = rs.getInt("IsAnswer");
+                correctAnswersMap.put(questionID, correctAnswerID);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return correctAnswersMap;
     }
 
     public static void main(String[] args) {

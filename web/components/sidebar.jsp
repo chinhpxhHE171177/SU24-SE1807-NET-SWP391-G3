@@ -228,14 +228,16 @@
                 <button class="dropdown-btn"><i class="fas fa-eye"></i> Courses</button>
                 <div class="dropdown-container">
                     <a href="subject-list">Course Manage</a>
+                    <a href="mooc-management">Mooc Manage</a>
                     <a href="lessons">Lesson Manage</a>
                     <a href="price-package">Package Manage</a>
                 </div>
                 <a class="nav-link" href="#"><i class="fas fa-comments"></i> Comments</a>
-                <a class="nav-link" href="#"><i class="far fa-check-square"></i> Quizzes</a>
+                <a class="nav-link" href="approveQuiz"><i class="far fa-check-square"></i> Quizzes</a>
+                <a class="nav-link" href="approveExam"><i class="far fa-check-square"></i> Exams</a>
                 <a class="nav-link" href="#"><i class="fas fa-bookmark"></i> Certificates</a>
                 <a class="nav-link" href="#"><i class="fas fa-cart-plus"></i> Finances</a>
-                <a class="nav-link" href="#"><i class="fas fa-sign-in-alt"></i> Registration</a>
+                <a class="nav-link" href="registrations"><i class="fas fa-sign-in-alt"></i> Registration</a>
                 <a class="nav-link" href="#"><i class="fas fa-blog"></i> Logs</a>
                 <a class="nav-link" href="#"><i class="fas fa-info-circle"></i> Help</a>
                 <a class="nav-link" href="#"><i class="fas fa-address-card"></i> About</a>

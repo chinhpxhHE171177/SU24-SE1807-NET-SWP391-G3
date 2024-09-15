@@ -74,6 +74,59 @@ public class SubjectDAO extends DBContext {
         return list;
     }
 
+    public List<Subject> getAllListSubjects() {
+        List<Subject> list = new ArrayList<>();
+
+        try {
+            String sql = "SELECT s.*, c.category_name, p.package_name, u.UserName, COUNT(lm.LesMoocID) AS numberOfLessons FROM [Subjects] s\n"
+                    + "LEFT JOIN Categories c ON c.CategoryID = s.CategoryID\n"
+                    + "LEFT JOIN Packages p ON p.PackageID = s.PackageID\n"
+                    + "LEFT JOIN Users u ON u.UserID = s.created_by\n"
+                    + "LEFT JOIN Lessons l ON s.SubjectID = l.SubjectID\n"
+                    + "LEFT JOIN Mooc m ON m.SubjectID = s.SubjectID\n"
+                    + "LEFT JOIN LesMooc lm ON lm.MoocID = m.MoocID\n"
+                    + "WHERE s.Status = 1\n"
+                    + "GROUP BY\n"
+                    + "s.SubjectID,\n"
+                    + "s.Subject_Name,\n"
+                    + "s.Description,\n"
+                    + "s.Image,\n"
+                    + "s.Status,\n"
+                    + "s.PackageId,\n"
+                    + "s.CategoryId,\n"
+                    + "s.created_by,\n"
+                    + "s.Created_at,\n"
+                    + "c.category_name,\n"
+                    + "p.package_name,\n"
+                    + "u.UserName";
+            PreparedStatement pst = connection.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Subject subject = new Subject(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getBoolean(5),
+                        rs.getInt(6),
+                        rs.getInt(7),
+                        rs.getInt(8),
+                        rs.getDate(9),
+                        rs.getString(10),
+                        rs.getString(11),
+                        rs.getString(12),
+                        rs.getInt(13));
+
+                int totalEnroll = totalSubjectEnroll(subject.getId());
+                subject.setTotalEnroll(totalEnroll);
+
+                list.add(subject);
+            }
+        } catch (SQLException e) {
+        }
+        return list;
+    }
+
     public int totalSubjectEnroll(int id) {
         String sql = "SELECT COUNT(UserID) AS totalUser FROM Registrations WHERE SubjectID = ?";
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
@@ -153,7 +206,7 @@ public class SubjectDAO extends DBContext {
     }
 
     public int getTotalSubject() {
-        String sql = "SELECT COUNT(*) FROM Subjects";
+        String sql = "SELECT COUNT(*) FROM Subjects WHERE Subjects.Status = 1";
         try {
             PreparedStatement pst = connection.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
@@ -469,7 +522,7 @@ public class SubjectDAO extends DBContext {
     }
 
     public Subject getSubjectById(int id) {
-        String sql = "SELECT s.*, c.category_name, p.package_name, u.UserName,u.FullName, COUNT(l.LessonId) AS numberOfLessons FROM [Subjects] s\n"
+        String sql = "SELECT s.*, c.category_name, p.package_name, u.UserName, u.FullName, COUNT(l.LessonId) AS numberOfLessons FROM [Subjects] s\n"
                 + "LEFT JOIN Categories c ON c.CategoryID = s.CategoryID\n"
                 + "LEFT JOIN Packages p ON p.PackageID = s.PackageID\n"
                 + "LEFT JOIN Users u ON u.UserID = s.created_by\n"
@@ -844,10 +897,29 @@ public class SubjectDAO extends DBContext {
         return list;
     }
 
+    public List<Subject> getAllSubjectsInQuizDetail() {
+        List<Subject> list = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM [Subjects] ORDER BY SubjectID";
+            PreparedStatement pst = connection.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Subject subject = new Subject();
+                subject.setId(rs.getInt("SubjectID"));
+                subject.setName(rs.getString("Subject_Name"));
+                list.add(subject);
+            }
+            return list;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public static void main(String args[]) {
         SubjectDAO sdao = new SubjectDAO();
         Subject subject = new Subject();
-        subject = (Subject) sdao.getSubjectByIdLM(1);
+        subject = (Subject) sdao.getSubjectById(1);
         System.out.println(subject);
 //        sdao.deleteSubject(11);
 //        List<Subject> list = sdao.getTopUserEnroll();
