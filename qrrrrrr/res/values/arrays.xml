@@ -1,0 +1,9 @@
+<resources>
+    <string-array name="issue_options">
+        <item>Select an issue</item>
+        <item>Issue 1</item>
+        <item>Issue 2</item>
+        <item>Issue 3</item>
+        <item>Other</item> <!-- Tùy chọn khác -->
+    </string-array>
+</resources>
