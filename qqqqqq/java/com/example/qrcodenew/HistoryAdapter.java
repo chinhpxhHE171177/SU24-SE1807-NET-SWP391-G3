@@ -2,6 +2,7 @@ package com.example.qrcodenew;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -98,14 +100,21 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Holder> 
                             }
                         })
                         .setNegativeButton("Cancel", (dialog, which) -> {
-                            // Đóng hộp thoại nếu nhấn "Hủy"
                             dialog.dismiss();
                         })
-                        .show(); // Hiển thị hộp thoại xác nhận
+                        .show();
             }
         });
     }
 
+    private double convertDurationToMinutes(String duration) {
+        try {
+            // Giả sử duration là định dạng: "6 m" (chẳng hạn: "6.75 m" cho 6 phút 45 giây)
+            return Double.parseDouble(duration.replace(" m", "")); // Có thể cần xử lý thêm nếu có giây
+        } catch (NumberFormatException e) {
+            return 0; // Giá trị mặc định nếu không thể chuyển đổi
+        }
+    }
 
     private void showToast(String message) {
         if (mToast != null) {

@@ -8,12 +8,20 @@ import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -40,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     private long startTime, endTime;
     private String scannedId;
 
+    private ListView listView;
+
     // Sử dụng danh sách để lưu IDCode đã quét
     private ArrayList<String> scannedIdCodes = new ArrayList<>();
     private boolean isRecording = false;
@@ -64,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btnAdd);
         btnListView = findViewById(R.id.btnViewList);
         btnShowHistory = findViewById(R.id.btnHistory);
+        listView = findViewById(R.id.list_view_issues);
 
         // Yêu cầu quyền truy cập camera
         Dexter.withActivity(this)
@@ -170,46 +181,166 @@ public class MainActivity extends AppCompatActivity {
         deviceData.close();
     }
 
-
     private void showIssueDialog(View dialogView, ArrayList<String> issueList, boolean isFirstScan) {
         ListView listView = dialogView.findViewById(R.id.list_view_issues);
+        issueList.add("Other"); // Thêm tùy chọn "Other"
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, issueList);
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+        // Thiết lập OnItemClickListener cho việc xóa
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedIssue = issueList.get(position);
+            if (selectedIssue != null && !selectedIssue.equals("Other")) {
+                showDeleteIssueDialog(selectedIssue, issueList, listView); // Hiển thị dialog xác nhận xóa
+            }
+        });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView)
                 .setPositiveButton("OK", (dialog, which) -> {
                     SparseBooleanArray checked = listView.getCheckedItemPositions();
                     ArrayList<String> selectedIssues = new ArrayList<>();
+                    boolean otherSelected = false;
+
                     for (int i = 0; i < issueList.size(); i++) {
                         if (checked.get(i)) {
                             selectedIssues.add(issueList.get(i));
+                            if ("Other".equals(issueList.get(i))) { // Kiểm tra nếu "Other" được chọn
+                                otherSelected = true;
+                            }
                         }
                     }
+
                     if (selectedIssues.size() > 5) {
                         Toast.makeText(MainActivity.this, "You cannot select more than 5 issues.", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    // Lưu các vấn đề đã chọn vào biến toàn cục
-                    tempSelectedIssues.clear();
-                    tempSelectedIssues.addAll(selectedIssues);
 
-                    // Chỉ thêm IDCode vào danh sách nếu là lần quét đầu tiên
-                    if (isFirstScan) {
-                        scannedIdCodes.add(scannedId);
+                    // Nếu "Other" được chọn, hiển thị dialog để nhập vấn đề mới
+                    if (otherSelected) {
+                        showNewIssueDialog(selectedIssues);
+                    } else {
+                        // Lưu các vấn đề đã chọn vào biến toàn cục
+                        tempSelectedIssues.clear();
+                        tempSelectedIssues.addAll(selectedIssues);
+
+                        // chỉ thêm IDCode vào danh sách nếu là lần quét đầu tiên
+                        if (isFirstScan) {
+                            scannedIdCodes.add(scannedId);
+                        }
                     }
                 })
                 .setNegativeButton("Close", (dialog, which) -> {
                     dialog.dismiss();
-                    // Chỉ reset trạng thái nếu là lần quét đầu tiên
+                    // Reset trạng thái nếu là lần quét đầu tiên
                     if (isFirstScan) {
-                        isRecording = false; // Reset trạng thái quét
-                        scannedIdCodes.clear(); // Xóa danh sách IDCode
+                        // Xác nhận tất cả các trạng thái liên quan được đặt lại
+                        resetScannedIdState(scannedId); // Đặt lại IDCode trạng thái
+                        isRecording = false; // Đặt lại trạng thái quét
+                        scannedIdCodes.clear(); // Xóa danh sách IDCode đã quét
                         tempSelectedIssues.clear(); // Xóa danh sách vấn đề đã chọn
                     }
                 })
                 .create()
+                .show();
+    }
+
+
+//    private void showIssueDialog(View dialogView, ArrayList<String> issueList, boolean isFirstScan) {
+//        ListView listView = dialogView.findViewById(R.id.list_view_issues);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, issueList);
+//        listView.setAdapter(adapter);
+//        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setView(dialogView)
+//                .setPositiveButton("OK", (dialog, which) -> {
+//                    SparseBooleanArray checked = listView.getCheckedItemPositions();
+//                    ArrayList<String> selectedIssues = new ArrayList<>();
+//                    for (int i = 0; i < issueList.size(); i++) {
+//                        if (checked.get(i)) {
+//                            selectedIssues.add(issueList.get(i));
+//                        }
+//                    }
+//                    if (selectedIssues.size() > 5) {
+//                        Toast.makeText(MainActivity.this, "You cannot select more than 5 issues.", Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
+//                    // Lưu các vấn đề đã chọn vào biến toàn cục
+//                    tempSelectedIssues.clear();
+//                    tempSelectedIssues.addAll(selectedIssues);
+//
+//                    // Chỉ thêm IDCode vào danh sách nếu là lần quét đầu tiên
+//                    if (isFirstScan) {
+//                        scannedIdCodes.add(scannedId);
+//                    }
+//                })
+//                .setNegativeButton("Close", (dialog, which) -> {
+//                    dialog.dismiss();
+//                    // Chỉ reset trạng thái nếu là lần quét đầu tiên
+//                    if (isFirstScan) {
+//                        isRecording = false; // Reset trạng thái quét
+//                        scannedIdCodes.clear(); // Xóa danh sách IDCode
+//                        tempSelectedIssues.clear(); // Xóa danh sách vấn đề đã chọn
+//                    }
+//                })
+//                .create()
+//                .show();
+//    }
+
+    private void showDeleteIssueDialog(String issue, ArrayList<String> issueList, ListView listView) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Issue");
+        builder.setMessage("Are you sure you want to delete the issue: " + issue + "?");
+
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+                    // Xóa vấn đề khỏi cơ sở dữ liệu
+                    databaseHelper.deleteIssueFromDevice(scannedId, issue);
+
+                    // Xóa vấn đề khỏi danh sách vấn đề hiện tại
+                    issueList.remove(issue);
+                    Toast.makeText(MainActivity.this, "Issue deleted successfully.", Toast.LENGTH_SHORT).show();
+
+                    // Cập nhật lại adapter cho danh sách vấn đề
+                    updateIssueList(listView, issueList); // Truyền listView vào phương thức
+                })
+                .setNegativeButton("No", (dialog, which) -> dialog.cancel())
+                .show();
+    }
+
+    private void updateIssueList(ListView listView, ArrayList<String> issueList) {
+        // Cập nhật lại adapter với danh sách mới
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, issueList);
+        listView.setAdapter(adapter);
+    }
+
+
+    private void showNewIssueDialog(ArrayList<String> selectedIssues) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter New Issue");
+
+        final EditText input = new EditText(this);
+        builder.setView(input);
+
+        builder.setPositiveButton("Add", (dialog, which) -> {
+                    String newIssue = input.getText().toString().trim();
+                    if (!newIssue.isEmpty()) {
+                        selectedIssues.add(newIssue);
+                        tempSelectedIssues.add(newIssue); // Cập nhật danh sách vấn đề toàn cục
+
+                        // Lưu vấn đề mới vào bảng DEVICE
+                        databaseHelper.insertNewIssue(scannedId, newIssue); // Thêm vào bảng DEVICE
+
+                        Toast.makeText(MainActivity.this, "New issue added.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Please enter a valid issue.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.cancel();
+                })
                 .show();
     }
 
@@ -219,12 +350,18 @@ public class MainActivity extends AppCompatActivity {
         String formattedEndTime = formatTime(endTime);
         String formattedTotalTime = formatTotalTime(totalTime);
 
+        // Log for debugging purposes
+        Log.d("Debug", "Saving data with selected issues: " + tempSelectedIssues.toString());
+
         if (scannedIdRecordingStatus.containsKey(scannedId) && scannedIdRecordingStatus.get(scannedId)) {
             databaseHelper.insertListData(scannedId, txt_code.getText().toString(), txt_name.getText().toString(),
                     String.join(", ", tempSelectedIssues), formattedStartTime, formattedEndTime, formattedTotalTime);
             Toast.makeText(this, "Data saved successfully.", Toast.LENGTH_SHORT).show();
+        } else {
+            Log.e("Data Save Error", "Failed to save data. ID code has not been recorded or is invalid.");
         }
     }
+
 
     private void resetScannedIdState(String scannedId) {
         // Chỉ reset trạng thái quét cho IDCode đã insert vào database

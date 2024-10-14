@@ -1,5 +1,7 @@
 package com.example.qrcodenew;
 
+import static com.example.qrcodenew.Database.DEVICE_ID_CODE;
+import static com.example.qrcodenew.Database.DEVICE_ISSUE;
 import static com.example.qrcodenew.Database.DEVICE_TABLE_NAME; // Cập nhật tên bảng
 import static com.example.qrcodenew.Database.DEVICE_HISTORY_TABLE_NAME; // Cập nhật tên bảng
 import static com.example.qrcodenew.Database.HISTORY_ENDTIME;
@@ -13,12 +15,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -42,7 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Kiểm tra nếu ID_CODE đã tồn tại
     public boolean isIdExists(String idCode) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(Database.DEVICE_TABLE_NAME, null, Database.DEVICE_ID_CODE + "=?", new String[]{idCode}, null, null, null);
+        Cursor cursor = db.query(Database.DEVICE_TABLE_NAME, null, DEVICE_ID_CODE + "=?", new String[]{idCode}, null, null, null);
         boolean exists = (cursor.getCount() > 0);
         cursor.close();
         db.close();
@@ -53,10 +57,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean insertData(final String idCode, final String code, final String name, final String issue) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(Database.DEVICE_ID_CODE, idCode);
+        values.put(DEVICE_ID_CODE, idCode);
         values.put(Database.DEVICE_CODE, code);
         values.put(Database.DEVICE_NAME, name);
-        values.put(Database.DEVICE_ISSUE, issue);
+        values.put(DEVICE_ISSUE, issue);
 
         try {
             long result = db.insert(Database.DEVICE_TABLE_NAME, null, values);
@@ -157,6 +161,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void insertNewIssue(String deviceId, String issue) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        // Lấy dữ liệu hiện có
+        Cursor cursor = db.query(DEVICE_TABLE_NAME,
+                new String[]{DEVICE_ISSUE},
+                DEVICE_ID_CODE + "=?",
+                new String[]{deviceId},
+                null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int issueIndex = cursor.getColumnIndex(DEVICE_ISSUE);
+
+            if (issueIndex != -1) {
+                String existingIssues = cursor.getString(issueIndex);
+                List<String> issueList = new ArrayList<>(Arrays.asList(existingIssues.split(",")));
+                issueList.add(issue); // Thêm vấn đề mới vào danh sách
+                String updatedIssues = TextUtils.join(",", issueList);
+
+                // Cập nhật bản ghi
+                ContentValues updateValues = new ContentValues();
+                updateValues.put(DEVICE_ISSUE, updatedIssues);
+                db.update(DEVICE_TABLE_NAME, updateValues, DEVICE_ID_CODE + "=?", new String[]{deviceId});
+            }
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        db.close();
+    }
+
+
     public Cursor selectHistoryData(String idCode) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT COUNT(*) FROM " + DEVICE_HISTORY_TABLE_NAME + " WHERE ID_CODE = ?", new String[]{idCode});
@@ -167,15 +206,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Database.DEVICE_NAME, name);
-        values.put(Database.DEVICE_ISSUE, issue);
-        db.update(Database.DEVICE_TABLE_NAME, values, Database.DEVICE_ID_CODE + " = ?", new String[]{idCode});
+        values.put(DEVICE_ISSUE, issue);
+        db.update(Database.DEVICE_TABLE_NAME, values, DEVICE_ID_CODE + " = ?", new String[]{idCode});
         db.close();
     }
 
     // Phương thức xóa thiết bị theo ID_CODE
     public boolean deleteDevice(String idCode) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(Database.DEVICE_TABLE_NAME, Database.DEVICE_ID_CODE + " = ?", new String[]{idCode}) > 0;
+        return db.delete(Database.DEVICE_TABLE_NAME, DEVICE_ID_CODE + " = ?", new String[]{idCode}) > 0;
     }
 
     // Phương thức xóa thiết bị theo ID_CODE
@@ -189,10 +228,57 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(DEVICE_HISTORY_TABLE_NAME, HISTORY_ID + " = ?", new String[]{String.valueOf(id)}) > 0;
     }
+
+    public void deleteIssueFromDevice(String deviceId, String issue) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Truy vấn lấy danh sách các vấn đề hiện có
+        Cursor cursor = db.query(DEVICE_TABLE_NAME,
+                new String[]{DEVICE_ISSUE},
+                DEVICE_ID_CODE + "=?",
+                new String[]{deviceId},
+                null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int issueIndex = cursor.getColumnIndex(DEVICE_ISSUE);
+            if (issueIndex != -1) {
+                String existingIssues = cursor.getString(issueIndex);
+                List<String> issueList = new ArrayList<>(Arrays.asList(existingIssues.split(",")));
+
+                // Xóa vấn đề đã chỉ định
+                issueList.remove(issue.trim());
+
+                // Tạo một ContentValues mới để cập nhật dữ liệu
+                ContentValues values = new ContentValues();
+                if (issueList.isEmpty()) {
+                    // Nếu không còn vấn đề nào, xóa trường này
+                    values.put(DEVICE_ISSUE, ""); // Đặt thành chuỗi rỗng
+                } else {
+                    // Cập nhật lại danh sách vấn đề cho bản ghi
+                    String updatedIssues = TextUtils.join(",", issueList);
+                    values.put(DEVICE_ISSUE, updatedIssues);
+                }
+
+                // Thực hiện cập nhật nếu có dữ liệu để cập nhật
+                if (values.size() > 0) {
+                    db.update(DEVICE_TABLE_NAME, values, DEVICE_ID_CODE + "=?", new String[]{deviceId});
+                }
+            }
+        }
+
+        // Đảm bảo đóng cursor
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+    }
+
+
+
     // Lấy thông tin một thiết bị theo ID_CODE
     public Cursor selectData(String idCode) {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.query(Database.DEVICE_TABLE_NAME, null, Database.DEVICE_ID_CODE + "=?", new String[]{idCode}, null, null, null);
+        return db.query(Database.DEVICE_TABLE_NAME, null, DEVICE_ID_CODE + "=?", new String[]{idCode}, null, null, null);
     }
 
     public ArrayList<Device> getAllData() {
@@ -211,10 +297,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 try {
                     // Lấy chỉ số cột
                     int idIndex = cursor.getColumnIndexOrThrow(Database.DEVICE_ID);
-                    int idCodeIndex = cursor.getColumnIndexOrThrow(Database.DEVICE_ID_CODE);
+                    int idCodeIndex = cursor.getColumnIndexOrThrow(DEVICE_ID_CODE);
                     int codeIndex = cursor.getColumnIndexOrThrow(Database.DEVICE_CODE);
                     int nameIndex = cursor.getColumnIndexOrThrow(Database.DEVICE_NAME);
-                    int issueIndex = cursor.getColumnIndexOrThrow(Database.DEVICE_ISSUE);
+                    int issueIndex = cursor.getColumnIndexOrThrow(DEVICE_ISSUE);
 
                     // Tạo mô hình Device và thêm vào danh sách
                     Device model = new Device(
