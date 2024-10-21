@@ -34,7 +34,7 @@ public class UploadDataTask extends AsyncTask<ArrayList<Device_History>, Void, B
     protected Boolean doInBackground(ArrayList<Device_History>... params) {
         ArrayList<Device_History> deviceList = params[0];
         try {
-            URL url = new URL("http://192.168.1.5:8080/ssmqrcode/uploadData");
+            URL url = new URL("http://192.168.1.8:8080/ssmqrcode/uploadData");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");

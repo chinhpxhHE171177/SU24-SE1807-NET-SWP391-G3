@@ -53,7 +53,7 @@ public class ListData extends AppCompatActivity {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.5:8080/ssmqrcode/")
+                .baseUrl("http://192.168.1.8:8080/ssmqrcode/")
                 .client(client) // Use the custom client with logging
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

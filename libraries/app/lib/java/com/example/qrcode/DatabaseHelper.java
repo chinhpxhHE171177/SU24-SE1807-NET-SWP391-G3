@@ -143,7 +143,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             if (issueIndex != -1) {
                 String existingIssues = cursor.getString(issueIndex);
-                List<String> issueList = new ArrayList<>(Arrays.asList(existingIssues.split(",")));
+                List<String> issueList = new ArrayList<>();
+
+                // Kiểm tra nếu existingIssues không phải là null
+                if (existingIssues != null && !existingIssues.isEmpty()) {
+                    issueList.addAll(Arrays.asList(existingIssues.split(",")));
+                }
                 issueList.add(issue); // Thêm vấn đề mới vào danh sách
                 String updatedIssues = TextUtils.join(",", issueList);
 
@@ -152,14 +157,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 updateValues.put(Database.DEVICE_ISSUE, updatedIssues);
                 db.update(DEVICE_TABLE_NAME, updateValues, Database.DEVICE_ID_CODE + "=?", new String[]{deviceId});
             }
+        } else {
+            // Nếu không có bản ghi nào, tức là vấn đề trước đó chưa tồn tại
+            values.put(Database.DEVICE_ID_CODE, deviceId);
+            values.put(Database.DEVICE_ISSUE, issue); // Thêm vấn đề mới
+            db.insert(DEVICE_TABLE_NAME, null, values); // Chèn một bản ghi mới
         }
 
+        // Đóng con trỏ (cursor)
         if (cursor != null) {
             cursor.close();
         }
 
+        // Đóng cơ sở dữ liệu
         db.close();
     }
+
 
     public void deleteIssueFromDevice(String deviceId, String issue) {
         SQLiteDatabase db = this.getWritableDatabase();

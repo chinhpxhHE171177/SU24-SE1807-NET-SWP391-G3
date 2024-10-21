@@ -62,10 +62,10 @@ public class ListHistoryActivity extends AppCompatActivity implements UploadData
                 }
 
                 // Schedule the next upload after 5 minutes
-                handler.postDelayed(this, 30000); // 300,000 milliseconds = 5 minutes
+                handler.postDelayed(this, 300000); // 300,000 milliseconds = 5 minutes
             }
         };
-        handler.postDelayed(uploadRunnable, 30000); // First trigger after 5 minutes
+        handler.postDelayed(uploadRunnable, 300000); // First trigger after 5 minutes
     }
 
     // Method to reset the timer if the user manually clicks the button
