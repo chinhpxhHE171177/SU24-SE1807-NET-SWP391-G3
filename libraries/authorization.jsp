@@ -140,13 +140,13 @@
             </thead>
             <tbody>
                 <c:forEach items="${permissions}" var="perm">
-                    <tr>
-                        <td>${perm.pageName}</td>
-                        <td><input type="checkbox" name="${perm.pageName}.canAccess" value="true" ${perm.canAccess ? 'checked' : ''}></td>
-                        <td><input type="checkbox" name="${perm.pageName}.canAdd" value="true" ${perm.canAdd ? 'checked' : ''}></td>
-                        <td><input type="checkbox" name="${perm.pageName}.canEdit" value="true" ${perm.canEdit ? 'checked' : ''}></td>
-                        <td><input type="checkbox" name="${perm.pageName}.canDelete" value="true" ${perm.canDelete ? 'checked' : ''}></td>
-                    </tr>
+                   <tr>
+                    <td>${perm.pageName}</td>
+                    <td><input type="checkbox" name="${perm.pageName}.canAccess" value="1" ${perm.canAccess ? 'checked' : ''}></td>
+                    <td><input type="checkbox" name="${perm.pageName}.canAdd" value="1" ${perm.canAdd ? 'checked' : ''}></td>
+                    <td><input type="checkbox" name="${perm.pageName}.canEdit" value="1" ${perm.canEdit ? 'checked' : ''}></td>
+                    <td><input type="checkbox" name="${perm.pageName}.canDelete" value="1" ${perm.canDelete ? 'checked' : ''}></td>
+                   </tr>
                 </c:forEach>
             </tbody>
         </table>

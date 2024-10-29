@@ -1,36 +1,3 @@
-   .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            border-radius: 5px;
-         animation: fadeIn 0.3s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    } 
-
-
-
-
-
-
-
-
-
-
-
-
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -170,6 +137,24 @@
     </style>
 </head>
 <%@include file="components/navigation.jsp"%>
+
+<!-- Modal -->
+<div class="modal fade" id="chartModal" tabindex="-1" aria-labelledby="chartModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="chartModalLabel">Line Chart</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <canvas id="modalChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 <body>
 <div class="container">
     <header>
@@ -193,6 +178,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 
 <script>
 const filterTypeSelect = document.getElementById('filterType');
@@ -218,7 +204,6 @@ async function fetchData(filterType) {
         document.getElementById('loader').style.display = 'none'; // Hide loader
         chartsContainer.innerHTML = ''; // Clear old charts
 
-
         // Check if data is empty
         if (data.length === 0) {
             const noDataMessage = document.createElement('div');
@@ -230,12 +215,29 @@ async function fetchData(filterType) {
             return; // Exit the function if there's no data
         }
 
+        // Fetch OEE (discountPercentage) from DummyJSON API
+       const oeeResponse = await fetch('https://dummyjson.com/products');
+       if (!oeeResponse.ok) throw new Error('Failed to fetch OEE data');
+       const oeeData = await oeeResponse.json();
+       console.log(oeeData); // Check the API response here
+       
+
+        // Map OEE values to data based on product ID or other logic
+        const oeeMap = {};
+        oeeData.products.forEach(product => {
+            oeeMap[product.id] = product.price;
+        });
+
+
         data.forEach(item => {
             const chartSection = document.createElement('div');
             chartSection.classList.add('position-relative', 'mb-5', 'p-3', 'bg-white', 'rounded', 'shadow');
 
             const lineHeading = document.createElement('h3');
             lineHeading.innerText = item.lineName;
+            lineHeading.style.cursor = 'pointer';
+            lineHeading.style.width = '30%';
+            lineHeading.onclick = () => openChartModal(item); // Open modal on click
             chartSection.appendChild(lineHeading);
 
             // Create three-dot menu (dropdown trigger)
@@ -279,7 +281,7 @@ async function fetchData(filterType) {
             chartsContainer.appendChild(chartSection);
 
             const ctx = canvas.getContext('2d');
-            const datasets = createDatasets(item);
+            const datasets = createDatasets(item, oeeMap[item.id]); // Pass OEE value here
 
             new Chart(ctx, {
                 type: 'bar',
@@ -297,8 +299,8 @@ async function fetchData(filterType) {
     }
 }
 
-// Create datasets based on data
-function createDatasets(item) {
+// Create datasets based on data and OEE
+function createDatasets(item, oee) {
     const datasets = [
         {
             label: 'Short Stop Time (minutes)',
@@ -324,6 +326,14 @@ function createDatasets(item) {
             type: 'line',
             yAxisID: 'yPercentage',
         },
+        {
+            label: 'OEE (%)',
+            data: [oee || 0], // Use OEE data or default to 0
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            type: 'bar',
+            yAxisID: 'yOEE',
+        },
     ];
 
     if (item.shortStop !== item.totalDowntime) {
@@ -339,7 +349,7 @@ function createDatasets(item) {
     return datasets;
 }
 
-// Chart options configuration
+// Update chart options to include the new y-axis for OEE
 function chartOptions() {
     return {
         responsive: true,
@@ -359,8 +369,75 @@ function chartOptions() {
                 position: 'right',
                 title: { text: 'Error Count', display: true },
             },
+            yOEE: {
+                beginAtZero: true,
+                position: 'right',
+                title: { text: 'OEE (%)', display: true },
+                ticks: { callback: value => value + '%' },
+            },
         },
     };
+}
+
+function openChartModal(item) {
+    const modalChartCtx = document.getElementById('modalChart').getContext('2d');
+
+    // Clear previous chart instance if any
+    if (window.modalChartInstance) window.modalChartInstance.destroy();
+
+    // Create new chart instance in the modal
+    window.modalChartInstance = new Chart(modalChartCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Short Stop Time', 'Short Stop Count', 'Short Stop Percentage', 'Total Downtime'],
+            datasets: [{
+                label: item.lineName,
+                data: [
+                    item.shortStop,
+                    item.downtimeCount,
+                    item.shortStopPercentage,
+                    item.totalDowntime,
+                ],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(139, 0, 139, 0.6)',
+                    'rgba(75, 192, 192, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(139, 0, 139, 1)',
+                    'rgba(75, 192, 192, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                datalabels: {
+                    anchor: 'end',       
+                    align: 'top',         
+                    formatter: (value) => value, 
+                    color: '#000', 
+                    font: {
+                        weight: 'bold'
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        },
+        plugins: [ChartDataLabels] // Khởi động plugin datalabels
+    });
+
+    // Show the modal
+    const chartModal = new bootstrap.Modal(document.getElementById('chartModal'));
+    chartModal.show();
 }
 
 // Download chart as an image

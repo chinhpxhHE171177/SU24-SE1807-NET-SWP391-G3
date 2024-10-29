@@ -62,57 +62,40 @@ public class Authorization extends HttpServlet {
         if ("true".equals(deleteParam)) {
             pdao.deletePermissionsByRoleId(roleId);
         } else {
-            // Map to hold permissions indexed by page name
-            Map<String, Permission> permissionMap = new HashMap<>();
 
-            // Load current permissions for the role
+            // Lấy danh sách tất cả permissions hiện có cho role
             List<Permission> currentPermissions = pdao.getPermissionsByRoleId(roleId);
+
+            // Duyệt qua từng permission để cập nhật trạng thái
             for (Permission perm : currentPermissions) {
-                permissionMap.put(perm.getPageName(), perm);
-            }
+                String pageName = perm.getPageName();
+                
+                // Kiểm tra xem checkbox có được chọn không
+                boolean canAccess = request.getParameter(pageName + ".canAccess") != null;
+                boolean canAdd = request.getParameter(pageName + ".canAdd") != null;
+                boolean canEdit = request.getParameter(pageName + ".canEdit") != null;
+                boolean canDelete = request.getParameter(pageName + ".canDelete") != null;
 
-            // Process each checkbox
-            for (String paramName : request.getParameterMap().keySet()) {
-                if (paramName.contains(".")) {
-                    String permissionType = paramName.substring(paramName.indexOf('.') + 1);
-                    String pageName = paramName.split("\\.")[0];
+                // Cập nhật trạng thái cho permission
+                perm.setCanAccess(canAccess);  
+                perm.setCanAdd(canAdd);  
+                perm.setCanEdit(canEdit);  
+                perm.setCanDelete(canDelete);
 
-                    // Get or create new permission entry
-                    Permission permission = permissionMap.getOrDefault(pageName, new Permission());
-                    permission.setRoleId(roleId);
-                    permission.setPageName(pageName);
-
-                    // Update permission fields based on checkbox states
-                    boolean isChecked = request.getParameter(paramName) != null && "true".equals(request.getParameter(paramName));
-                    switch (permissionType) {
-                        case "canAccess":
-                            permission.setCanAccess(isChecked);
-                            break;
-                        case "canAdd":
-                            permission.setCanAdd(isChecked);
-                            break;
-                        case "canEdit":
-                            permission.setCanEdit(isChecked);
-                            break;
-                        case "canDelete":
-                            permission.setCanDelete(isChecked);
-                            break;
-                    }
-
-                    // Update the permission map
-                    permissionMap.put(pageName, permission);
+                // Cập nhật hoặc xóa quyền trong cơ sở dữ liệu
+                if (canAccess || canAdd || canEdit || canDelete) {
+                    pdao.updatePermission(perm); // Cập nhật nếu có quyền
+                } else {
+                    // Nếu không có quyền, có thể xóa hoặc cập nhật trạng thái thành 0
+                    perm.setCanAccess(false);
+                    perm.setCanAdd(false);
+                    perm.setCanEdit(false);
+                    perm.setCanDelete(false);
+                    pdao.updatePermission(perm); 
                 }
             }
-
-            // Handle permissions with no checkboxes checked
-            for (Permission perm : permissionMap.values()) {
-                if (!perm.isCanAccess() && !perm.isCanAdd() && !perm.isCanEdit() && !perm.isCanDelete()) {
-                    pdao.deletePermission(perm);
-                }
-                pdao.updatePermission(perm);
-            }
-        }
-
-        response.sendRedirect("Authorization?role=" + roleId);
+            
+            response.sendRedirect("Authorization?role=" + roleId);
+    }
     }
 }
