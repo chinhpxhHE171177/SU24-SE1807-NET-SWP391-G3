@@ -318,6 +318,13 @@
         </select>
         <input type="text" name="deviceName" placeholder="Device Name" class="search-input"
                value="${not empty deviceName ? deviceName : ''}">
+               
+         <select name="type" class="search-input">
+          <option value="">-- Select Type --</option>
+          <c:forEach items="${requestScope.listType}" var="l">
+            <option value="${l.id}" ${l.id == type ? 'selected' : ''}>${l.name}</option>
+          </c:forEach>
+        </select>
 
         <!-- Sort by Date -->
         <select name="sortByDate" class="search-input">
@@ -419,17 +426,17 @@
   <nav aria-label="Page navigation">
     <ul class="pagination">
       <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-        <a class="page-link" href="ShortStopInfo?action=search&pageIndex=${currentPage - 1}&deviceCode=${deviceCode}&line=${line}&stage=${stage}&deviceName=${deviceName}&sortByDate=${sortByDate}" aria-label="Previous">
+        <a class="page-link" href="ShortStopInfo?action=search&pageIndex=${currentPage - 1}&deviceCode=${deviceCode}&line=${line}&stage=${stage}&deviceName=${deviceName}&type=${type}&sortByDate=${sortByDate}" aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
         </a>
       </li>
       <c:forEach begin="1" end="${totalPage}" var="i">
         <li class="page-item ${i == currentPage ? 'active' : ''}">
-          <a class="page-link" href="ShortStopInfo?action=search&pageIndex=${i}&deviceCode=${deviceCode}&line=${line}&stage=${stage}&deviceName=${deviceName}&sortByDate=${sortByDate}">${i}</a>
+          <a class="page-link" href="ShortStopInfo?action=search&pageIndex=${i}&deviceCode=${deviceCode}&line=${line}&stage=${stage}&deviceName=${deviceName}&type=${type}&sortByDate=${sortByDate}">${i}</a>
         </li>
       </c:forEach>
       <li class="page-item ${currentPage == totalPage ? 'disabled' : ''}">
-        <a class="page-link" href="ShortStopInfo?action=search&pageIndex=${currentPage + 1}&deviceCode=${deviceCode}&line=${line}&stage=${stage}&deviceName=${deviceName}&sortByDate=${sortByDate}" aria-label="Next">
+        <a class="page-link" href="ShortStopInfo?action=search&pageIndex=${currentPage + 1}&deviceCode=${deviceCode}&line=${line}&stage=${stage}&deviceName=${deviceName}&type=${type}&sortByDate=${sortByDate}" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
         </a>
       </li>
@@ -440,44 +447,106 @@
 
 <!-- Modal Add New Devices -->
 <div id="myModalNewDevices" class="modal">
-  <div class="modal-content">
-    <h2>Add New Devices</h2>
-    <hr/>
-    <form id="deviceNewForm" action="ShortStopInfo?action=add" method="POST"> <!-- Add form with POST method -->
-      <input type="hidden" name="action" value="add"> <!-- Hidden field for add action -->
+  <div class="modal-dialog modal-lg" role="document"> <!-- Large modal size -->
+    <div class="modal-content p-4">
+      <div class="modal-header">
+        <h2 class="modal-title">Add New Devices</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <hr />
+        <form id="deviceNewForm" action="ShortStopInfo?action=add" method="POST">
+          <!-- Add action as hidden input -->
+          <input type="hidden" name="action" value="add">
+          
+          <div class="row">
+            <!-- Select Device -->
+            <div class="col-md-6 mb-3">
+              <label for="deviceId">Select Device</label>
+              <select class="form-control" name="deviceId" id="deviceId">
+                <option value="">-- Select Device --</option>
+                <c:forEach items="${requestScope.liste}" var="l">
+                  <option value="${l.id}">${l.name}</option>
+                </c:forEach>
+              </select>
+            </div>
 
-      <!-- Select Device -->
-      <select class="mb-3" name="deviceId" id="deviceId" required>
-        <option value="">-- Select Device --</option>
-        <c:forEach items="${requestScope.liste}" var="l">
-          <option value="${l.id}">${l.name}</option>
-        </c:forEach>
-      </select>
+            <!-- Select Type -->
+            <div class="col-md-6 mb-3">
+              <label for="typeId">Select Type</label>
+              <select class="form-control" name="typeId" id="typeId">
+                <option value="">-- Select Type --</option>
+                <c:forEach items="${requestScope.listType}" var="p">
+                  <option value="${p.id}">${p.name}</option>
+                </c:forEach>
+              </select>
+            </div>
+          </div>
 
-      <!-- Select Error (Populated dynamically based on selected Device) -->
-      <select class="mb-3" name="errorDescription" id="errorDescription" required>
-        <option value="">-- Select Error --</option>
-      </select>
+          <div class="row">
+            <!-- Select Stage -->
+            <div class="col-md-6 mb-3">
+              <label for="stageId">Select Stage</label>
+              <select class="form-control" name="stageId" id="stageId">
+                <option value="">-- Select Stage --</option>
+                <c:forEach items="${requestScope.listst}" var="p">
+                  <option value="${p.id}">${p.name}</option>
+                </c:forEach>
+              </select>
+            </div>
 
-      <input class="mb-3" type="datetime-local" id="startTime" name="startTime" placeholder="Start Time" required>
-      <input class="mb-3" type="datetime-local" id="endTime" name="endTime" placeholder="End Time" required>
-      <select class="mb-3" name="stageId">
-        <option value="">-- Select Stage --</option>
-        <c:forEach items="${requestScope.listst}" var="p">
-          <option value="${p.id}">${p.name}</option>
-        </c:forEach>
-      </select>
+            <!-- Select Line -->
+            <div class="col-md-6 mb-3">
+              <label for="lineId">Select Line</label>
+              <select class="form-control" name="lineId" id="lineId">
+                <option value="">-- Select Line --</option>
+                <c:forEach items="${requestScope.listl}" var="p">
+                  <option value="${p.id}">${p.name}</option>
+                </c:forEach>
+              </select>
+            </div>
+          </div>
 
-      <!-- Error message display -->
-      <h5 style="color: red">${errorMessage}</h5>
-      <hr/>
+          <div class="row">
+            <!-- Select Error -->
+            <div class="col-md-6 mb-3">
+              <label for="errorDescription">Select Error</label>
+              <select class="form-control" name="errorDescription" id="errorDescription">
+                <option value="">-- Select Error --</option>
+              </select>
+            </div>
 
-      <!-- Buttons -->
-      <footer class="modal-footer">
-        <button type="button" class="btn-closeses">Close</button>
-        <button type="submit" class="btn-save">Add</button>
-      </footer>
-    </form>
+            <!-- Start Time -->
+            <div class="col-md-6 mb-3">
+              <label for="startTime">Start Time</label>
+              <input type="datetime-local" class="form-control" id="startTime" name="startTime" required>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- End Time -->
+            <div class="col-md-6 mb-3">
+              <label for="endTime">End Time</label>
+              <input type="datetime-local" class="form-control" id="endTime" name="endTime" required>
+            </div>
+
+            <!-- Error message display -->
+            <div class="col-md-12">
+              <h5 class="text-danger">${errorMessage}</h5>
+            </div>
+          </div>
+          
+          <hr />
+          <!-- Buttons -->
+          <div class="modal-footer">
+            <button type="button" class="btn-closeses" onclick="closeModal('addDeviceModal')">Close</button>
+            <button type="submit" class="btn btn-primary">Add</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -562,6 +631,7 @@
     document.querySelector('select[name="line"]').selectedIndex = 0;
     document.querySelector('select[name="stage"]').selectedIndex = 0;
     document.querySelector('input[name="deviceName"]').value = '';
+    document.querySelector('select[name="type"]').selectedIndex = 0;
     document.querySelector('select[name="sortByDate"]').selectedIndex = 0;
   }
 </script>

@@ -11,7 +11,9 @@ public class ErrorHistory {
     private Timestamp endDate;
     private double duration;
     private int stageId;
+    private int slotId;
     private int typeId;
+    private int lineId;
 
     private String equipmentCode;
     private String equipmentName;
@@ -305,16 +307,33 @@ public class ErrorHistory {
 		this.typeId = typeId;
 	}
 
+	public int getSlotId() {
+		return slotId;
+	}
+
+	public void setSlotId(int slotId) {
+		this.slotId = slotId;
+	}
+
+	public int getLineId() {
+		return lineId;
+	}
+
+	public void setLineId(int lineId) {
+		this.lineId = lineId;
+	}
+
 	@Override
 	public String toString() {
 		return "ErrorHistory [id=" + id + ", equipmentId=" + equipmentId + ", content=" + content + ", startDate="
 				+ startDate + ", startTime=" + startTime + ", endDate=" + endDate + ", duration=" + duration
-				+ ", stageId=" + stageId + ", equipmentCode=" + equipmentCode + ", equipmentName=" + equipmentName
-				+ ", stageName=" + stageName + ", lineName=" + lineName + ", departmentName=" + departmentName
-				+ ", year=" + year + ", month=" + month + ", day=" + day + ", longTime=" + longTime + ", shortTime="
-				+ shortTime + ", errorCount=" + errorCount + ", longCount=" + longCount + ", shortCount=" + shortCount
-				+ ", lossRate=" + lossRate + "]";
+				+ ", stageId=" + stageId + ", slotId=" + slotId + ", typeId=" + typeId + ", lineId=" + lineId
+				+ ", equipmentCode=" + equipmentCode + ", equipmentName=" + equipmentName + ", stageName=" + stageName
+				+ ", lineName=" + lineName + ", departmentName=" + departmentName + ", year=" + year + ", month="
+				+ month + ", day=" + day + ", longTime=" + longTime + ", shortTime=" + shortTime + ", errorCount="
+				+ errorCount + ", longCount=" + longCount + ", shortCount=" + shortCount + ", lossRate=" + lossRate
+				+ ", shiftName=" + shiftName + ", shortStopPercentage=" + shortStopPercentage + ", typeName=" + typeName
+				+ "]";
 	}
-
 
 }

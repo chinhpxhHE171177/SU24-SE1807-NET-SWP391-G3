@@ -5,6 +5,7 @@ import dal.EquipmentDAO;
 import dal.ErrorHistoryDAO;
 import dal.LineDAO;
 import dal.StageDAO;
+import dal.StopTypeDAO;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 
@@ -63,10 +64,12 @@ public class ShortStopInfoServlet extends HttpServlet {
         LineDAO ldao = new LineDAO();
         StageDAO sdao = new StageDAO();
         EquipmentDAO edao = new EquipmentDAO();
+        StopTypeDAO stdao = new StopTypeDAO();
 
         List<ProductionLines> listl = ldao.getLines();
         List<Stages> listst = sdao.getAlls();
         List<Equipment> liste = edao.getAlls();
+        List<StopType> listType = stdao.getAlls();
 
         List<ErrorHistory> lists = dao.getErrorHistory(pageIndex, pageSize);
         int totalLogs = dao.getCounts();
@@ -105,6 +108,7 @@ public class ShortStopInfoServlet extends HttpServlet {
 
         // Set attributes for JSP rendering
         request.setAttribute("lists", lists);
+        request.setAttribute("listType", listType);
         request.setAttribute("listl", listl);
         request.setAttribute("listst", listst);
         request.setAttribute("liste", liste);
@@ -123,7 +127,7 @@ public class ShortStopInfoServlet extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action == null) {
-            response.sendRedirect("shortStopInfo");
+            response.sendRedirect("ShortStopInfo");
             return;
         }
         switch (action) {
@@ -137,7 +141,7 @@ public class ShortStopInfoServlet extends HttpServlet {
                 update(request, response);
                 break;
             default:
-                response.sendRedirect("shortStopInfo");
+                response.sendRedirect("ShortStopInfo");
         }
     }
 
@@ -249,32 +253,37 @@ public class ShortStopInfoServlet extends HttpServlet {
         String lineCode = request.getParameter("line") != null ? request.getParameter("line").trim() : null;
         String stageCode = request.getParameter("stage") != null ? request.getParameter("stage").trim() : null;
         String deviceName = request.getParameter("deviceName") != null ? request.getParameter("deviceName").trim() : null;
+        String type = request.getParameter("type") != null ? request.getParameter("type").trim() : null;
         String sortByDate = request.getParameter("sortByDate") != null ? request.getParameter("sortByDate").trim() : "desc";
 
         int pageIndex = request.getParameter("pageIndex") != null ? Integer.parseInt(request.getParameter("pageIndex")) : 1;
         int pageSize = 10;
 
         LineDAO ldao = new LineDAO();
-        StageDAO stdao = new StageDAO();
+        StageDAO sdao = new StageDAO();
+        StopTypeDAO stdao = new StopTypeDAO();
         EquipmentDAO edao = new EquipmentDAO();
         List<Equipment> liste = edao.getAlls();
+        List<StopType> listType = stdao.getAlls();
 
         try {
             Integer stageId = (stageCode != null && !stageCode.isEmpty()) ? Integer.valueOf(stageCode) : null;
             Integer lineId = (lineCode != null && !lineCode.isEmpty()) ? Integer.valueOf(lineCode) : null;
+            Integer typeId = (type != null && !type.isEmpty()) ? Integer.valueOf(type) : null;
 
             // Get the filtered list based on the search criteria
-            List<ErrorHistory> lists = dao.search(deviceCode, lineId, stageId, deviceName, pageIndex, pageSize, sortByDate);
+            List<ErrorHistory> lists = dao.search(deviceCode, lineId, stageId, deviceName, typeId, pageIndex, pageSize, sortByDate);
 
             // Get the total count of filtered results
-            int totalLogs = dao.getFilteredCounts(deviceCode, lineId, stageId, deviceName);
+            int totalLogs = dao.getFilteredCounts(deviceCode, lineId, stageId, deviceName, typeId);
             int totalPage = (int) Math.ceil((double) totalLogs / pageSize);
 
             List<ProductionLines> listl = ldao.getLines();
-            List<Stages> listst = stdao.getAlls();
+            List<Stages> listst = sdao.getAlls();
 
             // Set attributes for JSP
             request.setAttribute("lists", lists);
+            request.setAttribute("listType", listType);
             request.setAttribute("listl", listl);
             request.setAttribute("listst", listst);
             request.setAttribute("liste", liste);
@@ -283,6 +292,7 @@ public class ShortStopInfoServlet extends HttpServlet {
             request.setAttribute("line", lineCode);
             request.setAttribute("sortByDate", sortByDate);
             request.setAttribute("deviceName", deviceName);
+            request.setAttribute("type", type);
             request.setAttribute("currentPage", pageIndex);
             request.setAttribute("totalLogs", totalLogs);
             request.setAttribute("totalPage", totalPage);
@@ -297,37 +307,41 @@ public class ShortStopInfoServlet extends HttpServlet {
 
     private void add(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            int equipmentId = Integer.parseInt(request.getParameter("deviceId"));
-            String errorDescription = request.getParameter("errorDescription"); // Đây sẽ là nội dung mô tả lỗi
+        	//int equipmentId = Integer.parseInt(request.getParameter("deviceId"));
+        	String errorDescription = request.getParameter("errorDescription");
+        	Timestamp startTime = Timestamp.valueOf(request.getParameter("startTime").replace("T", " ") + ":00");
+        	Timestamp endTime = Timestamp.valueOf(request.getParameter("endTime").replace("T", " ") + ":00");
 
-            // In ra giá trị để kiểm tra
-            System.out.println("Error Description: " + errorDescription);  // Kiểm tra giá trị
+        	Integer equipmentId = null;
+        	Integer stageId = null;
+        	Integer typeId = null;
+        	Integer lineId = null;
 
-            // Kiểm tra nếu errorDescription rỗng hoặc không hợp lệ
-            if (errorDescription == null || errorDescription.isEmpty()) { // Kiểm tra xem mô tả có rỗng không
-                throw new IllegalArgumentException("Invalid error description.");
-            }
+        	if (request.getParameter("deviceId") != null && !request.getParameter("deviceId").isEmpty()) {
+        		equipmentId = Integer.parseInt(request.getParameter("deviceId"));
+        	}
+        	if (request.getParameter("stageId") != null && !request.getParameter("stageId").isEmpty()) {
+        	    stageId = Integer.parseInt(request.getParameter("stageId"));
+        	}
+        	if (request.getParameter("typeId") != null && !request.getParameter("typeId").isEmpty()) {
+        	    typeId = Integer.parseInt(request.getParameter("typeId"));
+        	}
+        	if (request.getParameter("lineId") != null && !request.getParameter("lineId").isEmpty()) {
+        	    lineId = Integer.parseInt(request.getParameter("lineId"));
+        	}
 
-            String startTimeStr = request.getParameter("startTime").replace("T", " ") + ":00";
-            String endTimeStr = request.getParameter("endTime").replace("T", " ") + ":00";
+        	// Gọi phương thức thêm dữ liệu
+        	dao.add(equipmentId, errorDescription, startTime, endTime, stageId, typeId, lineId);
 
-            Timestamp startTime = Timestamp.valueOf(startTimeStr);
-            Timestamp endTime = Timestamp.valueOf(endTimeStr);
-            int stageId = Integer.parseInt(request.getParameter("stageId"));
-            System.out.println("Stage ID: " + stageId);  // In ra giá trị của stageId để kiểm tra
-
-
-            // Gọi phương thức để thêm lỗi vào cơ sở dữ liệu
-            dao.add(equipmentId, errorDescription, startTime, endTime, stageId);
 
             // Redirect with a success message
             String successMessage = "The short stop log added successfully!";
-            response.sendRedirect("shortStopInfo?successMessage=" + URLEncoder.encode(successMessage, "UTF-8"));
+            response.sendRedirect("ShortStopInfo?successMessage=" + URLEncoder.encode(successMessage, "UTF-8"));
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "An unexpected error occurred.");
             // Optionally, you can redirect here too if needed
-            response.sendRedirect("shortStopInfo");
+            response.sendRedirect("ShortStopInfo");
         }
     }
 
@@ -351,12 +365,12 @@ public class ShortStopInfoServlet extends HttpServlet {
             ErrorHistory eh = new ErrorHistory(deviceId, errorDescription, startTime, endTime, stageId);
             dao.update(eh);
             String successMessage = "The short stop log updated successfully!";
-            response.sendRedirect("shortStopInfo?successMessage=" + URLEncoder.encode(successMessage, "UTF-8"));
+            response.sendRedirect("ShortStopInfo?successMessage=" + URLEncoder.encode(successMessage, "UTF-8"));
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "An unexpected error occurred.");
             // Optionally, you can redirect here too if needed
-            response.sendRedirect("shortStopInfo");
+            response.sendRedirect("ShortStopInfo");
         }
     }
 

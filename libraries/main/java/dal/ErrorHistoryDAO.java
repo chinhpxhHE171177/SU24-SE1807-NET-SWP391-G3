@@ -109,17 +109,26 @@ public class ErrorHistoryDAO extends DBContext{
     }
    
 
-    public List<ErrorHistory> search(String EquipmentCode, Integer lineCode, Integer stageId, String deviceName, int pageIndex, int pageSize, String sortByDate) throws SQLException {
+    public List<ErrorHistory> search(String EquipmentCode, Integer lineCode, Integer stageId, String deviceName, Integer typeId, int pageIndex, int pageSize, String sortByDate) throws SQLException {
         List<ErrorHistory> list = new ArrayList<>();
 
         // Base query construction
-        String query = "SELECT eh.*, st.TypeName, e.EquipmentCode, e.EquipmentName, s.StageName, l.LineName\n" +
-                " FROM ErrorHistory eh\n" +
-                " JOIN Equipment e ON e.EquipmentID = eh.EquipmentID\n" +
-                " JOIN Stages s ON s.StageID = eh.StageID\n" +
-                " JOIN StopType st ON eh.TypeID = st.TypeID\n"+
-                " LEFT JOIN ProductionLines l ON l.LineID = s.LineID\n" +
-                " WHERE 1 = 1";
+        String query = "SELECT \r\n"
+        		+ "    eh.*, \r\n"
+        		+ "    st.TypeName, \r\n"
+        		+ "    e.EquipmentCode, \r\n"
+        		+ "    e.EquipmentName,\r\n"
+        		+ "    s.StageName, \r\n"
+        		+ "    l.LineName, \r\n"
+        		+ "    d.DepartmentName\r\n"
+        		+ "FROM ErrorHistory eh\r\n"
+        		+ "LEFT JOIN Equipment e ON e.EquipmentID = eh.EquipmentID\r\n"
+        		+ "LEFT JOIN Stages s ON eh.StageID = s.StageID\r\n"
+        		+ "LEFT JOIN StopType st ON eh.TypeID = st.TypeID\r\n"
+        		+ "LEFT JOIN ProductionLines l ON eh.LineID = l.LineID\r\n"
+        		+ "LEFT JOIN Rooms r ON l.RoomID = r.RoomID\r\n"
+        		+ "LEFT JOIN Departments d ON r.DepartmentID = d.DepartmentID\r\n"
+        		+ "WHERE 1=1";
 
         // Adding filters based on input parameters
         if (EquipmentCode != null && !EquipmentCode.isEmpty()) {
@@ -133,6 +142,9 @@ public class ErrorHistoryDAO extends DBContext{
         }
         if (deviceName != null && !deviceName.isEmpty()) {
             query += " AND e.EquipmentName LIKE ?";
+        }
+        if (typeId != null) {
+            query += " AND st.TypeID = ?";
         }
 
         // Add sorting by StartTime or EndTime
@@ -161,6 +173,9 @@ public class ErrorHistoryDAO extends DBContext{
             }
             if (deviceName != null && !deviceName.isEmpty()) {
                 stmt.setString(index++, "%" + deviceName + "%");
+            }
+            if (typeId != null) {
+                stmt.setInt(index++, typeId);
             }
 
             // Setting pagination parameters
@@ -197,16 +212,22 @@ public class ErrorHistoryDAO extends DBContext{
     public List<ErrorHistory> getErrorHistory(int pageIndex, int pageSize) {
         List<ErrorHistory> list = new ArrayList<>();
 
-        String query = "SELECT eh.*, st.TypeName, e.EquipmentCode, e.EquipmentName, \r\n"
-        		+ "s.StageName, l.LineName, d.DepartmentName\r\n"
+        String query = "SELECT \r\n"
+        		+ "    eh.*, \r\n"
+        		+ "    st.TypeName, \r\n"
+        		+ "    e.EquipmentCode, \r\n"
+        		+ "    e.EquipmentName,\r\n"
+        		+ "    s.StageName, \r\n"
+        		+ "    l.LineName, \r\n"
+        		+ "    d.DepartmentName\r\n"
         		+ "FROM ErrorHistory eh\r\n"
-        		+ "JOIN Equipment e ON e.EquipmentID = eh.EquipmentID\r\n"
-        		+ "JOIN Stages s ON eh.StageID = s.StageID\r\n"
-        		+ "JOIN StopType st ON eh.TypeID = st.TypeID\r\n"
-        		+ "LEFT JOIN ProductionLines l ON s.LineID = l.LineID\r\n"
+        		+ "LEFT JOIN Equipment e ON e.EquipmentID = eh.EquipmentID\r\n"
+        		+ "LEFT JOIN Stages s ON eh.StageID = s.StageID\r\n"
+        		+ "LEFT JOIN StopType st ON eh.TypeID = st.TypeID\r\n"
+        		+ "LEFT JOIN ProductionLines l ON eh.LineID = l.LineID\r\n"
         		+ "LEFT JOIN Rooms r ON l.RoomID = r.RoomID\r\n"
         		+ "LEFT JOIN Departments d ON r.DepartmentID = d.DepartmentID\r\n"
-        		+ "ORDER BY eh.StartTime desc\r\n"
+        		+ "ORDER BY eh.StartTime DESC\r\n"
         		+ "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
 
         try (Connection connection = getConnection();
@@ -228,6 +249,9 @@ public class ErrorHistoryDAO extends DBContext{
                     eh.setEndDate(resultSet.getTimestamp("EndTime"));
                     eh.setDuration(resultSet.getInt("Duration"));
                     eh.setStageId(resultSet.getInt("StageID"));
+                    eh.setSlotId(resultSet.getInt("SlotID"));
+                    eh.setTypeId(resultSet.getInt("TypeID"));
+                    eh.setLineId(resultSet.getInt("LineID"));
                     eh.setTypeName(resultSet.getString("TypeName"));
                     eh.setEquipmentCode(resultSet.getString("EquipmentCode"));
                     eh.setEquipmentName(resultSet.getString("EquipmentName"));
@@ -911,14 +935,16 @@ public class ErrorHistoryDAO extends DBContext{
     }
 
 
-    public int getFilteredCounts(String equipmentCode, Integer lineCode, Integer stageId, String deviceName) {
+    public int getFilteredCounts(String equipmentCode, Integer lineCode, Integer stageId, String deviceName, Integer typeId) {
         int count = 0;
-        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ErrorHistory eh "
-        		+ "JOIN StopType st ON eh.TypeID = st.TypeID "
-        		+ "JOIN Equipment e ON e.EquipmentID = eh.EquipmentID "
-        		+ "JOIN Stages s ON s.StageID = eh.StageID "
-        		+ "LEFT JOIN ProductionLines l ON l.LineID = s.LineID "
-        		+ "WHERE 1 = 1");
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ErrorHistory eh \r\n"
+        		+ "LEFT JOIN Equipment e ON e.EquipmentID = eh.EquipmentID\r\n"
+        		+ "LEFT JOIN Stages s ON eh.StageID = s.StageID\r\n"
+        		+ "LEFT JOIN StopType st ON eh.TypeID = st.TypeID\r\n"
+        		+ "LEFT JOIN ProductionLines l ON eh.LineID = l.LineID\r\n"
+        		+ "LEFT JOIN Rooms r ON l.RoomID = r.RoomID\r\n"
+        		+ "LEFT JOIN Departments d ON r.DepartmentID = d.DepartmentID\r\n"
+        		+ "WHERE 1=1");
 
         // Add filtering conditions based on the provided parameters
         if (equipmentCode != null && !equipmentCode.isEmpty()) {
@@ -932,6 +958,9 @@ public class ErrorHistoryDAO extends DBContext{
         }
         if (deviceName != null && !deviceName.isEmpty()) {
             sql.append(" AND e.EquipmentName LIKE ?");
+        }
+        if (typeId != null) {
+            sql.append(" AND st.TypeID = ?");
         }
 
         try (Connection connection = getConnection(); PreparedStatement pst = connection.prepareStatement(sql.toString())) {
@@ -948,6 +977,9 @@ public class ErrorHistoryDAO extends DBContext{
             }
             if (deviceName != null && !deviceName.isEmpty()) {
                 pst.setString(index++, "%" + deviceName + "%");
+            }
+            if (typeId != null) {
+                pst.setInt(index++, typeId);
             }
 
             ResultSet rs = pst.executeQuery();
@@ -1213,14 +1245,50 @@ public class ErrorHistoryDAO extends DBContext{
         }
     }
 
-    public void add(int equipmentId, String errorDescription, Timestamp startTime, Timestamp endTime, int stageId) {
-        String sql = "INSERT INTO ErrorHistory (EquipmentID, ErrorDescription, StartTime, EndTime, StageID) VALUES (?, ?, ?, ?, ?)";
-        try (Connection connection = getConnection();PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, equipmentId);
-            stmt.setString(2, errorDescription);
-            stmt.setTimestamp(3, startTime);
-            stmt.setTimestamp(4, endTime);
-            stmt.setInt(5, stageId);  // Đảm bảo stageId được thêm vào đúng cột trong bảng
+//    public void add(int equipmentId, String errorDescription, Timestamp startTime, Timestamp endTime, int stageId) {
+//        String sql = "INSERT INTO ErrorHistory (EquipmentID, ErrorDescription, StartTime, EndTime, StageID) VALUES (?, ?, ?, ?, ?)";
+//        try (Connection connection = getConnection();PreparedStatement stmt = connection.prepareStatement(sql)) {
+//            stmt.setInt(1, equipmentId);
+//            stmt.setString(2, errorDescription);
+//            stmt.setTimestamp(3, startTime);
+//            stmt.setTimestamp(4, endTime);
+//            stmt.setInt(5, stageId);  // Đảm bảo stageId được thêm vào đúng cột trong bảng
+//            stmt.executeUpdate();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
+    
+    public void add(Integer equipmentId, String errorDescription, Timestamp startTime, Timestamp endTime, Integer stageId, Integer typeId, Integer lineId) {
+        StringBuilder sql = new StringBuilder("INSERT INTO ErrorHistory (ErrorDescription, StartTime, EndTime");
+        
+        if (equipmentId != null) sql.append(", EquipmentID");
+        if (stageId != null) sql.append(", StageID");
+        if (typeId != null) sql.append(", TypeID");
+        if (lineId != null) sql.append(", LineID");
+        
+        sql.append(") VALUES (?, ?, ?"); // Base values for description, start time, end time
+        
+        if (equipmentId != null) sql.append(", ?");
+        if (stageId != null) sql.append(", ?");
+        if (typeId != null) sql.append(", ?");
+        if (lineId != null) sql.append(", ?");
+        
+        sql.append(")");
+
+        try (Connection connection = getConnection(); PreparedStatement stmt = connection.prepareStatement(sql.toString())) {
+            // Set the first three mandatory parameters
+            stmt.setString(1, errorDescription);
+            stmt.setTimestamp(2, startTime);
+            stmt.setTimestamp(3, endTime);
+            
+            int index = 4; // Start setting from the 4th position
+            
+            if (equipmentId != null) stmt.setInt(index++, equipmentId);
+            if (stageId != null) stmt.setInt(index++, stageId);
+            if (typeId != null) stmt.setInt(index++, typeId);
+            if (lineId != null) stmt.setInt(index++, lineId);
+
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
