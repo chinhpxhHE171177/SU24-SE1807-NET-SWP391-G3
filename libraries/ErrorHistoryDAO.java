@@ -393,33 +393,136 @@ public class ErrorHistoryDAO extends DBContext{
     }
 
     
-    public List<ErrorHistory> searchByDateRange(String deviceCode, Integer depId, Integer lineId, Integer stageId, Date startDate, Date endDate, int pageIndex, int pageSize) throws SQLException {
+//    public List<ErrorHistory> searchByDateRange(String deviceCode, Integer depId, Integer lineId, Integer stageId, Date startDate, Date endDate, int pageIndex, int pageSize) throws SQLException {
+//        List<ErrorHistory> detailedList = new ArrayList<>();
+//        Map<String, Integer> errorSummaryMap = new HashMap<>();
+//
+//        // Base SQL query for detailed error history
+//        String detailQuery = "SELECT eh.ErrorDescription, eh.StartTime, eh.EndTime, eh.Duration, " +
+//            "e.EquipmentCode, e.EquipmentName, s.StageName, l.LineName, d.DepartmentName " +
+//            "FROM ErrorHistory eh " +
+//            "JOIN Equipment e ON e.EquipmentID = eh.EquipmentID " +
+//            "JOIN Stages s ON eh.StageID = s.StageID " +
+//            "LEFT JOIN ProductionLines l ON s.LineID = l.LineID " +
+//            "LEFT JOIN Rooms r ON l.RoomID = r.RoomID " +
+//            "LEFT JOIN Departments d ON r.DepartmentID = d.DepartmentID " +
+//            "WHERE 1=1 ";
+//
+//        // Adding filters dynamically based on provided parameters
+//        if (deviceCode != null && !deviceCode.isEmpty()) {
+//            detailQuery += " AND e.EquipmentCode = ?";
+//        }
+//        if (depId != null) {
+//            detailQuery += " AND d.DepartmentID = ?";
+//        }
+//        if (lineId != null) {
+//            detailQuery += " AND l.LineID = ?";
+//        }
+//        if (stageId != null) {
+//            detailQuery += " AND s.StageID = ?";
+//        }
+//
+//        // Date filtering
+//        if (startDate != null && endDate != null) {
+//            detailQuery += " AND CAST(eh.StartTime AS DATE) >= ? AND CAST(eh.EndTime AS DATE) <= ?";
+//        }
+//
+//        // Pagination logic
+//        detailQuery += " ORDER BY eh.StartTime DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+//
+//        try (Connection connection = getConnection(); PreparedStatement detailStmt = connection.prepareStatement(detailQuery)) {
+//            int paramIndex = 1;
+//
+//            // Set the dynamic parameters
+//            if (deviceCode != null && !deviceCode.isEmpty()) {
+//                detailStmt.setString(paramIndex++, deviceCode);
+//            }
+//            if (depId != null) {
+//                detailStmt.setInt(paramIndex++, depId);
+//            }
+//            if (lineId != null) {
+//                detailStmt.setInt(paramIndex++, lineId);
+//            }
+//            if (stageId != null) {
+//                detailStmt.setInt(paramIndex++, stageId);
+//            }
+//
+//            // Set date parameters if applicable
+//            if (startDate != null && endDate != null) {
+//                detailStmt.setDate(paramIndex++, new java.sql.Date(startDate.getTime()));
+//                detailStmt.setDate(paramIndex++, new java.sql.Date(endDate.getTime()));
+//            }
+//
+//            // Set pagination parameters
+//            detailStmt.setInt(paramIndex++, (pageIndex - 1) * pageSize); // Offset
+//            detailStmt.setInt(paramIndex++, pageSize); // Fetch size
+//
+//            // Execute detailed query and populate the list
+//            try (ResultSet rs = detailStmt.executeQuery()) {
+//                while (rs.next()) {
+//                    ErrorHistory eh = new ErrorHistory();
+//                    eh.setContent(rs.getString("ErrorDescription"));
+//                    eh.setStartDate(rs.getTimestamp("StartTime"));
+//                    eh.setEndDate(rs.getTimestamp("EndTime"));
+//                    eh.setDuration(rs.getInt("Duration"));
+//                    eh.setEquipmentCode(rs.getString("EquipmentCode"));
+//                    eh.setEquipmentName(rs.getString("EquipmentName"));
+//                    eh.setStageName(rs.getString("StageName"));
+//                    eh.setLineName(rs.getString("LineName"));
+//                    eh.setDepartmentName(rs.getString("DepartmentName"));
+//
+//                    detailedList.add(eh);
+//
+//                    // Increment the error count in the summary map
+//                    String equipmentCode = rs.getString("EquipmentCode");
+//                    errorSummaryMap.put(equipmentCode, errorSummaryMap.getOrDefault(equipmentCode, 0) + 1);
+//                }
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            throw e;
+//        }
+//
+//        // Create summary message
+//        StringBuilder summaryMessage = new StringBuilder();
+//        for (Map.Entry<String, Integer> entry : errorSummaryMap.entrySet()) {
+//            summaryMessage.append(entry.getKey()).append(": ").append(entry.getValue()).append(" error(s), ");
+//        }
+//
+//        // Remove the trailing comma and space if necessary
+//        if (summaryMessage.length() > 0) {
+//            summaryMessage.setLength(summaryMessage.length() - 2); // Trim last comma and space
+//        }
+//
+//        // Print or return the summary if needed
+//        System.out.println(summaryMessage.toString()); // or return it
+//
+//        return detailedList;
+//    }
+    
+    
+    public List<ErrorHistory> searchByDateRange(Integer lineId, Integer stageId, Date startDate, Date endDate, int pageIndex, int pageSize) throws SQLException {
         List<ErrorHistory> detailedList = new ArrayList<>();
         Map<String, Integer> errorSummaryMap = new HashMap<>();
 
         // Base SQL query for detailed error history
         String detailQuery = "SELECT eh.ErrorDescription, eh.StartTime, eh.EndTime, eh.Duration, " +
-            "e.EquipmentCode, e.EquipmentName, s.StageName, l.LineName, d.DepartmentName " +
+            "e.EquipmentCode, e.EquipmentName, s.StageName, l.LineName, d.DepartmentName, st.TypeName " +
             "FROM ErrorHistory eh " +
-            "JOIN Equipment e ON e.EquipmentID = eh.EquipmentID " +
-            "JOIN Stages s ON eh.StageID = s.StageID " +
-            "LEFT JOIN ProductionLines l ON s.LineID = l.LineID " +
+            "LEFT JOIN StopType st ON eh.TypeID = st.TypeID " +
+            "LEFT JOIN Equipment e ON e.EquipmentID = eh.EquipmentID " +
+            "LEFT JOIN Stages s ON eh.StageID = s.StageID " +
+            "LEFT JOIN ProductionLines l ON eh.LineID = l.LineID " +
             "LEFT JOIN Rooms r ON l.RoomID = r.RoomID " +
             "LEFT JOIN Departments d ON r.DepartmentID = d.DepartmentID " +
             "WHERE 1=1 ";
 
-        // Adding filters dynamically based on provided parameters
-        if (deviceCode != null && !deviceCode.isEmpty()) {
-            detailQuery += " AND e.EquipmentCode = ?";
-        }
-        if (depId != null) {
-            detailQuery += " AND d.DepartmentID = ?";
-        }
+        
         if (lineId != null) {
             detailQuery += " AND l.LineID = ?";
         }
         if (stageId != null) {
-            detailQuery += " AND s.StageID = ?";
+            detailQuery += " AND eh.StageID = ?";
         }
 
         // Date filtering
@@ -433,13 +536,6 @@ public class ErrorHistoryDAO extends DBContext{
         try (Connection connection = getConnection(); PreparedStatement detailStmt = connection.prepareStatement(detailQuery)) {
             int paramIndex = 1;
 
-            // Set the dynamic parameters
-            if (deviceCode != null && !deviceCode.isEmpty()) {
-                detailStmt.setString(paramIndex++, deviceCode);
-            }
-            if (depId != null) {
-                detailStmt.setInt(paramIndex++, depId);
-            }
             if (lineId != null) {
                 detailStmt.setInt(paramIndex++, lineId);
             }
@@ -470,6 +566,7 @@ public class ErrorHistoryDAO extends DBContext{
                     eh.setStageName(rs.getString("StageName"));
                     eh.setLineName(rs.getString("LineName"));
                     eh.setDepartmentName(rs.getString("DepartmentName"));
+                    eh.setTypeName(rs.getString("TypeName"));
 
                     detailedList.add(eh);
 
@@ -501,29 +598,30 @@ public class ErrorHistoryDAO extends DBContext{
     }
     
     
-    public List<ErrorHistory> searchByDateRange(Integer lineId, Integer stageId, Date startDate, Date endDate, int pageIndex, int pageSize) throws SQLException {
+    public List<ErrorHistory> searchByShiftDateRange(Integer lineId, Integer stageId, Date startDate, Date endDate, int pageIndex, int pageSize) throws SQLException {
         List<ErrorHistory> detailedList = new ArrayList<>();
         Map<String, Integer> errorSummaryMap = new HashMap<>();
 
         // Base SQL query for detailed error history
-        String detailQuery = "SELECT eh.ErrorDescription, eh.StartTime, eh.EndTime, eh.Duration, " +
-            "e.EquipmentCode, e.EquipmentName, s.StageName, l.LineName, d.DepartmentName, sh.ShiftName " +
-            "FROM ErrorHistory eh " +
-            "JOIN Equipment e ON e.EquipmentID = eh.EquipmentID " +
-            "JOIN Stages s ON eh.StageID = s.StageID " +
-            "LEFT JOIN ProductionLines l ON s.LineID = l.LineID " +
-            "LEFT JOIN Rooms r ON l.RoomID = r.RoomID " +
-            "LEFT JOIN Departments d ON r.DepartmentID = d.DepartmentID " +
-            "LEFT JOIN ShiftSlots ss ON eh.SlotID = ss.SlotID " +
-            "LEFT JOIN Shifts sh ON ss.ShiftID = sh.ShiftID " +
-            "WHERE 1=1 ";
+        String detailQuery = "SELECT eh.ErrorDescription, eh.StartTime, eh.EndTime, eh.Duration, \r\n"
+        		+ "e.EquipmentCode, e.EquipmentName, s.StageName, l.LineName, d.DepartmentName, sh.ShiftName, st.TypeName\r\n"
+        		+ "FROM ErrorHistory eh \r\n"
+        		+ "LEFT JOIN StopType st ON eh.TypeID = st.TypeID\r\n"
+        		+ "LEFT JOIN Equipment e ON e.EquipmentID = eh.EquipmentID\r\n"
+        		+ "LEFT JOIN Stages s ON eh.StageID = s.StageID \r\n"
+        		+ "LEFT JOIN ProductionLines l ON eh.LineID = l.LineID \r\n"
+        		+ "LEFT JOIN Rooms r ON l.RoomID = r.RoomID \r\n"
+        		+ "LEFT JOIN Departments d ON r.DepartmentID = d.DepartmentID \r\n"
+        		+ "LEFT JOIN ShiftSlots ss ON eh.SlotID = ss.SlotID \r\n"
+        		+ "LEFT JOIN Shifts sh ON ss.ShiftID = sh.ShiftID \r\n"
+        		+ "WHERE 1=1 ";
 
         
         if (lineId != null) {
             detailQuery += " AND l.LineID = ?";
         }
         if (stageId != null) {
-            detailQuery += " AND s.StageID = ?";
+            detailQuery += " AND eh.StageID = ?";
         }
 
         // Date filtering
@@ -568,6 +666,7 @@ public class ErrorHistoryDAO extends DBContext{
                     eh.setLineName(rs.getString("LineName"));
                     eh.setDepartmentName(rs.getString("DepartmentName"));
                     eh.setShiftName(rs.getString("ShiftName"));
+                    eh.setTypeName(rs.getString("TypeName"));
 
                     detailedList.add(eh);
 
@@ -597,7 +696,7 @@ public class ErrorHistoryDAO extends DBContext{
 
         return detailedList;
     }
-
+    
 
     public List<ErrorHistory> searchChart(String equipmentCode, Integer depId, Integer lineId, Integer stageId, Date startDate, Date endDate) throws SQLException {
         List<ErrorHistory> list = new ArrayList<>();
@@ -840,6 +939,83 @@ public class ErrorHistoryDAO extends DBContext{
                     eh.setStageName(rs.getString("StageName"));
                     eh.setLineName(rs.getString("LineName"));
                     eh.setDepartmentName(rs.getString("DepartmentName"));
+                    eh.setTypeName(rs.getString("TypeName"));
+
+                    list.add(eh);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        return list;
+    }
+    
+    
+    public List<ErrorHistory> searchHourByDateNew(Integer lineId, Integer stageId, Date targetDate, int pageIndex, int pageSize) throws SQLException {
+        List<ErrorHistory> list = new ArrayList<>();
+
+        // Base SQL query for detailed error history
+        String detailQuery = "SELECT eh.ErrorDescription, eh.StartTime, eh.EndTime, eh.Duration, \r\n"
+        		+ "e.EquipmentCode, e.EquipmentName, s.StageName, l.LineName, d.DepartmentName, st.TypeName \r\n"
+        		+ "FROM ErrorHistory eh \r\n"
+        		+ "LEFT JOIN StopType st ON eh.TypeID = st.TypeID \r\n"
+        		+ "LEFT JOIN Equipment e ON e.EquipmentID = eh.EquipmentID \r\n"
+        		+ "LEFT JOIN Stages s ON eh.StageID = s.StageID \r\n"
+        		+ "LEFT JOIN ProductionLines l ON eh.LineID = l.LineID\r\n"
+        		+ "LEFT JOIN Rooms r ON l.RoomID = r.RoomID\r\n"
+        		+ "LEFT JOIN Departments d ON r.DepartmentID = d.DepartmentID \r\n"
+        		+ "WHERE 1=1 ";
+
+        if (lineId != null) {
+            detailQuery += " AND l.LineID = ?";
+        }
+        if (stageId != null) {
+            detailQuery += " AND eh.StageID = ?";
+        }
+
+        // Date filtering
+        if (targetDate != null) {
+            detailQuery += " AND CAST(eh.StartTime AS DATE)= ?";
+        }
+
+        // Pagination logic
+        detailQuery += " ORDER BY eh.StartTime DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try (Connection connection = getConnection(); PreparedStatement detailStmt = connection.prepareStatement(detailQuery)) {
+            int paramIndex = 1;
+
+            if (lineId != null) {
+                detailStmt.setInt(paramIndex++, lineId);
+            }
+            if (stageId != null) {
+                detailStmt.setInt(paramIndex++, stageId);
+            }
+
+            // Set date parameters if applicable
+            if (targetDate != null) {
+                detailStmt.setDate(paramIndex++, new java.sql.Date(targetDate.getTime()));
+            }
+
+            // Set pagination parameters
+            detailStmt.setInt(paramIndex++, (pageIndex - 1) * pageSize); // Offset
+            detailStmt.setInt(paramIndex++, pageSize); // Fetch size
+
+            // Execute detailed query and populate the list
+            try (ResultSet rs = detailStmt.executeQuery()) {
+                while (rs.next()) {
+                    ErrorHistory eh = new ErrorHistory();
+                    eh.setContent(rs.getString("ErrorDescription"));
+                    eh.setStartDate(rs.getTimestamp("StartTime"));
+                    eh.setEndDate(rs.getTimestamp("EndTime"));
+                    eh.setDuration(rs.getDouble("Duration"));
+                    eh.setEquipmentCode(rs.getString("EquipmentCode"));
+                    eh.setEquipmentName(rs.getString("EquipmentName"));
+                    eh.setStageName(rs.getString("StageName"));
+                    eh.setLineName(rs.getString("LineName"));
+                    eh.setDepartmentName(rs.getString("DepartmentName"));
+                    eh.setTypeName(rs.getString("TypeName"));
 
                     list.add(eh);
                 }
@@ -995,8 +1171,8 @@ public class ErrorHistoryDAO extends DBContext{
     public int getFilterCounts(String equipmentCode, Integer depId, Integer lineCode, Integer stageId, Date startDate, Date endDate) {
         int count = 0;
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ErrorHistory eh \n" +
-                "JOIN Equipment e ON e.EquipmentID = eh.EquipmentID \n" +
-                "JOIN Stages s ON s.StageID = eh.StageID \n" +
+                "LEFT JOIN Equipment e ON e.EquipmentID = eh.EquipmentID \n" +
+                "LEFT JOIN Stages s ON s.StageID = eh.StageID \n" +
                 "LEFT JOIN ProductionLines l ON l.LineID = s.LineID \n" +
                 "LEFT JOIN Rooms r ON l.RoomID = r.RoomID \n" +
                 "LEFT JOIN Departments d ON r.DepartmentID = d.DepartmentID WHERE 1 = 1");
@@ -1053,8 +1229,8 @@ public class ErrorHistoryDAO extends DBContext{
     public int getFilterCounts(Integer lineCode, Integer stageId, Date startDate, Date endDate) {
         int count = 0;
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ErrorHistory eh \n" +
-                "JOIN Equipment e ON e.EquipmentID = eh.EquipmentID \n" +
-                "JOIN Stages s ON s.StageID = eh.StageID \n" +
+                "LEFT JOIN Equipment e ON e.EquipmentID = eh.EquipmentID \n" +
+                "LEFT JOIN Stages s ON s.StageID = eh.StageID \n" +
                 "LEFT JOIN ProductionLines l ON l.LineID = s.LineID \n" +
                 "LEFT JOIN Rooms r ON l.RoomID = r.RoomID \n" +
                 "LEFT JOIN Departments d ON r.DepartmentID = d.DepartmentID WHERE 1 = 1");
@@ -1098,8 +1274,8 @@ public class ErrorHistoryDAO extends DBContext{
     public int getFilterCounts(String equipmentCode, Integer depId, Integer lineCode, Integer stageId, Date targetDate) {
         int count = 0;
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ErrorHistory eh \n" +
-                "JOIN Equipment e ON e.EquipmentID = eh.EquipmentID \n" +
-                "JOIN Stages s ON s.StageID = eh.StageID \n" +
+                "LEFT JOIN Equipment e ON e.EquipmentID = eh.EquipmentID \n" +
+                "LEFT JOIN Stages s ON s.StageID = eh.StageID \n" +
                 "LEFT JOIN ProductionLines l ON l.LineID = s.LineID \n" +
                 "LEFT JOIN Rooms r ON l.RoomID = r.RoomID \n" +
                 "LEFT JOIN Departments d ON r.DepartmentID = d.DepartmentID WHERE 1 = 1");
@@ -1156,8 +1332,8 @@ public class ErrorHistoryDAO extends DBContext{
     public int getFilterCounts(Integer lineCode, Integer stageId, Date targetDate) {
         int count = 0;
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ErrorHistory eh \n" +
-                "JOIN Equipment e ON e.EquipmentID = eh.EquipmentID \n" +
-                "JOIN Stages s ON s.StageID = eh.StageID \n" +
+                "LEFT JOIN Equipment e ON e.EquipmentID = eh.EquipmentID \n" +
+                "LEFT JOIN Stages s ON s.StageID = eh.StageID \n" +
                 "LEFT JOIN ProductionLines l ON l.LineID = s.LineID \n" +
                 "LEFT JOIN Rooms r ON l.RoomID = r.RoomID \n" +
                 "LEFT JOIN Departments d ON r.DepartmentID = d.DepartmentID WHERE 1 = 1");
@@ -1720,6 +1896,152 @@ public class ErrorHistoryDAO extends DBContext{
     }
     
     
+    public List<Map<String, Object>> searchByLineStageWorkingDayNew(Integer lineId, Integer stageId, Date startDate, Date endDate) throws SQLException {
+    	List<Map<String, Object>> downtimeList = new ArrayList<>();
+
+        StringBuilder detailQuery = new StringBuilder();
+        detailQuery.append("WITH MaxSlot AS (\r\n"
+        		+ "    SELECT \r\n"
+        		+ "        CAST(eh.StartTime AS DATE) AS Date,\r\n"
+        		+ "        l.LineName, \r\n"
+        		+ "        MAX(ss.SlotID) AS MaxSlotID\r\n"
+        		+ "    FROM ShiftSlots ss\r\n"
+        		+ "    JOIN ErrorHistory eh ON ss.SlotID = eh.SlotID\r\n"
+        		+ "    JOIN ProductionLines l ON eh.LineID = l.LineID\r\n"
+        		+ "    GROUP BY CAST(eh.StartTime AS DATE), l.LineName\r\n"
+        		+ ")\r\n"
+        		+ "SELECT\r\n"
+        		+ "   Day,\r\n"
+        		+ "   SUM(ShortStop) AS ShortStop,\r\n"
+        		+ "   ROUND(SUM(EShort) / NULLIF(LatestSlot, 0) * 100, 2) AS ShortPercentage,\r\n"
+        		+ "   SUM(ShortCount) AS ShortCount,\r\n"
+        		+ "   SUM(LongStop) AS LongStop,\r\n"
+        		+ "   ROUND(SUM(ELong) / NULLIF(LatestSlot, 0) * 100, 2) AS LongPercentage,\r\n"
+        		+ "   SUM(LongCount) AS LongCount,\r\n"
+        		+ "   SUM(PPStop) AS PPStop,\r\n"
+        		+ "   ROUND(SUM(EPP) / NULLIF(LatestSlot, 0) * 100, 2) AS PPPercentage,\r\n"
+        		+ "   SUM(PPCount) AS PPCount,\r\n"
+        		+ "   SUM(DCCStop) AS DCCStop,\r\n"
+        		+ "   ROUND(SUM(EDCC) / NULLIF(LatestSlot, 0) * 100, 2) AS DccPercentage,\r\n"
+        		+ "   SUM(DCCCount) AS DCCCount,\r\n"
+        		+ "   SUM(DMTDStop) AS DMTDStop,\r\n"
+        		+ "   ROUND(SUM(EDMTD) / NULLIF(LatestSlot, 0) * 100, 2) AS DmtdPercentage,\r\n"
+        		+ "   SUM(DMTDCount) AS DMTDCount,\r\n"
+        		+ "   SUM(NRStop) AS NRStop,\r\n"
+        		+ "   ROUND(SUM(ENR) / NULLIF(LatestSlot, 0) * 100, 2) AS NrPercentage,\r\n"
+        		+ "   SUM(NRCount) AS NRCount,\r\n"
+        		+ "   LatestSlot,\r\n"
+        		+ "   SUM(TotalTime) AS TotalTime,\r\n"
+        		+ "   SUM(TotalCounts) AS TotalCounts\r\n"
+        		+ "FROM (\r\n"
+        		+ "   SELECT \r\n"
+        		+ "       CAST(eh.StartTime AS DATE) AS Day,\r\n"
+        		+ "	   SUM(CASE WHEN eh.TypeID = 1 THEN eh.Duration ELSE 0 END) AS ShortStop,\r\n"
+        		+ "       COUNT(CASE WHEN eh.TypeID = 1 THEN 1 END) AS ShortCount,\r\n"
+        		+ "       SUM(CASE WHEN eh.TypeID = 2 THEN eh.Duration ELSE 0 END) AS LongStop,\r\n"
+        		+ "       COUNT(CASE WHEN eh.TypeID = 2 THEN 1 END) AS LongCount,\r\n"
+        		+ "	   SUM(CASE WHEN eh.TypeID = 3 THEN eh.Duration ELSE 0 END) AS PPStop,\r\n"
+        		+ "       COUNT(CASE WHEN eh.TypeID = 3 THEN 1 END) AS PPCount,\r\n"
+        		+ "	   SUM(CASE WHEN eh.TypeID = 4 THEN eh.Duration ELSE 0 END) AS DMTDStop,\r\n"
+        		+ "       COUNT(CASE WHEN eh.TypeID = 4 THEN 1 END) AS DCCCount,\r\n"
+        		+ "	   SUM(CASE WHEN eh.TypeID = 5 THEN eh.Duration ELSE 0 END) AS DCCStop,\r\n"
+        		+ "       COUNT(CASE WHEN eh.TypeID = 5 THEN 1 END) AS DMTDCount,\r\n"
+        		+ "	   SUM(CASE WHEN eh.TypeID = 6 THEN eh.Duration ELSE 0 END) AS NRStop,\r\n"
+        		+ "       COUNT(CASE WHEN eh.TypeID = 6 THEN 1 END) AS NRCount,\r\n"
+        		+ "       SUM(eh.Duration) AS TotalTime,\r\n"
+        		+ "       COUNT(eh.ErrorID) AS TotalCounts,\r\n"
+        		+ "	   ms.MaxSlotID AS LatestSlot,\r\n"
+        		+ "       CAST(SUM(CASE WHEN eh.TypeID = 1 THEN eh.Duration ELSE 0 END) AS FLOAT) / NULLIF(ss.Duration, 0) AS EShort,\r\n"
+        		+ "       CAST(SUM(CASE WHEN eh.TypeID = 2 THEN eh.Duration ELSE 0 END) AS FLOAT) / NULLIF(ss.Duration, 0) AS ELong,\r\n"
+        		+ "       CAST(SUM(CASE WHEN eh.TypeID = 3 THEN eh.Duration ELSE 0 END) AS FLOAT) / NULLIF(ss.Duration, 0) AS EPP,\r\n"
+        		+ "       CAST(SUM(CASE WHEN eh.TypeID = 4 THEN eh.Duration ELSE 0 END) AS FLOAT) / NULLIF(ss.Duration, 0) AS EDMTD,\r\n"
+        		+ "       CAST(SUM(CASE WHEN eh.TypeID = 5 THEN eh.Duration ELSE 0 END) AS FLOAT) / NULLIF(ss.Duration, 0) AS EDCC,\r\n"
+        		+ "       CAST(SUM(CASE WHEN eh.TypeID = 6 THEN eh.Duration ELSE 0 END) AS FLOAT) / NULLIF(ss.Duration, 0) AS ENR\r\n"
+        		+ "    \r\n"
+        		+ "   FROM ErrorHistory eh\r\n"
+        		+ "   LEFT JOIN StopType st ON eh.TypeID = st.TypeID\r\n"
+        		+ "   LEFT JOIN Stages s ON s.StageID = eh.StageID\r\n"
+        		+ "   LEFT JOIN ProductionLines l ON eh.LineID = l.LineID\r\n"
+        		+ "   LEFT JOIN ShiftSlots ss ON eh.SlotID = ss.SlotID\r\n"
+        		+ "   LEFT JOIN MaxSlot ms ON ms.LineName = l.LineName AND ms.Date = CAST(eh.StartTime AS DATE)\r\n"
+        		+ "   WHERE 1=1\n");
+
+        // Append line ID filter
+        if (lineId != null) {
+            detailQuery.append(" AND l.LineID = ?"); // Fixed alias to 'pl'
+        }
+
+        // Append stage ID filter
+        if (stageId != null) {
+            detailQuery.append(" AND eh.StageID = ?"); // No change needed here
+        }
+
+        // Append date range filter
+        if (startDate != null && endDate != null) {
+            detailQuery.append(" AND CAST(eh.StartTime AS DATE) >= ? AND CAST(eh.EndTime AS DATE) <= ?");
+        }
+
+        detailQuery.append(" GROUP BY CAST(eh.StartTime AS DATE), ss.Duration, ms.MaxSlotID")
+                .append(") AS Summary ")
+                .append("GROUP BY Day, LatestSlot ORDER BY Day ASC");
+
+        try (Connection connection = getConnection();
+             PreparedStatement detailStmt = connection.prepareStatement(detailQuery.toString())) {
+            
+            int paramIndex = 1;
+
+            if (lineId != null) {
+                detailStmt.setInt(paramIndex++, lineId);
+            }
+
+            if (stageId != null) {
+                detailStmt.setInt(paramIndex++, stageId);
+            }
+
+            if (startDate != null && endDate != null) {
+                detailStmt.setDate(paramIndex++, new java.sql.Date(startDate.getTime()));
+                detailStmt.setDate(paramIndex++, new java.sql.Date(endDate.getTime()));
+            }
+
+            try (ResultSet resultSet = detailStmt.executeQuery()) {
+                while (resultSet.next()) {
+                	Map<String, Object> downtimeData = new HashMap<>();
+
+                    downtimeData.put("day", resultSet.getString("Day"));
+                    downtimeData.put("shortStop", resultSet.getDouble("ShortStop"));
+                    downtimeData.put("shortPercentage", resultSet.getDouble("ShortPercentage"));
+                    downtimeData.put("shortCount", resultSet.getInt("ShortCount"));
+                    downtimeData.put("longStop", resultSet.getDouble("LongStop"));
+                    downtimeData.put("longPercentage", resultSet.getDouble("LongPercentage"));
+                    downtimeData.put("longCount", resultSet.getInt("LongCount"));
+                    downtimeData.put("ppStop", resultSet.getDouble("PPStop"));
+                    downtimeData.put("ppPercentage", resultSet.getDouble("PPPercentage"));
+                    downtimeData.put("ppCount", resultSet.getInt("PPCount"));
+                    downtimeData.put("dccStop", resultSet.getDouble("DCCStop"));
+                    downtimeData.put("dccPercentage", resultSet.getDouble("DccPercentage"));
+                    downtimeData.put("dccCount", resultSet.getInt("DCCCount"));
+                    downtimeData.put("dmtdStop", resultSet.getDouble("DMTDStop"));
+                    downtimeData.put("dmtdPercentage", resultSet.getDouble("DmtdPercentage"));
+                    downtimeData.put("dmtdCount", resultSet.getInt("DMTDCount"));
+                    downtimeData.put("nrStop", resultSet.getDouble("NRStop"));
+                    downtimeData.put("nrPercentage", resultSet.getDouble("NrPercentage"));
+                    downtimeData.put("nrCount", resultSet.getInt("NRCount"));
+                    downtimeData.put("latestSlot", resultSet.getDouble("LatestSlot"));
+                    downtimeData.put("totalTime", resultSet.getDouble("TotalTime"));
+                    downtimeData.put("totalCount", resultSet.getInt("TotalCounts"));
+                    
+                    downtimeList.add(downtimeData);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        return downtimeList;
+    }
+    
+    
 //    public List<ErrorHistory> searchByLineStageShift(Integer lineId, Integer stageId, Date startDate, Date endDate) throws SQLException {
 //        List<ErrorHistory> list = new ArrayList<>();
 //
@@ -1888,6 +2210,155 @@ public class ErrorHistoryDAO extends DBContext{
         }
 
         return list;
+    }
+    
+    
+    public List<Map<String, Object>> searchByLineStageShiftNew(Integer lineId, Integer stageId, Date startDate, Date endDate) throws SQLException {
+    	 List<Map<String, Object>> downtimeList = new ArrayList<>();
+
+        StringBuilder detailQuery = new StringBuilder();
+        detailQuery.append("WITH MaxSlot AS (\r\n"
+        		+ "    SELECT \r\n"
+        		+ "        CAST(eh.StartTime AS DATE) AS Date,\r\n"
+        		+ "        l.LineName, \r\n"
+        		+ "        MAX(ss.SlotID) AS MaxSlotID\r\n"
+        		+ "    FROM ShiftSlots ss\r\n"
+        		+ "    JOIN ErrorHistory eh ON ss.SlotID = eh.SlotID\r\n"
+        		+ "    JOIN ProductionLines l ON eh.LineID = l.LineID\r\n"
+        		+ "    GROUP BY CAST(eh.StartTime AS DATE), l.LineName\r\n"
+        		+ ")\r\n"
+        		+ "SELECT\r\n"
+        		+ "   Day,\r\n"
+        		+ "   ShiftName,\r\n"
+        		+ "   SUM(ShortStop) AS ShortStop,\r\n"
+        		+ "   ROUND(SUM(EShort) / NULLIF(LatestSlot, 0) * 100, 2) AS ShortPercentage,\r\n"
+        		+ "   SUM(ShortCount) AS ShortCount,\r\n"
+        		+ "   SUM(LongStop) AS LongStop,\r\n"
+        		+ "   ROUND(SUM(ELong) / NULLIF(LatestSlot, 0) * 100, 2) AS LongPercentage,\r\n"
+        		+ "   SUM(LongCount) AS LongCount,\r\n"
+        		+ "   SUM(PPStop) AS PPStop,\r\n"
+        		+ "   ROUND(SUM(EPP) / NULLIF(LatestSlot, 0) * 100, 2) AS PPPercentage,\r\n"
+        		+ "   SUM(PPCount) AS PPCount,\r\n"
+        		+ "   SUM(DCCStop) AS DCCStop,\r\n"
+        		+ "   ROUND(SUM(EDCC) / NULLIF(LatestSlot, 0) * 100, 2) AS DccPercentage,\r\n"
+        		+ "   SUM(DCCCount) AS DCCCount,\r\n"
+        		+ "   SUM(DMTDStop) AS DMTDStop,\r\n"
+        		+ "   ROUND(SUM(EDMTD) / NULLIF(LatestSlot, 0) * 100, 2) AS DmtdPercentage,\r\n"
+        		+ "   SUM(DMTDCount) AS DMTDCount,\r\n"
+        		+ "   SUM(NRStop) AS NRStop,\r\n"
+        		+ "   ROUND(SUM(ENR) / NULLIF(LatestSlot, 0) * 100, 2) AS NrPercentage,\r\n"
+        		+ "   SUM(NRCount) AS NRCount,\r\n"
+        		+ "   LatestSlot,\r\n"
+        		+ "   SUM(TotalTime) AS TotalTime,\r\n"
+        		+ "   SUM(TotalCounts) AS TotalCounts\r\n"
+        		+ "FROM (\r\n"
+        		+ "   SELECT \r\n"
+        		+ "       CAST(eh.StartTime AS DATE) AS Day,\r\n"
+        		+ "	   sh.ShiftName AS ShiftName,\r\n"
+        		+ "	   SUM(CASE WHEN eh.TypeID = 1 THEN eh.Duration ELSE 0 END) AS ShortStop,\r\n"
+        		+ "       COUNT(CASE WHEN eh.TypeID = 1 THEN 1 END) AS ShortCount,\r\n"
+        		+ "       SUM(CASE WHEN eh.TypeID = 2 THEN eh.Duration ELSE 0 END) AS LongStop,\r\n"
+        		+ "       COUNT(CASE WHEN eh.TypeID = 2 THEN 1 END) AS LongCount,\r\n"
+        		+ "	   SUM(CASE WHEN eh.TypeID = 3 THEN eh.Duration ELSE 0 END) AS PPStop,\r\n"
+        		+ "       COUNT(CASE WHEN eh.TypeID = 3 THEN 1 END) AS PPCount,\r\n"
+        		+ "	   SUM(CASE WHEN eh.TypeID = 4 THEN eh.Duration ELSE 0 END) AS DMTDStop,\r\n"
+        		+ "       COUNT(CASE WHEN eh.TypeID = 4 THEN 1 END) AS DCCCount,\r\n"
+        		+ "	   SUM(CASE WHEN eh.TypeID = 5 THEN eh.Duration ELSE 0 END) AS DCCStop,\r\n"
+        		+ "       COUNT(CASE WHEN eh.TypeID = 5 THEN 1 END) AS DMTDCount,\r\n"
+        		+ "	   SUM(CASE WHEN eh.TypeID = 6 THEN eh.Duration ELSE 0 END) AS NRStop,\r\n"
+        		+ "       COUNT(CASE WHEN eh.TypeID = 6 THEN 1 END) AS NRCount,\r\n"
+        		+ "       SUM(eh.Duration) AS TotalTime,\r\n"
+        		+ "       COUNT(eh.ErrorID) AS TotalCounts,\r\n"
+        		+ "	   ms.MaxSlotID AS LatestSlot,\r\n"
+        		+ "       CAST(SUM(CASE WHEN eh.TypeID = 1 THEN eh.Duration ELSE 0 END) AS FLOAT) / NULLIF(ss.Duration, 0) AS EShort,\r\n"
+        		+ "       CAST(SUM(CASE WHEN eh.TypeID = 2 THEN eh.Duration ELSE 0 END) AS FLOAT) / NULLIF(ss.Duration, 0) AS ELong,\r\n"
+        		+ "       CAST(SUM(CASE WHEN eh.TypeID = 3 THEN eh.Duration ELSE 0 END) AS FLOAT) / NULLIF(ss.Duration, 0) AS EPP,\r\n"
+        		+ "       CAST(SUM(CASE WHEN eh.TypeID = 4 THEN eh.Duration ELSE 0 END) AS FLOAT) / NULLIF(ss.Duration, 0) AS EDMTD,\r\n"
+        		+ "       CAST(SUM(CASE WHEN eh.TypeID = 5 THEN eh.Duration ELSE 0 END) AS FLOAT) / NULLIF(ss.Duration, 0) AS EDCC,\r\n"
+        		+ "       CAST(SUM(CASE WHEN eh.TypeID = 6 THEN eh.Duration ELSE 0 END) AS FLOAT) / NULLIF(ss.Duration, 0) AS ENR\r\n"
+        		+ "    \r\n"
+        		+ "   FROM ErrorHistory eh\r\n"
+        		+ "   LEFT JOIN StopType st ON eh.TypeID = st.TypeID\r\n"
+        		+ "   LEFT JOIN Stages s ON s.StageID = eh.StageID\r\n"
+        		+ "   LEFT JOIN ProductionLines l ON eh.LineID = l.LineID\r\n"
+        		+ "   LEFT JOIN ShiftSlots ss ON eh.SlotID = ss.SlotID\r\n"
+        		+ "   LEFT JOIN Shifts sh ON ss.ShiftID = sh.ShiftID\r\n"
+        		+ "   JOIN MaxSlot ms ON ms.LineName = l.LineName AND ms.Date = CAST(eh.StartTime AS DATE)\r\n"
+        		+ "   WHERE 1=1\n");
+
+        // Append line ID filter
+        if (lineId != null) {
+            detailQuery.append(" AND l.LineID = ?"); 
+        }
+
+        // Append stage ID filter
+        if (stageId != null) {
+            detailQuery.append(" AND eh.StageID = ?"); 
+        }
+
+        // Append date range filter
+        if (startDate != null && endDate != null) {
+            detailQuery.append(" AND CAST(eh.StartTime AS DATE) >= ? AND CAST(eh.EndTime AS DATE) <= ?");
+        }
+
+        detailQuery.append(" GROUP BY CAST(eh.StartTime AS DATE), ss.Duration, ms.MaxSlotID, sh.ShiftName")
+                .append(") AS Summary ")
+                .append("GROUP BY Day, LatestSlot, ShiftName ORDER BY Day ASC");
+
+        try (Connection connection = getConnection(); 
+             PreparedStatement detailStmt = connection.prepareStatement(detailQuery.toString())) {
+            
+            int paramIndex = 1;
+
+            if (lineId != null) {
+                detailStmt.setInt(paramIndex++, lineId);
+            }
+
+            if (stageId != null) {
+                detailStmt.setInt(paramIndex++, stageId);
+            }
+
+            if (startDate != null && endDate != null) {
+                detailStmt.setDate(paramIndex++, new java.sql.Date(startDate.getTime()));
+                detailStmt.setDate(paramIndex++, new java.sql.Date(endDate.getTime()));
+            }
+
+            try (ResultSet resultSet = detailStmt.executeQuery()) {
+                while (resultSet.next()) {
+                	Map<String, Object> downtimeData = new HashMap<>();
+                	downtimeData.put("day", resultSet.getString("Day"));
+                	downtimeData.put("shiftName", resultSet.getString("ShiftName"));
+                    downtimeData.put("shortStop", resultSet.getDouble("ShortStop"));
+                    downtimeData.put("shortPercentage", resultSet.getDouble("ShortPercentage"));
+                    downtimeData.put("shortCount", resultSet.getInt("ShortCount"));
+                    downtimeData.put("longStop", resultSet.getDouble("LongStop"));
+                    downtimeData.put("longPercentage", resultSet.getDouble("LongPercentage"));
+                    downtimeData.put("longCount", resultSet.getInt("LongCount"));
+                    downtimeData.put("ppStop", resultSet.getDouble("PPStop"));
+                    downtimeData.put("ppPercentage", resultSet.getDouble("PPPercentage"));
+                    downtimeData.put("ppCount", resultSet.getInt("PPCount"));
+                    downtimeData.put("dccStop", resultSet.getDouble("DCCStop"));
+                    downtimeData.put("dccPercentage", resultSet.getDouble("DccPercentage"));
+                    downtimeData.put("dccCount", resultSet.getInt("DCCCount"));
+                    downtimeData.put("dmtdStop", resultSet.getDouble("DMTDStop"));
+                    downtimeData.put("dmtdPercentage", resultSet.getDouble("DmtdPercentage"));
+                    downtimeData.put("dmtdCount", resultSet.getInt("DMTDCount"));
+                    downtimeData.put("nrStop", resultSet.getDouble("NRStop"));
+                    downtimeData.put("nrPercentage", resultSet.getDouble("NrPercentage"));
+                    downtimeData.put("nrCount", resultSet.getInt("NRCount"));
+                    downtimeData.put("latestSlot", resultSet.getDouble("LatestSlot"));
+                    downtimeData.put("totalTime", resultSet.getDouble("TotalTime"));
+                    downtimeData.put("totalCount", resultSet.getInt("TotalCounts"));
+                    
+                    downtimeList.add(downtimeData);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        return downtimeList;
     }
 
     
@@ -2119,83 +2590,140 @@ public class ErrorHistoryDAO extends DBContext{
         return list;
     }
     
-    public List<ErrorHistory> searchByDateRange(String deviceCode, Integer lineId, Integer stageId, Date startDate, Date endDate, int pageIndex, int pageSize) throws SQLException {
-        List<ErrorHistory> detailedList = new ArrayList<>();
-        Map<String, Integer> errorSummaryMap = new HashMap<>();
+    
+    public List<Map<String, Object>> searchLineStageHourByDateNew(Integer lineId, Integer stageId, Date targetDate) throws SQLException {
+    	 List<Map<String, Object>> downtimeList = new ArrayList<>();
 
-        // Base SQL query for detailed error history
-        String detailQuery = "SELECT eh.ErrorDescription, eh.StartTime, eh.EndTime, eh.Duration, " +
-            "e.EquipmentCode, e.EquipmentName, s.StageName, l.LineName, d.DepartmentName " +
-            "FROM ErrorHistory eh " +
-            "JOIN Equipment e ON e.EquipmentID = eh.EquipmentID " +
-            "JOIN Stages s ON eh.StageID = s.StageID " +
-            "LEFT JOIN ProductionLines l ON s.LineID = l.LineID " +
-            "LEFT JOIN Rooms r ON l.RoomID = r.RoomID " +
-            "LEFT JOIN Departments d ON r.DepartmentID = d.DepartmentID " +
-            "WHERE 1=1 ";
+        StringBuilder detailQuery = new StringBuilder();
+        detailQuery.append("WITH MaxSlot AS (\r\n"
+        		+ "    SELECT \r\n"
+        		+ "        CONVERT(VARCHAR(16), eh.StartTime, 120) AS StartTime,\r\n"
+        		+ "        l.LineName, \r\n"
+        		+ "        MAX(ss.SlotID) AS MaxSlotID\r\n"
+        		+ "    FROM ShiftSlots ss\r\n"
+        		+ "    JOIN ErrorHistory eh ON ss.SlotID = eh.SlotID\r\n"
+        		+ "    JOIN ProductionLines l ON eh.LineID = l.LineID\r\n"
+        		+ "    GROUP BY CONVERT(VARCHAR(16), eh.StartTime, 120), l.LineName\r\n"
+        		+ ")\r\n"
+        		+ "SELECT\r\n"
+        		+ "   StartTime,\r\n"
+        		+ "   SUM(ShortStop) AS ShortStop,\r\n"
+        		+ "   ROUND(SUM(EShort) / NULLIF(LatestSlot, 0) * 100, 2) AS ShortPercentage,\r\n"
+        		+ "   SUM(ShortCount) AS ShortCount,\r\n"
+        		+ "   SUM(LongStop) AS LongStop,\r\n"
+        		+ "   ROUND(SUM(ELong) / NULLIF(LatestSlot, 0) * 100, 2) AS LongPercentage,\r\n"
+        		+ "   SUM(LongCount) AS LongCount,\r\n"
+        		+ "   SUM(PPStop) AS PPStop,\r\n"
+        		+ "   ROUND(SUM(EPP) / NULLIF(LatestSlot, 0) * 100, 2) AS PPPercentage,\r\n"
+        		+ "   SUM(PPCount) AS PPCount,\r\n"
+        		+ "   SUM(DCCStop) AS DCCStop,\r\n"
+        		+ "   ROUND(SUM(EDCC) / NULLIF(LatestSlot, 0) * 100, 2) AS DccPercentage,\r\n"
+        		+ "   SUM(DCCCount) AS DCCCount,\r\n"
+        		+ "   SUM(DMTDStop) AS DMTDStop,\r\n"
+        		+ "   ROUND(SUM(EDMTD) / NULLIF(LatestSlot, 0) * 100, 2) AS DmtdPercentage,\r\n"
+        		+ "   SUM(DMTDCount) AS DMTDCount,\r\n"
+        		+ "   SUM(NRStop) AS NRStop,\r\n"
+        		+ "   ROUND(SUM(ENR) / NULLIF(LatestSlot, 0) * 100, 2) AS NrPercentage,\r\n"
+        		+ "   SUM(NRCount) AS NRCount,\r\n"
+        		+ "   LatestSlot,\r\n"
+        		+ "   SUM(TotalTime) AS TotalTime,\r\n"
+        		+ "   SUM(TotalCounts) AS TotalCounts\r\n"
+        		+ "FROM (\r\n"
+        		+ "   SELECT \r\n"
+        		+ "       CONVERT(VARCHAR(16), eh.StartTime, 120) AS StartTime,\r\n"
+        		+ "	   SUM(CASE WHEN eh.TypeID = 1 THEN eh.Duration ELSE 0 END) AS ShortStop,\r\n"
+        		+ "       COUNT(CASE WHEN eh.TypeID = 1 THEN 1 END) AS ShortCount,\r\n"
+        		+ "       SUM(CASE WHEN eh.TypeID = 2 THEN eh.Duration ELSE 0 END) AS LongStop,\r\n"
+        		+ "       COUNT(CASE WHEN eh.TypeID = 2 THEN 1 END) AS LongCount,\r\n"
+        		+ "	   SUM(CASE WHEN eh.TypeID = 3 THEN eh.Duration ELSE 0 END) AS PPStop,\r\n"
+        		+ "       COUNT(CASE WHEN eh.TypeID = 3 THEN 1 END) AS PPCount,\r\n"
+        		+ "	   SUM(CASE WHEN eh.TypeID = 4 THEN eh.Duration ELSE 0 END) AS DMTDStop,\r\n"
+        		+ "       COUNT(CASE WHEN eh.TypeID = 4 THEN 1 END) AS DCCCount,\r\n"
+        		+ "	   SUM(CASE WHEN eh.TypeID = 5 THEN eh.Duration ELSE 0 END) AS DCCStop,\r\n"
+        		+ "       COUNT(CASE WHEN eh.TypeID = 5 THEN 1 END) AS DMTDCount,\r\n"
+        		+ "	   SUM(CASE WHEN eh.TypeID = 6 THEN eh.Duration ELSE 0 END) AS NRStop,\r\n"
+        		+ "       COUNT(CASE WHEN eh.TypeID = 6 THEN 1 END) AS NRCount,\r\n"
+        		+ "       SUM(eh.Duration) AS TotalTime,\r\n"
+        		+ "       COUNT(eh.ErrorID) AS TotalCounts,\r\n"
+        		+ "	   ms.MaxSlotID AS LatestSlot,\r\n"
+        		+ "       CAST(SUM(CASE WHEN eh.TypeID = 1 THEN eh.Duration ELSE 0 END) AS FLOAT) / NULLIF(ss.Duration, 0) AS EShort,\r\n"
+        		+ "       CAST(SUM(CASE WHEN eh.TypeID = 2 THEN eh.Duration ELSE 0 END) AS FLOAT) / NULLIF(ss.Duration, 0) AS ELong,\r\n"
+        		+ "       CAST(SUM(CASE WHEN eh.TypeID = 3 THEN eh.Duration ELSE 0 END) AS FLOAT) / NULLIF(ss.Duration, 0) AS EPP,\r\n"
+        		+ "       CAST(SUM(CASE WHEN eh.TypeID = 4 THEN eh.Duration ELSE 0 END) AS FLOAT) / NULLIF(ss.Duration, 0) AS EDMTD,\r\n"
+        		+ "       CAST(SUM(CASE WHEN eh.TypeID = 5 THEN eh.Duration ELSE 0 END) AS FLOAT) / NULLIF(ss.Duration, 0) AS EDCC,\r\n"
+        		+ "       CAST(SUM(CASE WHEN eh.TypeID = 6 THEN eh.Duration ELSE 0 END) AS FLOAT) / NULLIF(ss.Duration, 0) AS ENR\r\n"
+        		+ "   FROM ErrorHistory eh\r\n"
+        		+ "   LEFT JOIN StopType st ON eh.TypeID = st.TypeID\r\n"
+        		+ "   LEFT JOIN Stages s ON s.StageID = eh.StageID\r\n"
+        		+ "   LEFT JOIN ProductionLines l ON eh.LineID = l.LineID\r\n"
+        		+ "   LEFT JOIN ShiftSlots ss ON eh.SlotID = ss.SlotID\r\n"
+        		+ "   LEFT JOIN MaxSlot ms ON ms.LineName = l.LineName AND ms.StartTime = CONVERT(VARCHAR(16), eh.StartTime, 120)\r\n"
+        		+ "   WHERE 1=1\n");
 
-        // Adding filters dynamically based on provided parameters
-        if (deviceCode != null && !deviceCode.isEmpty()) {
-            detailQuery += " AND e.EquipmentCode = ?";
-        }
+        // Append line ID filter
         if (lineId != null) {
-            detailQuery += " AND l.LineID = ?";
+            detailQuery.append(" AND l.LineID = ?"); // Fixed alias to 'pl'
         }
+
+        // Append stage ID filter
         if (stageId != null) {
-            detailQuery += " AND s.StageID = ?";
+            detailQuery.append(" AND eh.StageID = ?"); // No change needed here
         }
 
-        // Date filtering
-        if (startDate != null && endDate != null) {
-            detailQuery += " AND CAST(eh.StartTime AS DATE) >= ? AND CAST(eh.EndTime AS DATE) <= ?";
+        // Append date range filter
+        if (targetDate != null) {
+            detailQuery.append(" AND CAST(eh.StartTime AS DATE) = ?");
         }
 
-        // Pagination logic
-        detailQuery += " ORDER BY eh.StartTime DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        detailQuery.append(" GROUP BY ss.Duration, ms.MaxSlotID, CONVERT(VARCHAR(16), eh.StartTime, 120)")
+                .append(") AS Summary ")
+                .append("GROUP BY StartTime, LatestSlot ORDER BY StartTime ASC");
 
-        try (Connection connection = getConnection(); PreparedStatement detailStmt = connection.prepareStatement(detailQuery)) {
+        try (Connection connection = getConnection();
+             PreparedStatement detailStmt = connection.prepareStatement(detailQuery.toString())) {
+
             int paramIndex = 1;
 
-            // Set the dynamic parameters
-            if (deviceCode != null && !deviceCode.isEmpty()) {
-                detailStmt.setString(paramIndex++, deviceCode);
-            }
             if (lineId != null) {
                 detailStmt.setInt(paramIndex++, lineId);
             }
+
             if (stageId != null) {
                 detailStmt.setInt(paramIndex++, stageId);
             }
 
-            // Set date parameters if applicable
-            if (startDate != null && endDate != null) {
-                detailStmt.setDate(paramIndex++, new java.sql.Date(startDate.getTime()));
-                detailStmt.setDate(paramIndex++, new java.sql.Date(endDate.getTime()));
+            if (targetDate != null) {
+                detailStmt.setDate(paramIndex++, new java.sql.Date(targetDate.getTime()));
             }
 
-            // Set pagination parameters
-            detailStmt.setInt(paramIndex++, (pageIndex - 1) * pageSize); // Offset
-            detailStmt.setInt(paramIndex++, pageSize); // Fetch size
+            try (ResultSet resultSet = detailStmt.executeQuery()) {
+                while (resultSet.next()) {
+                	Map<String, Object> downtimeData = new HashMap<>();
 
-            // Execute detailed query and populate the list
-            try (ResultSet rs = detailStmt.executeQuery()) {
-                while (rs.next()) {
-                    ErrorHistory eh = new ErrorHistory();
-                    eh.setContent(rs.getString("ErrorDescription"));
-                    eh.setStartDate(rs.getTimestamp("StartTime"));
-                    eh.setEndDate(rs.getTimestamp("EndTime"));
-                    eh.setDuration(rs.getDouble("Duration"));
-                    eh.setEquipmentCode(rs.getString("EquipmentCode"));
-                    eh.setEquipmentName(rs.getString("EquipmentName"));
-                    eh.setStageName(rs.getString("StageName"));
-                    eh.setLineName(rs.getString("LineName"));
-                    eh.setDepartmentName(rs.getString("DepartmentName"));
-
-                    detailedList.add(eh);
-
-                    // Increment the error count in the summary map
-                    String equipmentCode = rs.getString("EquipmentCode");
-                    errorSummaryMap.put(equipmentCode, errorSummaryMap.getOrDefault(equipmentCode, 0) + 1);
+                    downtimeData.put("startTime", resultSet.getString("StartTime"));
+                    downtimeData.put("shortStop", resultSet.getDouble("ShortStop"));
+                    downtimeData.put("shortPercentage", resultSet.getDouble("ShortPercentage"));
+                    downtimeData.put("shortCount", resultSet.getInt("ShortCount"));
+                    downtimeData.put("longStop", resultSet.getDouble("LongStop"));
+                    downtimeData.put("longPercentage", resultSet.getDouble("LongPercentage"));
+                    downtimeData.put("longCount", resultSet.getInt("LongCount"));
+                    downtimeData.put("ppStop", resultSet.getDouble("PPStop"));
+                    downtimeData.put("ppPercentage", resultSet.getDouble("PPPercentage"));
+                    downtimeData.put("ppCount", resultSet.getInt("PPCount"));
+                    downtimeData.put("dccStop", resultSet.getDouble("DCCStop"));
+                    downtimeData.put("dccPercentage", resultSet.getDouble("DccPercentage"));
+                    downtimeData.put("dccCount", resultSet.getInt("DCCCount"));
+                    downtimeData.put("dmtdStop", resultSet.getDouble("DMTDStop"));
+                    downtimeData.put("dmtdPercentage", resultSet.getDouble("DmtdPercentage"));
+                    downtimeData.put("dmtdCount", resultSet.getInt("DMTDCount"));
+                    downtimeData.put("nrStop", resultSet.getDouble("NRStop"));
+                    downtimeData.put("nrPercentage", resultSet.getDouble("NrPercentage"));
+                    downtimeData.put("nrCount", resultSet.getInt("NRCount"));
+                    downtimeData.put("latestSlot", resultSet.getDouble("LatestSlot"));
+                    downtimeData.put("totalTime", resultSet.getDouble("TotalTime"));
+                    downtimeData.put("totalCount", resultSet.getInt("TotalCounts"));
+                    
+                    downtimeList.add(downtimeData);
                 }
             }
         } catch (SQLException e) {
@@ -2203,22 +2731,111 @@ public class ErrorHistoryDAO extends DBContext{
             throw e;
         }
 
-        // Create summary message
-        StringBuilder summaryMessage = new StringBuilder();
-        for (Map.Entry<String, Integer> entry : errorSummaryMap.entrySet()) {
-            summaryMessage.append(entry.getKey()).append(": ").append(entry.getValue()).append(" error(s), ");
-        }
-
-        // Remove the trailing comma and space if necessary
-        if (summaryMessage.length() > 0) {
-            summaryMessage.setLength(summaryMessage.length() - 2); // Trim last comma and space
-        }
-
-        // Print or return the summary if needed
-        System.out.println(summaryMessage.toString()); // or return it
-
-        return detailedList;
+        return downtimeList;
     }
+    
+//    public List<ErrorHistory> searchByDateRange(String deviceCode, Integer lineId, Integer stageId, Date startDate, Date endDate, int pageIndex, int pageSize) throws SQLException {
+//        List<ErrorHistory> detailedList = new ArrayList<>();
+//        Map<String, Integer> errorSummaryMap = new HashMap<>();
+//
+//        // Base SQL query for detailed error history
+//        String detailQuery = "SELECT eh.ErrorDescription, eh.StartTime, eh.EndTime, eh.Duration, " +
+//            "e.EquipmentCode, e.EquipmentName, s.StageName, l.LineName, d.DepartmentName " +
+//            "FROM ErrorHistory eh " +
+//            "LEFT JOIN StopType st ON eh.TypeID = st.TypeID " +
+//            "LEFT JOIN Equipment e ON e.EquipmentID = eh.EquipmentID " +
+//            "LEFT JOIN Stages s ON eh.StageID = s.StageID " +
+//            "LEFT JOIN ProductionLines l ON s.LineID = l.LineID " +
+//            "LEFT JOIN Rooms r ON l.RoomID = r.RoomID " +
+//            "LEFT JOIN Departments d ON r.DepartmentID = d.DepartmentID " +
+//            "WHERE 1=1 ";
+//
+//        // Adding filters dynamically based on provided parameters
+//        if (deviceCode != null && !deviceCode.isEmpty()) {
+//            detailQuery += " AND e.EquipmentCode = ?";
+//        }
+//        if (lineId != null) {
+//            detailQuery += " AND l.LineID = ?";
+//        }
+//        if (stageId != null) {
+//            detailQuery += " AND s.StageID = ?";
+//        }
+//
+//        // Date filtering
+//        if (startDate != null && endDate != null) {
+//            detailQuery += " AND CAST(eh.StartTime AS DATE) >= ? AND CAST(eh.EndTime AS DATE) <= ?";
+//        }
+//
+//        // Pagination logic
+//        detailQuery += " ORDER BY eh.StartTime DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+//
+//        try (Connection connection = getConnection(); PreparedStatement detailStmt = connection.prepareStatement(detailQuery)) {
+//            int paramIndex = 1;
+//
+//            // Set the dynamic parameters
+//            if (deviceCode != null && !deviceCode.isEmpty()) {
+//                detailStmt.setString(paramIndex++, deviceCode);
+//            }
+//            if (lineId != null) {
+//                detailStmt.setInt(paramIndex++, lineId);
+//            }
+//            if (stageId != null) {
+//                detailStmt.setInt(paramIndex++, stageId);
+//            }
+//
+//            // Set date parameters if applicable
+//            if (startDate != null && endDate != null) {
+//                detailStmt.setDate(paramIndex++, new java.sql.Date(startDate.getTime()));
+//                detailStmt.setDate(paramIndex++, new java.sql.Date(endDate.getTime()));
+//            }
+//
+//            // Set pagination parameters
+//            detailStmt.setInt(paramIndex++, (pageIndex - 1) * pageSize); // Offset
+//            detailStmt.setInt(paramIndex++, pageSize); // Fetch size
+//
+//            // Execute detailed query and populate the list
+//            try (ResultSet rs = detailStmt.executeQuery()) {
+//                while (rs.next()) {
+//                    ErrorHistory eh = new ErrorHistory();
+//                    eh.setContent(rs.getString("ErrorDescription"));
+//                    eh.setStartDate(rs.getTimestamp("StartTime"));
+//                    eh.setEndDate(rs.getTimestamp("EndTime"));
+//                    eh.setDuration(rs.getDouble("Duration"));
+//                    eh.setEquipmentCode(rs.getString("EquipmentCode"));
+//                    eh.setEquipmentName(rs.getString("EquipmentName"));
+//                    eh.setStageName(rs.getString("StageName"));
+//                    eh.setLineName(rs.getString("LineName"));
+//                    eh.setDepartmentName(rs.getString("DepartmentName"));
+//                    eh.setTypeName(rs.getString("TypeName"));
+//
+//                    detailedList.add(eh);
+//
+//                    // Increment the error count in the summary map
+//                    String equipmentCode = rs.getString("EquipmentCode");
+//                    errorSummaryMap.put(equipmentCode, errorSummaryMap.getOrDefault(equipmentCode, 0) + 1);
+//                }
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            throw e;
+//        }
+//
+//        // Create summary message
+//        StringBuilder summaryMessage = new StringBuilder();
+//        for (Map.Entry<String, Integer> entry : errorSummaryMap.entrySet()) {
+//            summaryMessage.append(entry.getKey()).append(": ").append(entry.getValue()).append(" error(s), ");
+//        }
+//
+//        // Remove the trailing comma and space if necessary
+//        if (summaryMessage.length() > 0) {
+//            summaryMessage.setLength(summaryMessage.length() - 2); // Trim last comma and space
+//        }
+//
+//        // Print or return the summary if needed
+//        System.out.println(summaryMessage.toString()); // or return it
+//
+//        return detailedList;
+//    }
 
 
     
