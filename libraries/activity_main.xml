@@ -1,10 +1,12 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Add a Vertical Chain or use Constraints properly -->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background">
 
-    <!-- Include Title -->
+    <!-- Title Bar -->
     <include
         android:id="@+id/titleBar"
         layout="@layout/title"
@@ -12,9 +14,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Image Scan Button inside CardView for shadow effect -->
+    <!-- QR Scan Button -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewScan"
+        android:visibility="gone"
         android:layout_width="220dp"
         android:layout_height="220dp"
         app:cardCornerRadius="30dp"
@@ -38,27 +41,39 @@
         android:id="@+id/txtProcessingStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="The Data is processing..."
+        android:text="The data is processing..."
         android:visibility="gone"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="18sp"
         android:gravity="center"
         android:fontFamily="sans-serif-medium"
-        app:layout_constraintTop_toBottomOf="@id/cardViewScan"
+        app:layout_constraintTop_toBottomOf="@id/titleBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"/>
 
-    <!-- Floating Action Buttons -->
+    <!-- ListView for Pending Items -->
+    <ListView
+        android:id="@+id/listViewProcessing"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/txtProcessingStatus"
+        app:layout_constraintBottom_toTopOf="@+id/fab_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:padding="16dp"/>
+
+    <!-- Floating Action Buttons Container -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/fab_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/txtProcessingStatus"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="60dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="20dp">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnViewProcessing"
@@ -99,9 +114,14 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#FFCCFF"
             android:tint="#FFFFFF"
-            android:contentDescription="View History"
+            android:contentDescription="History"
             android:src="@drawable/ic_history"
             android:layout_margin="16dp"
             app:rippleColor="#FFCCFF"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+

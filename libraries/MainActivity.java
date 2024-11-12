@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtProcessingStatus;
     private long startTime, endTime;
     private String scannedId;
-    private ListView listview;
+    private ListView listview, listview2;
     private ArrayList<String> scannedIdCodes = new ArrayList<>();
     private boolean isRecording = false;
     private ArrayList<String> tempSelectedIssues = new ArrayList<>();
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView txt_name;
     private TextView txt_stage;
     private TextView txt_line;
+    private DeviceProcessAdapter adapter;
+    private ArrayList<DeviceProcess> processingList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,11 @@ public class MainActivity extends AppCompatActivity {
         btnProcess = findViewById(R.id.btnViewProcessing);
         listview = findViewById(R.id.list_view_issues);
         txtProcessingStatus = findViewById(R.id.txtProcessingStatus);
+
+        // Initialize ListViews
+        listview2 = findViewById(R.id.listViewProcessing);
+        adapter = new DeviceProcessAdapter(this, new ArrayList<>()); // Pass an empty list initially
+        listview2.setAdapter(adapter);
 
         // yc camera
         Dexter.withActivity(this)
@@ -98,10 +106,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // Check the processing status initially
-        updateProcessingStatus(); // hide textView
+        updateProcessingStatus();
     }
 
-    // Method to update the visibility of the processing TextView
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            startQrCodeScanner();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
     private void updateProcessingStatus() {
         if (!processingDevices.isEmpty()) {
             txtProcessingStatus.setVisibility(View.VISIBLE);
@@ -140,6 +156,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void updatePendingList() {
+        ArrayList<DeviceProcess> currentList = new ArrayList<>(processingDevices.values());
+        adapter.clear(); // Clear current items in the adapter
+        adapter.addAll(currentList); // Add all processing devices to the adapter
+        adapter.notifyDataSetChanged(); // Notify the adapter for data change
+
+        // Truyền vào visibility cho ListView
+        listview2.setVisibility(currentList.isEmpty() ? View.GONE : View.VISIBLE);
+    }
+
     private void handleType1(String scanResult) {
         // Lấy dữ liệu từ cơ sở dữ liệu
         Cursor deviceData = databaseHelper.selectData(scanResult);
@@ -165,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
             int lineIndex = deviceData.getColumnIndex(Database.DEVICE_LINE);
 
             scannedId = deviceData.getString(idCodeIndex);
+            String typeName = "Unknown";
 
             txt_id.setText("ID: " + deviceData.getString(idIndex));
             txt_idCode.setText("IdCode: " + scannedId);
@@ -192,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
                         deviceData.getString(nameIndex),
                         deviceData.getString(stageIndex),
                         deviceData.getString(lineIndex),
+                        typeName,
                         new ArrayList<>(issueList),
                         startTime
                 ));
@@ -209,16 +237,47 @@ public class MainActivity extends AppCompatActivity {
 
                 deviceInfo = processingDevices.get(scannedId);
                 if (deviceInfo != null) {
-                    // Update typeName based on issue selection before duration check
                     if (deviceInfo.issues.contains("Phế phẩm")) {
-                        deviceInfo.typeName = "Phế phẩm"; // Set typeName as "Phế phẩm"
-                        deviceInfo.issues.clear(); // Reset issues to null
+                        deviceInfo.typeName = "Phế phẩm";
+                        deviceInfo.issues.clear();
                     } else {
                         deviceInfo.typeName = durationInMinutes > 5 ? "Dừng dài" : "Dừng ngắn";
                     }
                 }
                 saveDataOnSecondScan(scannedId);
+
+                // Tạo một danh sách chứa thông tin thiết bị để upload
+                ArrayList<Device_History> deviceHistoryList = new ArrayList<>();
+                Device_History deviceHistory = new Device_History();
+
+                deviceHistory.setIdCode(scannedId);
+                deviceHistory.setCode(deviceInfo.code);
+                deviceHistory.setName(deviceInfo.name);
+                deviceHistory.setStage(deviceInfo.stage);
+                deviceHistory.setLine(deviceInfo.line);
+                deviceHistory.setIssue(String.join(", ", deviceInfo.issues));
+                deviceHistory.setStartTime(formatTime(scannedIdStartTime.get(scannedId)));
+                deviceHistory.setEndTime(formatTime(endTime));
+                deviceHistory.setTotalTime(formatTotalTime(endTime - scannedIdStartTime.get(scannedId)));
+                deviceHistory.setTypeName(deviceInfo.typeName);
+
+                deviceHistoryList.add(deviceHistory);
+
+                // Thực hiện upload dữ liệu
+                new UploadDataTask(this, new UploadDataTask.OnUploadCompleteListener() {
+                    @Override
+                    public void onUploadComplete(Boolean success) {
+                        if (success) {
+                            // Xóa thiết bị khỏi danh sách và cập nhật lại giao diện
+                            processingDevices.remove(scannedId);
+                            updatePendingList();
+                            Toast.makeText(MainActivity.this, "Data uploaded successfully.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).execute(deviceHistoryList);
+
                 resetScannedIdState(scannedId);
+                updatePendingList();
             }
         } else {
             // Không thấy dữ liệu
@@ -241,23 +300,22 @@ public class MainActivity extends AppCompatActivity {
             int lineIndex = deviceData.getColumnIndex(Database.DEVICE_LINE);
 
             scannedId = deviceData.getString(idCodeIndex);
-            String lineName = deviceData.getString(lineIndex);
+            String typeName = "Đổi mã, Thay dao";
 
             // Quét lần đầu
             if (!scannedIdRecordingStatus.getOrDefault(scannedId, false)) {
-                updateProcessingStatus();
                 startTime = System.currentTimeMillis();
                 scannedIdStartTime.put(scannedId, startTime);
                 scannedIdRecordingStatus.put(scannedId, true);
                 processingDevices.put(scannedId, new DeviceProcess(
                         deviceData.getString(lineIndex),
+                        typeName,
                         startTime
                 ));
+                updateProcessingStatus();
+                updatePendingList();
             } else {
                 DeviceProcess deviceInfo = processingDevices.get(scannedId);
-//                if (deviceInfo != null) {
-//                    deviceInfo.issues.clear();
-//                }
                 endTime = System.currentTimeMillis();
 
                 deviceInfo = processingDevices.get(scannedId);
@@ -265,7 +323,37 @@ public class MainActivity extends AppCompatActivity {
                     deviceInfo.typeName = "Đổi mã, Thay dao";
                 }
                 saveDataOnSecondScan2(scannedId);
+                //resetScannedIdState(scannedId);
+                //updatePendingList();
+
+                // Tạo một danh sách chứa thông tin thiết bị để upload
+                ArrayList<Device_History> deviceHistoryList = new ArrayList<>();
+                Device_History deviceHistory = new Device_History();
+
+                deviceHistory.setIdCode(scannedId);
+                deviceHistory.setLine(deviceInfo.line);
+                deviceHistory.setStartTime(formatTime(scannedIdStartTime.get(scannedId)));
+                deviceHistory.setEndTime(formatTime(endTime));
+                deviceHistory.setTotalTime(formatTotalTime(endTime - scannedIdStartTime.get(scannedId)));
+                deviceHistory.setTypeName(deviceInfo.typeName);
+
+                deviceHistoryList.add(deviceHistory);
+
+                // Thực hiện upload dữ liệu
+                new UploadDataTask(this, new UploadDataTask.OnUploadCompleteListener() {
+                    @Override
+                    public void onUploadComplete(Boolean success) {
+                        if (success) {
+                            // Xóa thiết bị khỏi danh sách và cập nhật lại giao diện
+                            processingDevices.remove(scannedId);
+                            updatePendingList();
+                            Toast.makeText(MainActivity.this, "Data uploaded successfully.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).execute(deviceHistoryList);
+
                 resetScannedIdState(scannedId);
+                updatePendingList();
             }
         } else {
             // Không thấy dữ liệu
@@ -284,22 +372,22 @@ public class MainActivity extends AppCompatActivity {
 
             scannedId = deviceData.getString(idCodeIndex);
             String lineName = deviceData.getString(lineIndex);
+            String typeName = "Đầu cuối ca";
 
             // Quét lần đầu
             if (!scannedIdRecordingStatus.getOrDefault(scannedId, false)) {
-                updateProcessingStatus();
                 startTime = System.currentTimeMillis();
                 scannedIdStartTime.put(scannedId, startTime);
                 scannedIdRecordingStatus.put(scannedId, true);
                 processingDevices.put(scannedId, new DeviceProcess(
                         deviceData.getString(lineIndex),
+                        typeName,
                         startTime
                 ));
+                updateProcessingStatus();
+                updatePendingList();
             } else {
                 DeviceProcess deviceInfo = processingDevices.get(scannedId);
-//                if (deviceInfo != null) {
-//                    deviceInfo.issues.clear();
-//                }
                 endTime = System.currentTimeMillis();
 
                 deviceInfo = processingDevices.get(scannedId);
@@ -308,6 +396,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 saveDataOnSecondScan2(scannedId);
                 resetScannedIdState(scannedId);
+                updatePendingList();
             }
         } else {
             // Không thấy dữ liệu
@@ -316,7 +405,6 @@ public class MainActivity extends AppCompatActivity {
 
         deviceData.close();
     }
-
 
     private void showIssueDialog(View dialogView, ArrayList<String> issueList, boolean isFirstScan) {
         ListView listView = dialogView.findViewById(R.id.list_view_issues);
@@ -350,17 +438,17 @@ public class MainActivity extends AppCompatActivity {
 
                     // Handle the case where "Phế phẩm" is selected
                     if (isDefectiveProductSelected) {
-                        selectedIssues.clear(); // Clear all issues if "Phế phẩm" is selected
+                        selectedIssues.clear();
                         selectedIssues.add("Phế phẩm");
-                        processingDevices.get(scannedId).typeName = "Phế phẩm"; // Set typeName as "Phế phẩm"
+                        processingDevices.get(scannedId).typeName = "Phế phẩm";
                     } else if (selectedIssues.size() > 5) {
                         Toast.makeText(MainActivity.this, "You cannot select more than 5 issues.", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     scannedIssuesMap.put(scannedId, selectedIssues);
+                    updatePendingList();
 
-                    // If "Other" is selected, show a dialog for additional issues
                     if (otherSelected) {
                         showNewIssueDialog(selectedIssues);
                     } else if (isFirstScan) {

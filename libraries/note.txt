@@ -1,0 +1,90 @@
+Ví Dụ Cụ Thể Trong Mã
+Dưới đây là một đoạn mã đơn giản để bắt sự kiện của nút quét.
+
+java
+
+Copy
+@Override
+public boolean onKeyDown(int keyCode, KeyEvent event) {
+    // Giả sử KEYCODE_SCAN là mã phím của nút quét mà bạn xác định được
+    if (keyCode == KEYCODE_SCAN) { 
+        startQrCodeScanner(); // Bắt đầu quét mã QR
+        return true; // Đánh dấu rằng sự kiện được xử lý
+    }
+    return super.onKeyDown(keyCode, event); // Xử lý mặc định cho các phím khác
+}
+
+private void startQrCodeScanner() {
+    Intent intent = new Intent(MainActivity.this, QrCodeScanner.class);
+    startActivityForResult(intent, 100); // Mở activity quét mã QR
+}
+
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == 100 && resultCode == RESULT_OK) {
+        String scannedCode = data.getStringExtra("scannedCode");
+        handleScannedResult(scannedCode); // Xử lý mã đã quét
+    }
+}
+
+private void handleScannedResult(String scannedCode) {
+    // Xử lý kết quả mã quét ở đây
+    Toast.makeText(this, "Scanned Code: " + scannedCode, Toast.LENGTH_SHORT).show();
+}
+Cần Lưu Ý Khi Thực Hiện:
+Mã Phím:
+
+Bạn cần xác định mã phím chính xác cho nút scan. Nếu bạn không biết mã phím của nút này, bạn có thể thử nghiệm bằng cách in ra tất cả các mã phím để tìm mã chính xác.
+java
+
+Copy
+@Override
+public boolean onKeyDown(int keyCode, KeyEvent event) {
+    Log.d("KeyCode", "Key pressed: " + keyCode);
+    return super.onKeyDown(keyCode, event);
+}
+
+
+
+
+1. Sử Dụng Logcat Để Xem Key Code
+Điều đầu tiên bạn có thể làm là sử dụng logging trong Android để hiển thị các phím mà thiết bị nhận diện khi bạn nhấn nút scan.
+
+Phần mã để ghi lại mã phím:
+java
+
+Copy
+@Override
+public boolean onKeyDown(int keyCode, KeyEvent event) {
+    Log.d("KeyCode", "Key pressed: " + keyCode); // Ghi lại mã phím
+    return super.onKeyDown(keyCode, event);
+}
+2. Chạy Ứng Dụng Trên Thiết Bị của Bạn
+Kết nối thiết bị với máy tính qua USB và sử dụng Android Studio hoặc một công cụ logcat để xem log đầu ra.
+Khi bạn nhấn nút scan trên thiết bị, hãy chú ý đến các thông báo trong logcat. Bạn sẽ thấy log ghi lại mã phím tương ứng với nút mà bạn đã nhấn.
+3. Xác Định Mã Phím
+Kiểm tra giá trị của keyCode được ghi lại trong logcat. Bạn có thể xác định mã phím cụ thể bằng cách tham khảo danh sách mã phím của Android.
+Mã phím sẽ trông giống như mã số nguyên mà bạn có thể map lại với tên nút ("KEYCODE_SCAN", "KEYCODE_V", v.v.).
+4. Thử Nghiệm Các Mã Khác Nhau
+Nếu không thể truy cập logcat, bạn có thể cần thử nghiệm thủ công với một số mã phím phổ biến sau:
+
+KEYCODE_BUTTON_A
+KEYCODE_BUTTON_B
+KEYCODE_CAMERA (thường được sử dụng cho nút chụp ảnh)
+KEYCODE_DPAD_CENTER
+5. Tạo Mỗi Phím Khác Nhau Như Một Phần Giải Thích
+Khi bạn đã xác định được mã phím, bạn có thể sử dụng nó trong onKeyDown để thực hiện chức năng quét mã QR.
+
+Ví Dụ:
+java
+
+Copy
+@Override
+public boolean onKeyDown(int keyCode, KeyEvent event) {
+    if (keyCode == <mã phím mà bạn đã xác định>) { // Thay <mã phím> bằng mã đã tìm thấy
+        startQrCodeScanner(); // Bắt đầu quét mã QR
+        return true; // Đánh dấu là đã xử lý phím
+    }
+    return super.onKeyDown(keyCode, event); // Xử lý các phím khác
+}
