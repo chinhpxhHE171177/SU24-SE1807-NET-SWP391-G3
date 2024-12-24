@@ -1,0 +1,77 @@
+          <!-- Modal cho việc chỉnh sửa -->
+  <div class="modal fade" id="staticBackdrop3" tabindex="-1" aria-labelledby="staticBackdrop1Label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdrop1Label">Chỉnh sửa tên trang</h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" action="authorization" method="post">
+                    <input type="hidden" name="action" value="editPermission">
+                    <input type="hidden" name="oldPageName" id="oldPageName"> <!-- Tên trang cũ -->
+                    <input type="hidden" name="permissionIds" id="permissionIds"> <!-- Chứa nhiều permission ID -->
+                    <div class="form-outline mb-4">
+                        <input type="text" id="editPageName" name="pageName" class="form-control" required />
+                        <label class="form-label" for="editPageName">Tên trang mới</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Cập nhật</button>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+
+
+ function editPageName(oldPageName, permIds) {
+            event.preventDefault();
+            document.getElementById('editPageName').value = ''; // Xóa ô nhập cho tên mới
+            document.getElementById('oldPageName').value = oldPageName; // Đặt tên trang cũ vào ô ẩn
+            document.getElementById('permissionIds').value = permIds.join(','); // Chuyển đổi thành chuỗi ID permissions
+            var editModal = new bootstrap.Modal(document.getElementById('staticBackdrop3'));
+            editModal.show();
+        }
+
+
+
+protected void editPermission(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String oldPageName = request.getParameter("oldPageName");
+        String newPageName = request.getParameter("pageName"); // Đây là tên trang mới
+
+        if (newPageName == null || newPageName.isEmpty()) {
+            throw new IllegalArgumentException("Tên trang không được để trống.");
+        }
+
+        try {
+            // Gọi phương thức để cập nhật tất cả các permissions với PageName cũ
+            pdao.updatePageName(oldPageName, newPageName);
+            
+            String successMessage = "Tên trang đã được cập nhật thành công!";
+            response.sendRedirect("authorization?toastMessage=" + URLEncoder.encode(successMessage, "UTF-8") + "&type=success");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            String errorMessage = "Lỗi xảy ra khi cập nhật tên trang: " + e.getMessage();
+            response.sendRedirect("authorization?toastMessage=" + URLEncoder.encode(errorMessage, "UTF-8") + "&type=error");
+        }
+    }
+
+
+
+
+public void updatePageName(String oldPageName, String newPageName) throws SQLException {
+	    String sql = "UPDATE Permissions SET PageName = ? WHERE PageName = ?";
+
+	    try (Connection conn = getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setString(1, newPageName); 
+	        stmt.setString(2, oldPageName);  
+
+	        stmt.executeUpdate(); 
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        throw e; 
+	    }
+	}
+
